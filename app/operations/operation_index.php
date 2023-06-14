@@ -1,10 +1,10 @@
 <?php
 
-namespace Controllers;
+namespace operations;
 
-class IndexController {
-	public function helloworldAction(\Base $fff, array $args = []): void {
-		echo 'Hello World!! This is a '.$fff->VERB.'.';
+class operation_index {
+	public function helloworld_default(\Base $f3, array $args = []): void {
+		echo 'Hello World!! This is a '.$f3->VERB.'.';
 
 		// URI example
 		// http://localhost:4000/helloworld/D Tapader/34/Software Engineer
