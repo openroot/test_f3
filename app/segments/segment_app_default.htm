@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset={{ @ENCODING }}" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="{{ @GUI }}css/custom.css" />
+		<title>{{ @site }}</title>
+		<base href="{{ @BASE }}/" />
+	</head>
+
+	<body>
+		<div id="header">
+			<h2>{{ @site }}</h2>
+		</div>
+		<div id="content">
+			<F3:include href="{{ @segmentpath.@segment }}" />
+		</div>
+		<div id="footer">
+			<h2>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h2>
+		</div>
+	</body>
+</html>
