@@ -4,7 +4,7 @@ namespace operations;
 
 class operation_index {
 	public function helloworld_default(\Base $f3): void {
-		echo 'Hello World! This is a '.$f3->VERB.'.';
+		echo 'Hello World! This is a `'.$f3->VERB.'` verb.';
 
 		// URI example
 		// http://localhost:4000/helloworld/D Tapader/34/Software Engineer
