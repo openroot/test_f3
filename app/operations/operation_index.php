@@ -4,6 +4,8 @@ namespace operations;
 
 class operation_index {
 	public function helloworld_default(\Base $f3): void {
+		echo '<pre>This route: '.$f3['ALIASES.index_helloworld'].'</pre>';
+
 		echo 'Hello World! This is a `'.$f3->VERB.'` verb.';
 
 		// URI example
