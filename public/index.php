@@ -1,12 +1,12 @@
 <?php
-
 require(__DIR__ . '/../vendor/autoload.php');
 
 $f3 = \Base::instance();
-$f3->set('AUTOLOAD', '../app/');
+
+$f3->AUTOLOAD = '../app/';
 
 $f3->route('GET @index_default: /', function ($f3) {
-		$f3->value1='A user-defined value.';
+		$f3->value1 = 'A user-defined value.';
 
 		// URI example
 		// http://localhost:4000

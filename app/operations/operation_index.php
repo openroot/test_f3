@@ -1,5 +1,4 @@
 <?php
-
 namespace operations;
 
 class operation_index {
