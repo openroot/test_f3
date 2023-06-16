@@ -11,7 +11,7 @@ $f3->route(
 	'GET /',
 	function ($f3) {
 		$f3->set('value1', 'SAMPLING');
-		echo \Template::instance()->render('sample_template.htm');
+		echo \Template::instance()->render('/../app/segments/segment_sample.htm');
 	}
 );
 
