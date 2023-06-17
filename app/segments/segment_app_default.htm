@@ -10,13 +10,13 @@
 
 	<body>
 		<div id="header">
-			<h2>{{ @site }}</h2>
+			<h4>{{ @site }}</h4>
 		</div>
 		<div id="content">
-			<F3:include href="{{ @segmentpath.@segment }}" />
+			<F3:include href="{{ @segmentpath . @segment }}" />
 		</div>
 		<div id="footer">
-			<h2>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h2>
+			<h4>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h4>
 		</div>
 	</body>
 </html>

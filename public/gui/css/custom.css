@@ -8,10 +8,28 @@ html {
 }
 
 body {
-	border: 5px solid crimson;
+	font-family: 'Courier New', monospace;
+	border: 3px solid black;
 }
 
-div {
-	background-color: coral;
+div {padding: 10px;
+	background-color: #fffae5;
 	border: 1px solid white;
+}
+
+a:link,
+a:visited {
+	background-color: #fffae5;
+	color: black;
+	border: 2px solid black;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+}
+
+a:hover,
+a:active {
+	background-color: black;
+	color: #fffae5;
 }
