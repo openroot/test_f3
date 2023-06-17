@@ -110,7 +110,9 @@ class test_f3 {
 				$this->handle_f3->route(
 					'GET @indexdefault: /',
 					function ($f3) {
-						$f3->indexdefaultvalue1 = 'This user-defined value.';
+						$f3->index_default = array(
+							'value1' => 'This user-defined value.'
+						);
 
 						$f3->segment = 'segment_index_default.htm';
 						echo Template::instance()->render($f3->segmentappdefault);
