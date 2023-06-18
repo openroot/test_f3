@@ -88,6 +88,7 @@ class test_f3 {
 				$this->handle_f3->segmentappdefault = $this->handle_f3->segmentpath . 'segment_app_default.htm';
 				$this->handle_f3->segment = '';
 				$this->handle_f3->transactionblobpath = '../app/transactions/blob/';
+				$this->handle_f3->blobf3jigpath = $this->handle_f3->transactionblobpath. 'f3jig/';
 
 				$this->handle_f3->externallink = 'window.open(this.href); return false;';
 			}

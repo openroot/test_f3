@@ -37,7 +37,7 @@ class transaction_jig {
 
 	private function handshake(): bool {
 		try {
-			$this->handle_f3jig = new Jig($this->config_f3->transactionblobpath . $this->config_f3jig_database_name, Jig::FORMAT_JSON);
+			$this->handle_f3jig = new Jig($this->config_f3->blobf3jigpath . $this->config_f3jig_database_name, Jig::FORMAT_JSON);
 			return true;
 		}
 		catch (Exception $exception) {
@@ -67,5 +67,26 @@ class transaction_jig {
 			}
 		}
 		return NULL;
+	}
+
+	public function simple_writer(string $table_name): void {
+		if (isset($table_name) && !empty($table_name)) {
+			$mapper = new Jig\Mapper($this->handle_f3jig, $table_name);
+			$mapper->username = 'userA';
+			$mapper->password = '57d82jg05';
+			$mapper->save();
+			$mapper->reset();
+			$mapper->username = 'userB';
+			$mapper->password = 'kbjd94973';
+			$mapper->save();
+		}
+	}
+
+	public function simple_reader(string $table_name): ?array {
+		$data = array();
+		if (isset($table_name) && !empty($table_name)) {
+			$data = $this->handle_f3jig->read($table_name);
+		}
+		return $data;
 	}
 }

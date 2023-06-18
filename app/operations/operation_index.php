@@ -24,13 +24,22 @@ class operation_index {
 	}
 
 	public function jig_default(Base $f3): void {
-		$transaction_jig = new transaction_jig($f3, 'sample_db');
+		$database_name = 'sample_db/';
+		$table_name = 'users.json';
+
+		$transaction_jig = new transaction_jig($f3, $database_name);
 		if ($transaction_jig->issuccess_init()) {
 			$handle_f3jig = $transaction_jig->retrieve_handle();
 			$f3->index_jig_default = array(
 				'uuid' => $handle_f3jig->uuid(),
 				'dir' => $handle_f3jig->dir()
 			);
+
+			$transaction_jig->simple_writer($table_name);
+			$data = $transaction_jig->simple_reader($table_name);
+			if (isset($data)) {
+				$f3->index_jig_default += array('simple_data' => $data);
+			}
 
 			$f3->segment = 'segment_jig_default.htm';
 			echo Template::instance()->render($f3->segmentappdefault);

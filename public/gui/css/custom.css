@@ -12,7 +12,10 @@ body {
 	border: 3px solid black;
 }
 
-div {padding: 10px;
+div#header,
+div#content,
+div#footer {
+	padding: 10px;
 	background-color: #fffae5;
 	border: 1px solid white;
 }
@@ -32,4 +35,60 @@ a:hover,
 a:active {
 	background-color: black;
 	color: #fffae5;
+}
+
+table {
+	table-layout: fixed;
+	width: 100%;
+}
+
+table,
+th,
+td {
+	border: 1px solid black;
+	border-collapse: collapse;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: left;
+}
+
+th {
+	background-color: black;
+	color: #fffae5;
+	text-align: center;
+}
+
+caption {
+	display: table-caption;
+	text-align: right;
+	padding: 15px;
+	padding-right: 15px;
+	background-color: black;
+	color: #fffae5;
+	font-weight: thin;
+	text-decoration: underline;
+	font-size: larger;
+}
+
+div.viewtable {
+	height: 200px;
+	overflow: auto;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	border-radius: 8px;
+}
+
+::-webkit-scrollbar {
+	width: 15px;
+}
+::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 1px black;
+	border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+	background: black;
+	border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: black;
 }
