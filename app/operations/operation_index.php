@@ -43,7 +43,7 @@ class operation_index {
 				$f3->index_f3jig_default += array('simple_table_data' => $table_data);
 			}
 
-			$f3->segment = 'segment_f3jig_default.htm';
+			$f3->segment = 'segment_transaction_f3jig_default.htm';
 			echo Template::instance()->render($f3->segmentappdefault);
 		}
 	}

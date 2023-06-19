@@ -116,12 +116,13 @@ class test_f3 {
 				// http://localhost:4000
 				$this->handle_this->route(
 					'GET @indexdefault: /',
+					// faster inbuilt function realization
 					function ($f3) {
 						$f3->index_default = array(
 							'value1' => 'This user-defined value.'
 						);
 
-						$f3->segment = 'segment_index_default.htm';
+						$f3->segment = 'segment_operation_index_default.htm';
 						echo Template::instance()->render($f3->segmentappdefault);
 					}
 				);
