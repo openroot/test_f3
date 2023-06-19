@@ -24,7 +24,7 @@ class job_exception extends Exception {
 			return true;
 		}
 		else {
-			throw new Exception("Exception message is invalid.");
+			throw new Exception('Exception message is invalid.');
 		}
 		return false;
 	}
@@ -36,7 +36,7 @@ class job_exception extends Exception {
 		else {
 			$this->handle_this = 'App Exception: ' . $this->config_message;
 		}
-		// TODO: default it to non-binary-file logged
+		// TODO: Default it to non-binary-file logged.
 		throw new Exception($this->handle_this);
 		
 		return true;

@@ -28,11 +28,11 @@ class transaction_f3jig {
 				return true;
 			}
 			else {
-				throw new job_exception("F3-Jig database name is invalid.");
+				throw new job_exception('F3-Jig database name is invalid.');
 			}
 		}
 		else {
-			throw new job_exception("F3 instance is null.");
+			throw new job_exception('F3 instance is null.');
 		}
 		return false;
 	}
@@ -45,7 +45,7 @@ class transaction_f3jig {
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle();
-			throw new job_exception("F3-Jig plug-in unable to initialized.", $exception);
+			throw new job_exception('F3-Jig plug-in unable to initialized.', $exception);
 		}
 		return false;
 	}
@@ -93,7 +93,7 @@ class transaction_f3jig {
 				}
 			}
 			catch (Exception $exception) {
-				throw new job_exception("Unable to write data.", $exception);
+				throw new job_exception('Unable to write data.', $exception);
 			}
 		}
 		return false;
@@ -107,7 +107,7 @@ class transaction_f3jig {
 				}
 			}
 			catch (Exception $exception) {
-				throw new job_exception("Unable to read data.", $exception);
+				throw new job_exception('Unable to read data.', $exception);
 			}
 		}
 		return NULL;

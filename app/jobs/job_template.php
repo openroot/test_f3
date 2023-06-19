@@ -27,11 +27,11 @@ class job_template {
 				return true;
 			}
 			else {
-				throw new job_exception("Config 2 is invalid.");
+				throw new job_exception('Config 2 is invalid.');
 			}
 		}
 		else {
-			throw new job_exception("Config 1 is invalid.");
+			throw new job_exception('Config 1 is invalid.');
 		}
 		return false;
 	}
@@ -46,7 +46,7 @@ class job_template {
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle(); // (todo): Keep this destroyer only when this method concerned is crucial to operational completion.
-			throw new job_exception("This-job unable to initialized.", $exception);
+			throw new job_exception('<[This-job] unable to initialized>.', $exception);
 		}
 		return false;
 	}

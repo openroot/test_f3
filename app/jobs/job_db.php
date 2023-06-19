@@ -27,11 +27,11 @@ class job_db {
 				return true;
 			}
 			else {
-				throw new job_exception("Database type is invalid.");
+				throw new job_exception('Database type is invalid.');
 			}
 		}
 		else {
-			throw new job_exception("F3 instance is null.");
+			throw new job_exception('F3 instance is null.');
 		}
 		return false;
 	}
@@ -45,7 +45,7 @@ class job_db {
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle();
-			throw new job_exception("Database unable to initialized.", $exception);
+			throw new job_exception('Database unable to initialized.', $exception);
 		}
 		return false;
 	}
