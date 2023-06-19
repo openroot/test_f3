@@ -1,5 +1,7 @@
 <?php
+
 namespace operations;
+
 use \Base as Base;
 use \Template as Template;
 use \transactions\transaction_f3jig as transaction_f3jig;

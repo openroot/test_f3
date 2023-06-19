@@ -40,7 +40,7 @@ class job_db {
 		try {
 			// TODO: put 'initialization' logics here
 			$this->handle_this = 'to be replaced with real basic object';
-			
+
 			return true;
 		}
 		catch (Exception $exception) {
