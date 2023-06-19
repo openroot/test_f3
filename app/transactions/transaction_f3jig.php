@@ -7,7 +7,7 @@ use \Base as Base;
 use \DB\Jig as Jig;
 use \jobs\job_exception as job_exception;
 
-class transaction_jig {
+class transaction_f3jig {
 	private ?Jig $handle_this = NULL;
 	private Base $config_f3;
 	private string $config_f3jig_database_name = '';

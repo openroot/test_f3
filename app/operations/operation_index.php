@@ -2,7 +2,7 @@
 namespace operations;
 use \Base as Base;
 use \Template as Template;
-use \transactions\transaction_jig as transaction_jig;
+use \transactions\transaction_f3jig as transaction_f3jig;
 
 class operation_index {
 	public function helloworld_default(Base $f3): void {
@@ -23,27 +23,27 @@ class operation_index {
 		echo '</body></html>';
 	}
 
-	public function jig_default(Base $f3): void {
+	public function f3jig_default(Base $f3): void {
 		$database_name = 'sample_db/';
 		$table_name = 'users.json';
 
-		$transaction_jig = new transaction_jig($f3, $database_name);
-		if (isset($transaction_jig) && $transaction_jig->issuccess_init()) {
-			$handle_f3jig = $transaction_jig->retrieve_handle();
+		$transaction_f3jig = new transaction_f3jig($f3, $database_name);
+		if (isset($transaction_f3jig) && $transaction_f3jig->issuccess_init()) {
+			$handle_f3jig = $transaction_f3jig->retrieve_handle();
 			if (isset($handle_f3jig)) {
-				$f3->index_jig_default = array(
+				$f3->index_f3jig_default = array(
 					'uuid' => $handle_f3jig->uuid(),
 					'dir' => $handle_f3jig->dir()
 				);
 			}
 
-			$transaction_jig->simple_writer($table_name);
-			$table_data = $transaction_jig->simple_reader($table_name);
+			$transaction_f3jig->simple_writer($table_name);
+			$table_data = $transaction_f3jig->simple_reader($table_name);
 			if (isset($table_data)) {
-				$f3->index_jig_default += array('simple_table_data' => $table_data);
+				$f3->index_f3jig_default += array('simple_table_data' => $table_data);
 			}
 
-			$f3->segment = 'segment_jig_default.htm';
+			$f3->segment = 'segment_f3jig_default.htm';
 			echo Template::instance()->render($f3->segmentappdefault);
 		}
 	}

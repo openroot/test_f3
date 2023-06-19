@@ -131,8 +131,8 @@ class test_f3 {
 				$this->handle_this->route('GET|POST @indexhelloworld: /helloworld/@name/@age/@profession', 'operations\operation_index->helloworld_default');
 
 				// URI example
-				// http://localhost:4000/jig
-				$this->handle_this->route('GET @indexjig: /jig', 'operations\operation_index->jig_default');
+				// http://localhost:4000/f3jig
+				$this->handle_this->route('GET @indexf3jig: /f3jig', 'operations\operation_index->f3jig_default');
 
 				return true;
 			}
