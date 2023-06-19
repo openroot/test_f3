@@ -1,5 +1,7 @@
 <?php
+
 namespace app;
+
 use Exception as Exception;
 use \Base as Base;
 use \Template as Template;
@@ -7,8 +9,8 @@ use \Template as Template;
 require(__DIR__ . '/../vendor/autoload.php');
 
 class test_f3 {
+	private ?object $handle_this = NULL;
 	private string $config_app_name = '';
-	private ?object $handle_f3 = NULL;
 
 	public function __construct(string $app_name) {
 		$this->config_app_name = $app_name;
@@ -31,22 +33,21 @@ class test_f3 {
 
 	private function handshake(): bool {
 		try {
-			$this->handle_f3 = Base::instance();
+			$this->handle_this = Base::instance();
 		}
 		catch (Exception $exception) {
-			$this->handle_f3 = NULL;
+			$this->destroy_handle();
 			echo 'Package Exception: F3 framework couldn\'t be instantiated. [ ' . $exception->getMessage() . ' ]. EOL';
 		}
 
-		if (isset($this->handle_f3)) {
+		if ($this->issuccess_init()) {
 			if ($this->set_globalvalues()) {
 				if ($this->prepare_routes()) {
 					if ($this->publish_app()) {
 						return true;
 					}
 					else {
-						$this->handle_f3 = NULL;
-						return false;
+						$this->destroy_handle();
 					}
 				}
 			}
@@ -55,7 +56,7 @@ class test_f3 {
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->handle_f3)) {
+		if (isset($this->handle_this)) {
 			return true;
 		}
 		else {
@@ -64,51 +65,56 @@ class test_f3 {
 	}
 
 	public function retrieve_handle(): ?object {
-		if (isset($this->handle_f3)) {
-			return $this->handle_f3;
+		if (isset($this->handle_this)) {
+			return $this->handle_this;
 		}
 		else {
 			if ($this->validate_config() && $this->handshake()) {
-				return $this->handle_f3;
+				return $this->handle_this;
 			}
 		}
 		return NULL;
 	}
 
+	public function destroy_handle() {
+		$this->handle_this = NULL;
+	}
+
 	private function set_globalvalues(): bool {
-		if (isset($this->handle_f3)) {
+		if ($this->issuccess_init()) {
 			try {
-				$this->handle_f3->AUTOLOAD = '../app/';
-				$this->handle_f3->DEBUG = 3;
-				$this->handle_f3->GUI = 'gui/';
+				$this->handle_this->AUTOLOAD = '../app/';
+				$this->handle_this->DEBUG = 3;
+				$this->handle_this->GUI = 'gui/';
 
-				$this->handle_f3->site = $this->config_app_name;
-				$this->handle_f3->app = $this->config_app_name;
-				$this->handle_f3->segmentpath = '../app/segments/';
-				$this->handle_f3->segmentappdefault = $this->handle_f3->segmentpath . 'segment_app_default.htm';
-				$this->handle_f3->segment = '';
-				$this->handle_f3->transactionblobpath = '../app/transactions/blob/';
-				$this->handle_f3->blobf3jigpath = $this->handle_f3->transactionblobpath. 'f3jig/';
+				$this->handle_this->site = $this->config_app_name;
+				$this->handle_this->app = $this->config_app_name;
+				$this->handle_this->segmentpath = '../app/segments/';
+				$this->handle_this->segmentappdefault = $this->handle_this->segmentpath . 'segment_app_default.htm';
+				$this->handle_this->segment = '';
+				$this->handle_this->transactionblobpath = '../app/transactions/blob/';
+				$this->handle_this->blobf3jigpath = $this->handle_this->transactionblobpath. 'f3jig/';
 
-				$this->handle_f3->externallink = 'window.open(this.href); return false;';
+				$this->handle_this->externallink = 'window.open(this.href); return false;';
+
+				return true;
 			}
 			catch (Exception $exception) {
-				$this->handle_f3 = NULL;
+				$this->destroy_handle();
 				echo 'Package Exception: Configurations couldn\'t be initiated. [ ' . $exception->getMessage() . ' ]. EOL';
-				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private function prepare_routes(): bool {
-		if (isset($this->handle_f3)) {
+		if ($this->issuccess_init()) {
 			try {
-				$f3 = $this->handle_f3;
+				$f3 = $this->handle_this;
 
 				// URI example
 				// http://localhost:4000
-				$this->handle_f3->route(
+				$this->handle_this->route(
 					'GET @indexdefault: /',
 					function ($f3) {
 						$f3->index_default = array(
@@ -122,33 +128,35 @@ class test_f3 {
 
 				// URI example
 				// http://localhost:4000/helloworld/D Tapader/34/Software Engineer
-				$this->handle_f3->route('GET|POST @indexhelloworld: /helloworld/@name/@age/@profession', 'operations\operation_index->helloworld_default');
+				$this->handle_this->route('GET|POST @indexhelloworld: /helloworld/@name/@age/@profession', 'operations\operation_index->helloworld_default');
 
 				// URI example
 				// http://localhost:4000/jig
-				$this->handle_f3->route('GET @indexjig: /jig', 'operations\operation_index->jig_default');
+				$this->handle_this->route('GET @indexjig: /jig', 'operations\operation_index->jig_default');
+
+				return true;
 			}
 			catch (Exception $exception) {
-				$this->handle_f3 = NULL;
+				$this->destroy_handle();
 				echo 'Package Exception: Routes couldn\'t be prepared. [ ' . $exception->getMessage() . ' ]. EOL';
-				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private function publish_app(): bool {
-		if (isset($this->handle_f3)) {
+		if ($this->issuccess_init()) {
 			try {
-				$this->handle_f3->run();
+				$this->handle_this->run();
+
+				return true;
 			}
 			catch (Exception $exception) {
-				$this->handle_f3 = NULL;
+				$this->destroy_handle();
 				echo 'Package Exception: App were unable to be published. [ ' . $exception->getMessage() . ' ]. EOL';
-				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 }
 

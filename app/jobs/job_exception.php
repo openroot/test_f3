@@ -1,11 +1,13 @@
 <?php
+
 namespace jobs;
+
 use Exception;
 
 class job_exception extends Exception {
+	private ?string $handle_this = NULL;
 	private string $config_message = '';
 	private ?Exception $config_exception = NULL;
-	private ?string $handle_full_message = NULL;
 
 	public function __construct(string $message, Exception $exception = NULL) {
 		$this->config_message = $message;
@@ -29,18 +31,19 @@ class job_exception extends Exception {
 
 	private function handshake(): bool {
 		if (isset($this->config_exception)) {
-			$this->handle_full_message = 'App Exception: ' . $this->config_message . ' [ ' . $this->config_exception->message . ' ]';
+			$this->handle_this = 'App Exception: ' . $this->config_message . ' [ ' . $this->config_exception->message . ' ]';
 		}
 		else {
-			$this->handle_full_message = 'App Exception: ' . $this->config_message;
+			$this->handle_this = 'App Exception: ' . $this->config_message;
 		}
 		// TODO: default it to non-binary-file logged
-		throw new Exception($this->handle_full_message);
+		throw new Exception($this->handle_this);
+		
 		return true;
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->handle_full_message)) {
+		if (isset($this->handle_this)) {
 			return true;
 		}
 		else {
@@ -49,14 +52,18 @@ class job_exception extends Exception {
 	}
 
 	public function retrieve_handle(): ?string {
-		if (isset($this->handle_full_message)) {
-			return $this->handle_full_message;
+		if (isset($this->handle_this)) {
+			return $this->handle_this;
 		}
 		else {
 			if ($this->validate_config() && $this->handshake()) {
-				return $this->handle_full_message;
+				return $this->handle_this;
 			}
 		}
 		return NULL;
+	}
+
+	public function destroy_handle() {
+		$this->handle_this = NULL;
 	}
 }

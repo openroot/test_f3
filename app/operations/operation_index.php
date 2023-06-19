@@ -28,17 +28,19 @@ class operation_index {
 		$table_name = 'users.json';
 
 		$transaction_jig = new transaction_jig($f3, $database_name);
-		if ($transaction_jig->issuccess_init()) {
+		if (isset($transaction_jig) && $transaction_jig->issuccess_init()) {
 			$handle_f3jig = $transaction_jig->retrieve_handle();
-			$f3->index_jig_default = array(
-				'uuid' => $handle_f3jig->uuid(),
-				'dir' => $handle_f3jig->dir()
-			);
+			if (isset($handle_f3jig)) {
+				$f3->index_jig_default = array(
+					'uuid' => $handle_f3jig->uuid(),
+					'dir' => $handle_f3jig->dir()
+				);
+			}
 
 			$transaction_jig->simple_writer($table_name);
-			$data = $transaction_jig->simple_reader($table_name);
-			if (isset($data)) {
-				$f3->index_jig_default += array('simple_data' => $data);
+			$table_data = $transaction_jig->simple_reader($table_name);
+			if (isset($table_data)) {
+				$f3->index_jig_default += array('simple_table_data' => $table_data);
 			}
 
 			$f3->segment = 'segment_jig_default.htm';
