@@ -10,6 +10,7 @@ use \jobs\job_exception as job_exception;
 
 class operation_index {
 	private ?string $handle_this = NULL;
+	private ?object $config_f3templateinstance = NULL;
 
 	public function __construct() {
 		if ($this->validate_config()) {
@@ -26,12 +27,16 @@ class operation_index {
 		try {
 			// TODO: Put 'initialization' logics here for app client.
 			$this->handle_this = 'To be replaced with real \'client\' object';
-
-			return true;
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle();
 			throw new job_exception('App client unable to initialized.', $exception);
+		}
+
+		if ($this->issuccess_init()) {
+			if ($this->initialize_f3singletones()) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -59,6 +64,21 @@ class operation_index {
 
 	public function destroy_handle() {
 		$this->handle_this = NULL;
+	}
+
+	private function initialize_f3singletones(): bool {
+		if ($this->issuccess_init()) {
+			try {
+				$this->config_f3templateinstance = Template::instance();
+
+				return true;
+			}
+			catch (Exception $exception) {
+				$this->destroy_handle();
+				throw new job_exception('F3 singletones couldn\'t be initialized.', $exception);
+			}
+		}
+		return false;
 	}
 
 	public function helloworld_default(Base $f3): bool {
@@ -106,7 +126,7 @@ class operation_index {
 				}
 
 				$f3->segment = 'segment_transaction_f3jig_default.htm';
-				echo Template::instance()->render($f3->segmentappdefault);
+				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
 			}
 			
 			return true;
