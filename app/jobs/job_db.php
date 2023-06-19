@@ -38,15 +38,14 @@ class job_db {
 
 	private function handshake(): bool {
 		try {
-			// TODO: put 'initialization' logics here
+			// (todo): Put 'initialization' logics here.
 			$this->handle_this = 'to be replaced with real basic object';
 
 			return true;
 		}
 		catch (Exception $exception) {
-			$this->handle_this = NULL;
+			$this->destroy_handle();
 			throw new job_exception("Database unable to initialized.", $exception);
-			return false;
 		}
 		return false;
 	}
