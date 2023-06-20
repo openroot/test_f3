@@ -6,7 +6,7 @@ use Exception as Exception;
 use \jobs\job_exception as job_exception;
 
 class job_template {
-	private ?object $handle_this = NULL;
+	private ?string $handle_this = NULL;
 	private string $config_1 = '';
 	private string $config_2 = '';
 
@@ -20,7 +20,7 @@ class job_template {
 		return false;
 	}
 
-	// (todo): This would  be a class specification.
+	// (todo): This would be a class specification.
 	private function validate_config(): bool {
 		if (isset($this->config_1) && !empty($this->config_1)) {
 			if (isset($this->config_2) && !empty($this->config_2)) {
@@ -36,7 +36,7 @@ class job_template {
 		return false;
 	}
 
-	// (todo): This would  be a class specification.
+	// (todo): This would be a class specification.
 	private function handshake(): bool {
 		try {
 			// (todo): Put 'initialization' logics here.
@@ -60,7 +60,7 @@ class job_template {
 		}
 	}
 
-	public function retrieve_handle(): ?object {
+	public function retrieve_handle(): ?string {
 		if (isset($this->handle_this)) {
 			return $this->handle_this;
 		}

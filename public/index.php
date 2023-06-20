@@ -112,12 +112,13 @@ class test_f3 {
 			try {
 				$f3 = $this->handle_this;
 
-				// URI example
-				// http://localhost:4000
+				// URI example: http://localhost:4000/
 				$this->handle_this->route(
-					'GET @indexdefault: /',
-					// faster inbuilt function realization
+					'GET '.
+					'@indexdefault: '.
+					'/',
 					function ($f3) {
+						// faster inbuilt function realization
 						$f3->index_default = array(
 							'value1' => 'This user-defined value.'
 						);
@@ -127,13 +128,37 @@ class test_f3 {
 					}
 				);
 
-				// URI example
-				// http://localhost:4000/helloworld/D Tapader/34/Software Engineer
-				$this->handle_this->route('GET|POST @indexhelloworld: /helloworld/@name/@age/@profession', 'operations\operation_index->helloworld_default');
+				// URI example: http://localhost:4000/template/
+				$this->handle_this->route(
+					'GET ' .
+					'@templatedefault: ' .
+					'/template',
+					'operations\operation_index->template_default'
+				);
 
-				// URI example
-				// http://localhost:4000/f3jig
-				$this->handle_this->route('GET @indexf3jig: /f3jig', 'operations\operation_index->f3jig_default');
+				// URI example: http://localhost:4000/helloworld/D Tapader/34/Software Engineer
+				$this->handle_this->route(
+					'GET|POST '.
+					'@indexhelloworld: '.
+					'/helloworld/@name/@age/@profession',
+					'operations\operation_index->helloworld_default'
+				);
+
+				// URI example: http://localhost:4000/f3jig/
+				$this->handle_this->route(
+					'GET '.
+					'@f3jigdefault: '.
+					'/f3jig',
+					'operations\operation_index->f3jig_default'
+				);
+
+				// URI example: http://localhost:4000/db/
+				$this->handle_this->route(
+					'GET ' .
+					'@dbdefault: ' .
+					'/db',
+					'operations\operation_index->db_default'
+				);
 
 				return true;
 			}

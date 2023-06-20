@@ -1,4 +1,4 @@
-<pre>This route: {{ @@ALIASES.indexf3jig }}</pre>
+<pre>This route: {{ @@ALIASES.f3jigdefault }}</pre>
 <pre>F3-Jig database ID: {{ @@index_f3jig_default.uuid }}</pre>
 <pre>F3-Jig database directory: {{ @@index_f3jig_default.dir }}</pre>
 <pre>F3-Jig table `users`:</pre>
@@ -7,7 +7,7 @@
 			<caption>users</caption>
 			<tr><th>Index</th><th>Username</th><th>Password</th></tr>
 			<F3:repeat
-				group="{{ @@index_f3jig_default['simple_table_data'] }}"
+				group="{{ @@index_f3jig_default.simple_table_data }}"
 				key="{{ @key }}"
 				value="{{ @value }}"
 				counter="{{ @counter }}">

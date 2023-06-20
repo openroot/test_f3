@@ -5,8 +5,10 @@ namespace operations;
 use Exception as Exception;
 use \Base as Base;
 use \Template as Template;
-use \transactions\transaction_f3jig as transaction_f3jig;
 use \jobs\job_exception as job_exception;
+use \jobs\job_template as job_template;
+use \transactions\transaction_f3jig as transaction_f3jig;
+use \jobs\job_db as job_db;
 
 class operation_index {
 	private ?string $handle_this = NULL;
@@ -81,6 +83,36 @@ class operation_index {
 		return false;
 	}
 
+	// (todo): This would be a router specification.
+	public function template_default(Base $f3): bool {
+		if ($this->issuccess_init()) {
+			$job_template = new job_template('A Random Value', 'Another Random Value');
+			if (isset($job_template) && $job_template->issuccess_init()) {
+				$handle_template = $job_template->retrieve_handle();
+				if (isset($handle_template)) {
+					$f3->index_template_default = array(
+						'str' => 'dev.openroot@gmail.com',
+						'num' => 0420,
+						'boo' => true,
+						'arr_inde' => array('tues', 'wed', 'thurs', 'fri'),
+						'arr_associa' => array(
+							'animal' => 'snake',
+							'plant' => 'grass',
+							'flower' => 'sunflower',
+							'leaf' => 'banana'
+						)
+					);
+				}
+
+				$f3->segment = 'segment_job_template_default.htm';
+				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
+			}
+
+			return true;
+		}
+		return false;
+	}
+
 	public function helloworld_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
 			echo '<html><head><title>Test F3</title></head><body>';
@@ -128,7 +160,25 @@ class operation_index {
 				$f3->segment = 'segment_transaction_f3jig_default.htm';
 				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
 			}
-			
+
+			return true;
+		}
+		return false;
+	}
+
+	public function db_default(Base $f3): bool {
+		if ($this->issuccess_init()) {
+			$job_db = new job_db($f3, 'f3jig');
+			if (isset($job_db) && $job_db->issuccess_init()) {
+				$handle_db = $job_db->retrieve_handle();
+				if (isset($handle_db)) {
+					$f3->index_db_default = array();
+				}
+
+				$f3->segment = 'segment_job_db_default.htm';
+				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
+			}
+
 			return true;
 		}
 		return false;

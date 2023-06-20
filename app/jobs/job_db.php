@@ -7,7 +7,7 @@ use \Base as Base;
 use \jobs\job_exception as job_exception;
 
 class job_db {
-	private ?object $handle_this = NULL;
+	private ?string $handle_this = NULL;
 	private Base $config_f3;
 	private string $config_database_type = '';
 
@@ -59,7 +59,7 @@ class job_db {
 		}
 	}
 
-	public function retrieve_handle(): ?object {
+	public function retrieve_handle(): ?string {
 		if (isset($this->handle_this)) {
 			return $this->handle_this;
 		}

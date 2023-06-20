@@ -1,0 +1,55 @@
+<pre>This route: {{ @@ALIASES.templatedefault }}</pre>
+<code>Template variable `str` (string): {{ @@index_template_default.str }}</code>
+<br>
+<code>Template variable `num` (number): {{ @@index_template_default.num }}</code>
+<br>
+<code>Template variable `boo` (boolean) with [check]: 
+	<F3:check if="{{ @index_template_default.boo }}">
+		<true><span>True</span></true>
+		<false><span>False</span></false>
+	</F3:check>
+</code>
+<br>
+<code>Template with [switch]: 
+<F3:switch expr="{{ 'Sunday' }}">
+	<case value="{{ 'Sunday' }}" break="{{ TRUE }}">
+		"It is not Sun-day."
+	</case>
+	<default>
+		"Default message."
+	</default>
+</F3:switch>
+</code>
+<br>
+<code>Template variable `arr_inde` (indexed array) with [check] [loop]: 
+<F3:check if="{{ count(@@index_template_default.arr_inde) > 0 }}">
+	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@index_template_default.arr_inde) }}" step="{{ @i++ }}">
+		{{ @@index_template_default.arr_inde[@i] }},&nbsp;
+	</F3:loop>
+</F3:check>
+</code>
+<br>
+<code>Template variable `arr_associa` (associative array) with [repeat]:</code>
+<div class="viewtable" style="width: 350px; height: 100%">
+	<table>
+		<caption>Associative Array</caption>
+		<tr>
+			<th>Index</th>
+			<th>Key</th>
+			<th>Value</th>
+		</tr>
+		<F3:repeat
+			group="{{ @@index_template_default.arr_associa }}"
+			key="{{ @key }}"
+			value="{{ @value }}"
+			counter="{{ @counter }}">
+			<tr>
+				<td>{{ @@counter }}</td>
+				<td>{{ @@key }}</td>
+				<td>{{ @@value}}</td>
+			</tr>
+		</F3:repeat>
+	</table>
+</div>
+<br>
+<F3:exclude>A Template comment</exclude>
