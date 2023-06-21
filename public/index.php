@@ -6,9 +6,9 @@ use Exception as Exception;
 use \Base as Base;
 use \Template as Template;
 
-require(__DIR__ . '/../vendor/autoload.php');
+require(__DIR__ . '../vendor/autoload.php');
 
-class test_f3 {
+class app_test_f3 {
 	private ?Base $handle_this = NULL;
 	private string $config_app_name = '';
 
@@ -195,8 +195,8 @@ class test_f3 {
 	}
 }
 
-$test_f3 = new test_f3('Test F3');
-if ($test_f3->issuccess_init()) {
+$app_test_f3 = new app_test_f3('Test F3');
+if ($app_test_f3->issuccess_init()) {
 	exit(0);
 }
 else {
