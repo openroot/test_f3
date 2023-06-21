@@ -6,7 +6,7 @@ use Exception as Exception;
 use \Base as Base;
 use \Template as Template;
 
-require(__DIR__ . '../vendor/autoload.php');
+require(__DIR__ . '/../vendor/autoload.php');
 
 class app_test_f3 {
 	private ?Base $handle_this = NULL;
