@@ -13,13 +13,15 @@ class transaction_f3jig {
 	private string $config_f3jig_database_name = '';
 	
 	public function __construct(Base $f3, ?string $f3jig_database_name = NULL) {
-		$default_database_name = 'test_f3'; // TODO: Replace it with app configured value.
-		$this->config_f3 = $f3;
-		$this->config_f3jig_database_name = (isset($f3jig_database_name) && !empty($f3jig_database_name)) ? $f3jig_database_name : $default_database_name;
-		$this->config_f3jig_database_name .= '/';
+		if (isset($f3)) {
+			$default_database_name = $f3->get('transactions.f3jig.databasename');
+			$this->config_f3 = $f3;
+			$this->config_f3jig_database_name = (isset($f3jig_database_name) && !empty($f3jig_database_name)) ? $f3jig_database_name : $default_database_name;
+			$this->config_f3jig_database_name .= '/';
 
-		if ($this->validate_config()) {
-			return $this->handshake();
+			if ($this->validate_config()) {
+				return $this->handshake();
+			}
 		}
 		return false;
 	}

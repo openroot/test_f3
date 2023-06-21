@@ -40,7 +40,11 @@ class transaction_f3mysql {
 
 	private function handshake(): bool {
 		try {
-			$this->handle_this = new SQL('mysql:host=localhost;port=3306;dbname=databasename', 'username', 'password');
+			$this->handle_this = new SQL('mysql:host=localhost;
+				port=' . $this->config_f3->get('transactions.f3mysql.port') . ';
+				dbname=' . $this->config_f3->get('transactions.f3mysql.databasename'),
+				$this->config_f3->get('transactions.f3mysql.username'),
+				$this->config_f3->get('transactions.f3mysql.password'));
 
 			return true;
 		}

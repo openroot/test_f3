@@ -43,7 +43,7 @@ class job_db {
 
 	private function handshake(): bool {
 		try {
-			// (todo): Put 'initialization' logics here.
+			// TODO: Put 'initialization' logics here.
 			$db = new transaction_f3jig($this->config_f3);
 			$data = $db->sample_reader('users.json');
 

@@ -15,7 +15,7 @@ use models\enum_database;
 
 class operation_index {
 	private ?string $handle_this = NULL;
-	private ?object $config_f3templateinstance = NULL;
+	private ?Template $config_f3template = NULL;
 
 	public function __construct() {
 		if ($this->validate_config()) {
@@ -74,7 +74,7 @@ class operation_index {
 	private function initialize_f3singletones(): bool {
 		if ($this->issuccess_init()) {
 			try {
-				$this->config_f3templateinstance = Template::instance();
+				$this->config_f3template = Template::instance();
 
 				return true;
 			}
@@ -108,7 +108,7 @@ class operation_index {
 				}
 
 				$f3->segment = 'segment_job_template_default.htm';
-				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
+				echo $this->config_f3template->render($f3->segmentappdefault);
 			}
 
 			return true;
@@ -158,7 +158,7 @@ class operation_index {
 				}
 
 				$f3->segment = 'segment_transaction_f3jig_default.htm';
-				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
+				echo $this->config_f3template->render($f3->segmentappdefault);
 			}
 
 			return true;
@@ -184,7 +184,7 @@ class operation_index {
 				}
 
 				$f3->segment = 'segment_transaction_f3mysql_default.htm';
-				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
+				echo $this->config_f3template->render($f3->segmentappdefault);
 			}
 
 			return true;
@@ -202,7 +202,7 @@ class operation_index {
 				}
 
 				$f3->segment = 'segment_job_db_default.htm';
-				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
+				echo $this->config_f3template->render($f3->segmentappdefault);
 			}
 
 			return true;

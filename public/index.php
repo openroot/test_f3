@@ -9,7 +9,7 @@ use \Template as Template;
 require(__DIR__ . '/../vendor/autoload.php');
 
 class test_f3 {
-	private ?object $handle_this = NULL;
+	private ?Base $handle_this = NULL;
 	private string $config_app_name = '';
 
 	public function __construct(string $app_name) {
@@ -65,7 +65,7 @@ class test_f3 {
 		}
 	}
 
-	public function retrieve_handle(): ?object {
+	public function retrieve_handle(): Base {
 		if (isset($this->handle_this)) {
 			return $this->handle_this;
 		}
@@ -84,9 +84,9 @@ class test_f3 {
 	private function set_globalvalues(): bool {
 		if ($this->issuccess_init()) {
 			try {
-				$this->handle_this->AUTOLOAD = $this->handle_this['f3app']['autoload'];
-				$this->handle_this->DEBUG = $this->handle_this['f3app']['debuglevel'];
-				$this->handle_this->GUI = $this->handle_this['f3app']['gui'];
+				$this->handle_this->AUTOLOAD = $this->handle_this->get('f3app.autoload');
+				$this->handle_this->DEBUG = $this->handle_this->get('f3app.debuglevel');
+				$this->handle_this->GUI = $this->handle_this->get('f3app.gui');
 
 				$this->handle_this->site = $this->config_app_name;
 				$this->handle_this->app = $this->config_app_name;
