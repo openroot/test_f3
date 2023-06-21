@@ -7,8 +7,11 @@ use \Base as Base;
 use \Template as Template;
 use \jobs\job_exception as job_exception;
 use \jobs\job_template as job_template;
-use \transactions\transaction_f3jig as transaction_f3jig;
 use \jobs\job_db as job_db;
+use \transactions\transaction_f3jig as transaction_f3jig;
+use \transactions\transaction_f3mysql as transaction_f3mysql;
+use \models as models;
+use models\enum_database;
 
 class operation_index {
 	private ?string $handle_this = NULL;
@@ -138,10 +141,7 @@ class operation_index {
 
 	public function f3jig_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
-			$database_name = 'sample_db/';
-			$table_name = 'users.json';
-
-			$transaction_f3jig = new transaction_f3jig($f3, $database_name);
+			$transaction_f3jig = new transaction_f3jig($f3);
 			if (isset($transaction_f3jig) && $transaction_f3jig->issuccess_init()) {
 				$handle_f3jig = $transaction_f3jig->retrieve_handle();
 				if (isset($handle_f3jig)) {
@@ -151,10 +151,10 @@ class operation_index {
 					);
 				}
 
-				$transaction_f3jig->simple_writer($table_name);
-				$table_data = $transaction_f3jig->simple_reader($table_name);
+				$transaction_f3jig->sample_writer();
+				$table_data = $transaction_f3jig->sample_reader();
 				if (isset($table_data)) {
-					$f3->index_f3jig_default += array('simple_table_data' => $table_data);
+					$f3->index_f3jig_default += array('sample_table_data' => $table_data);
 				}
 
 				$f3->segment = 'segment_transaction_f3jig_default.htm';
@@ -166,9 +166,35 @@ class operation_index {
 		return false;
 	}
 
+	public function f3mysql_default(Base $f3): bool {
+		if ($this->issuccess_init()) {
+			$transaction_f3mysql = new transaction_f3mysql($f3);
+			if (isset($transaction_f3mysql) && $transaction_f3mysql->issuccess_init()) {
+				$handle_f3mysql = $transaction_f3mysql->retrieve_handle();
+				if (isset($handle_f3mysql)) {
+					$f3->index_f3mysql_default = array(
+						'uuid' => $handle_f3mysql->uuid()
+					);
+				}
+
+				$transaction_f3mysql->sample_writer();
+				$table_data = $transaction_f3mysql->sample_reader();
+				if (isset($table_data)) {
+					$f3->index_f3mysql_default += array('sample_table_data' => $table_data);
+				}
+
+				$f3->segment = 'segment_transaction_f3mysql_default.htm';
+				echo $this->config_f3templateinstance->render($f3->segmentappdefault);
+			}
+
+			return true;
+		}
+		return false;
+	}
+
 	public function db_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
-			$job_db = new job_db($f3, 'f3jig');
+			$job_db = new job_db($f3, models\enum_database_type::f3jig);
 			if (isset($job_db) && $job_db->issuccess_init()) {
 				$handle_db = $job_db->retrieve_handle();
 				if (isset($handle_db)) {

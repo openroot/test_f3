@@ -34,6 +34,7 @@ class test_f3 {
 	private function handshake(): bool {
 		try {
 			$this->handle_this = Base::instance();
+			$this->handle_this->config('../app/resources/setup.cfg');
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle();
@@ -83,9 +84,9 @@ class test_f3 {
 	private function set_globalvalues(): bool {
 		if ($this->issuccess_init()) {
 			try {
-				$this->handle_this->AUTOLOAD = '../app/';
-				$this->handle_this->DEBUG = 3;
-				$this->handle_this->GUI = 'gui/';
+				$this->handle_this->AUTOLOAD = $this->handle_this['f3app']['autoload'];
+				$this->handle_this->DEBUG = $this->handle_this['f3app']['debuglevel'];
+				$this->handle_this->GUI = $this->handle_this['f3app']['gui'];
 
 				$this->handle_this->site = $this->config_app_name;
 				$this->handle_this->app = $this->config_app_name;
@@ -150,6 +151,14 @@ class test_f3 {
 					'@f3jigdefault: '.
 					'/f3jig',
 					'operations\operation_index->f3jig_default'
+				);
+
+				// URI example: http://localhost:4000/f3mysql/
+				$this->handle_this->route(
+					'GET ' .
+					'@f3mysqldefault: ' .
+					'/f3mysql',
+					'operations\operation_index->f3mysql_default'
 				);
 
 				// URI example: http://localhost:4000/db/

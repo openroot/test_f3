@@ -5,15 +5,18 @@ namespace jobs;
 use Exception;
 use \Base as Base;
 use \jobs\job_exception as job_exception;
+use \models as models;
+use \transactions\transaction_f3jig as transaction_f3jig;
+use \DB\Cortex as Cortex;
 
 class job_db {
 	private ?string $handle_this = NULL;
 	private Base $config_f3;
-	private string $config_database_type = '';
+	private string $config_enum_database_type = '';
 
-	public function __construct(Base $f3, string $database_type) {
+	public function __construct(Base $f3, string $enum_database_type) {
 		$this->config_f3 = $f3;
-		$this->config_database_type = $database_type;
+		$this->config_enum_database_type = $enum_database_type;
 
 		if ($this->validate_config()) {
 			return $this->handshake();
@@ -23,7 +26,9 @@ class job_db {
 
 	private function validate_config(): bool {
 		if (isset($this->config_f3)) {
-			if (isset($this->config_database_type) && !empty($this->config_database_type)) {
+			if (isset($this->config_enum_database_type)
+				// TODO: Add enum existance check.
+			) {
 				return true;
 			}
 			else {
@@ -39,6 +44,9 @@ class job_db {
 	private function handshake(): bool {
 		try {
 			// (todo): Put 'initialization' logics here.
+			$db = new transaction_f3jig($this->config_f3);
+			$data = $db->sample_reader('users.json');
+
 			$this->handle_this = 'to be replaced with real basic object';
 
 			return true;
