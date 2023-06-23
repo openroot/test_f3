@@ -58,7 +58,7 @@ class job_db {
 					break;
 
 				default:
-					throw new Exception('Database type is not valid.');
+					throw new job_exception('Database type is not valid.');
 					break;
 			}
 
@@ -96,5 +96,18 @@ class job_db {
 
 	public function destroy_handle() {
 		$this->handle_this = NULL;
+	}
+
+	public function create_table($orm_model): bool {
+		if ($this->issuccess_init()) {
+			try {
+				$orm_model::setup();
+				return true;
+			}
+			catch (Exception $exception) {
+				throw new job_exception('Table Couldn\'t created.', $exception);
+			}
+		}
+		return false;
 	}
 }

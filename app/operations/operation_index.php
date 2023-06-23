@@ -194,13 +194,15 @@ class operation_index {
 
 	public function db_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
-			$database_type = models\enum_database_type::f3mysql;
+			$database_type = models\enum_database_type::f3jig;
 
 			$job_db = new job_db($f3, $database_type);
 			if (isset($job_db) && $job_db->issuccess_init()) {
 				$handle_db = $job_db->retrieve_handle();
 				if (isset($handle_db)) {
 					$f3->index_db_default = array('dbtype' => $database_type);
+
+					$job_db->create_table(models\orm_sample_cortex::class);
 				}
 
 				$f3->segment = 'segment_job_db_default.htm';
