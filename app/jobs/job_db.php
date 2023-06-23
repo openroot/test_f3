@@ -7,7 +7,7 @@ use \Base as Base;
 use \jobs\job_exception as job_exception;
 use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
-use models\enum_database_type;
+use \models\enums as enums;
 
 class job_db {
 	private ?bool $handle_this = NULL;
@@ -47,12 +47,12 @@ class job_db {
 		$this->database_id = isset($this->database_id) && !empty($this->database_id) ? $this->database_id : $this->config_f3->get('job.db.default.id');
 		try {
 			switch ($this->config_enum_database_type) {
-				case enum_database_type::f3mysql:
+				case enums\enum_database_type::f3mysql:
 					$handle_f3msql = (new transaction_f3mysql($this->config_f3))->retrieve_handle();
 					$this->config_f3->set($this->database_id, $handle_f3msql);
 					break;
 
-				case enum_database_type::f3jig:
+				case enums\enum_database_type::f3jig:
 					$handle_f3jig = (new transaction_f3jig($this->config_f3))->retrieve_handle();
 					$this->config_f3->set($this->database_id, $handle_f3jig);
 					break;

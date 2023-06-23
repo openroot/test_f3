@@ -88,13 +88,12 @@ class app_test_f3 {
 				$this->handle_this->DEBUG = $this->handle_this->get('f3app.debuglevel');
 				$this->handle_this->GUI = $this->handle_this->get('f3app.gui');
 
-				$this->handle_this->site = $this->config_app_name;
-				$this->handle_this->app = $this->config_app_name;
-				$this->handle_this->segmentpath = '../app/segments/';
-				$this->handle_this->segmentappdefault = $this->handle_this->segmentpath . 'segment_app_default.htm';
-				$this->handle_this->segment = '';
-				$this->handle_this->transactionblobpath = '../app/transactions/blob/';
-				$this->handle_this->blobf3jigpath = $this->handle_this->transactionblobpath. 'f3jig/';
+				$this->handle_this->sitename = $this->handle_this->get('sitename');
+				$this->handle_this->appname = $this->handle_this->get('appname');
+				$this->handle_this->segmentspath = $this->handle_this->get('segments.path');
+				$this->handle_this->segmentsdefaultrender = $this->handle_this->get('segments.defaultrender');
+				$this->handle_this->segmentsrender = $this->handle_this->get('segments.render');
+				$this->handle_this->transactionsblobspath = $this->handle_this->get('transactions.blobs.path');
 
 				$this->handle_this->externallink = 'window.open(this.href); return false;';
 
@@ -124,8 +123,8 @@ class app_test_f3 {
 							'value1' => 'This user-defined value.'
 						);
 
-						$f3->segment = 'segment_operation_index_default.htm';
-						echo Template::instance()->render($f3->segmentappdefault);
+						$f3->segmentsrender = 'segment_operation_index_default.htm';
+						echo Template::instance()->render($f3->segmentsdefaultrender);
 					}
 				);
 

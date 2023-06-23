@@ -43,7 +43,7 @@ class transaction_f3jig {
 
 	private function handshake(): bool {
 		try {
-			$this->handle_this = new Jig($this->config_f3->blobf3jigpath . $this->config_f3jig_database_name, Jig::FORMAT_JSON);
+			$this->handle_this = new Jig($this->config_f3->get('transactions.blobs.f3jigpath') . $this->config_f3jig_database_name, Jig::FORMAT_JSON);
 
 			return true;
 		}

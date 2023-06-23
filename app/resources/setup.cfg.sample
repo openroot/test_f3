@@ -1,13 +1,17 @@
 [globals]
-sitename=""
+sitename="Test F3"
 
-appname=""
+appname="Test F3"
 
 f3app.autoload="../app/"
 f3app.debuglevel=3
 f3app.gui="gui/"
 
-transactions.blobpath="../app/transactions/blob/"
+segments.path="../app/segments/"
+segments.defaultrender="../app/segments/segment_app_default.htm"
+segments.render=""
+
+job.db.default.id="DB"
 
 transactions.f3mysql.host="localhost"
 transactions.f3mysql.port=3306
@@ -15,9 +19,6 @@ transactions.f3mysql.databasename=""
 transactions.f3mysql.username=""
 transactions.f3mysql.password=""
 
-transactions.f3jig.path="../app/transactions/blob/f3jig/"
-transactions.f3jig.databasename=""
-
-segments.path="../app/segments/"
-segments.defaultrender="../app/segments/segment_app_default.htm"
-segments.render=""
+transactions.blobs.path="../app/transactions/blobs/"
+transactions.blobs.f3jigpath="../app/transactions/blobs/blob_f3jig/"
+transactions.f3jig.databasename="test_f3"

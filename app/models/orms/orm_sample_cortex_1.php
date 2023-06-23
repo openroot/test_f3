@@ -1,11 +1,11 @@
 <?php
 
-namespace models;
+namespace models\orms;
 
 use \DB\SQL\Schema as Schema;
 use \DB\Cortex as Cortex;
 
-class orm_sample_cortex extends Cortex {
+class orm_sample_cortex_1 extends Cortex {
 	protected
 		$fieldConf = [
 			'created_at' => [
@@ -37,7 +37,7 @@ class orm_sample_cortex extends Cortex {
 				'nullable' => true
 			]
 		],
-		$db = 'DB',
-		$table = 'sample_cortex',
+		$db = 'DB1',
+		$table = 'sample_cortex_1',
 		$primary = 'id'; // Name of the primary key (auto-created), default: id.
 }

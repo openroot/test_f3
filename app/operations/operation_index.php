@@ -10,8 +10,8 @@ use \jobs\job_template as job_template;
 use \jobs\job_db as job_db;
 use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
-use \models as models;
-use models\enum_database;
+use \models\enums as enums;
+use \models\orms as orms;
 
 class operation_index {
 	private ?string $handle_this = NULL;
@@ -107,8 +107,8 @@ class operation_index {
 					);
 				}
 
-				$f3->segment = 'segment_job_template_default.htm';
-				echo $this->config_f3template->render($f3->segmentappdefault);
+				$f3->segmentsrender = 'segment_job_template_default.htm';
+				echo $this->config_f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;
@@ -119,7 +119,7 @@ class operation_index {
 	public function helloworld_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
 			echo '<html><head><title>Test F3</title></head><body>';
-			echo '<div id="header"><h4>' . $f3->site . '</h4></div>';
+			echo '<div id="header"><h4>' . $f3->sitename . '</h4></div>';
 
 			echo '<div id="content">';
 			echo '<pre>This Route: ' . $f3['ALIASES.indexhelloworld'] . '</pre>';
@@ -157,8 +157,8 @@ class operation_index {
 					$f3->index_f3jig_default += array('sample_table_data' => $table_data);
 				}
 
-				$f3->segment = 'segment_transaction_f3jig_default.htm';
-				echo $this->config_f3template->render($f3->segmentappdefault);
+				$f3->segmentsrender = 'segment_transaction_f3jig_default.htm';
+				echo $this->config_f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;
@@ -183,8 +183,8 @@ class operation_index {
 					$f3->index_f3mysql_default += array('sample_table_data' => $table_data);
 				}
 
-				$f3->segment = 'segment_transaction_f3mysql_default.htm';
-				echo $this->config_f3template->render($f3->segmentappdefault);
+				$f3->segmentsrender = 'segment_transaction_f3mysql_default.htm';
+				echo $this->config_f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;
@@ -194,19 +194,19 @@ class operation_index {
 
 	public function db_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
-			$database_type = models\enum_database_type::f3jig;
+			$database_type = enums\enum_database_type::f3mysql;
 
-			$job_db = new job_db($f3, $database_type);
+			$job_db = new job_db($f3, $database_type, 'DB1');
 			if (isset($job_db) && $job_db->issuccess_init()) {
 				$handle_db = $job_db->retrieve_handle();
 				if (isset($handle_db)) {
 					$f3->index_db_default = array('dbtype' => $database_type);
 
-					$job_db->create_table(models\orm_sample_cortex::class);
+					$job_db->create_table(orms\orm_sample_cortex_1::class);
 				}
 
-				$f3->segment = 'segment_job_db_default.htm';
-				echo $this->config_f3template->render($f3->segmentappdefault);
+				$f3->segmentsrender = 'segment_job_db_default.htm';
+				echo $this->config_f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;

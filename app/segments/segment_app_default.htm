@@ -4,16 +4,16 @@
 		<meta http-equiv="Content-Type" content="text/html; charset={{ @ENCODING }}" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="{{ @@GUI }}css/custom.css" />
-		<title>{{ @@site }}</title>
+		<title>{{ @@sitename }}</title>
 		<base href="{{ @@BASE }}/" />
 	</head>
 
 	<body>
 		<div id="header">
-			<h4>{{ @@site }}</h4>
+			<h4>{{ @@sitename }}</h4>
 		</div>
 		<div id="content">
-			<F3:include href="{{ @@segmentpath . @@segment }}" />
+			<F3:include href="{{ @@segmentspath . @@segmentsrender }}" />
 		</div>
 		<div id="footer">
 			<h4>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h4>
