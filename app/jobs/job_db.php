@@ -98,10 +98,15 @@ class job_db {
 		$this->handle_this = NULL;
 	}
 
-	public function create_table($orm_model): bool {
+	public function get_modelsorms_breadcrumb(?string $modelsormsbreadcrumb = NULL): string {
+		return isset($modelsormsbreadcrumb) && !empty($modelsormsbreadcrumb) ? $modelsormsbreadcrumb : $this->config_f3->get('modelsormsbreadcrumb');
+	}
+
+	public function create_table(string $orm_model_name, ?string $modelsormsbreadcrumb = NULL): bool {
 		if ($this->issuccess_init()) {
 			try {
-				$orm_model::setup();
+				class_alias($this->get_modelsorms_breadcrumb($modelsormsbreadcrumb) . $orm_model_name, 'orm_model_alias');
+				'orm_model_alias'::class::setup();
 				return true;
 			}
 			catch (Exception $exception) {

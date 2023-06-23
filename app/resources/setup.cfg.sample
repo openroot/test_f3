@@ -22,3 +22,5 @@ transactions.f3mysql.password=""
 transactions.blobs.path="../app/transactions/blobs/"
 transactions.blobs.f3jigpath="../app/transactions/blobs/blob_f3jig/"
 transactions.f3jig.databasename="test_f3"
+
+models.orms.breadcrumb="\models\orms"

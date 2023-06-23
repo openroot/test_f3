@@ -202,7 +202,7 @@ class operation_index {
 				if (isset($handle_db)) {
 					$f3->index_db_default = array('dbtype' => $database_type);
 
-					$job_db->create_table(orms\orm_sample_cortex_1::class);
+					$job_db->create_table('orm_sample_cortex_1');
 				}
 
 				$f3->segmentsrender = 'segment_job_db_default.htm';

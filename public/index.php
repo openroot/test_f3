@@ -96,6 +96,7 @@ class app_test_f3 {
 				$this->handle_this->transactionsblobspath = $this->handle_this->get('transactions.blobs.path');
 
 				$this->handle_this->externallink = 'window.open(this.href); return false;';
+				$this->handle_this->modelsormsbreadcrumb = $this->handle_this->get('models.orms.breadcrumb') . '\\';
 
 				return true;
 			}
