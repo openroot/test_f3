@@ -5,18 +5,20 @@ namespace jobs;
 use Exception;
 use \Base as Base;
 use \jobs\job_exception as job_exception;
-use \models as models;
 use \transactions\transaction_f3jig as transaction_f3jig;
-use \DB\Cortex as Cortex;
+use \transactions\transaction_f3mysql as transaction_f3mysql;
+use models\enum_database_type;
 
 class job_db {
-	private ?string $handle_this = NULL;
+	private ?bool $handle_this = NULL;
 	private Base $config_f3;
 	private string $config_enum_database_type = '';
+	private ?string $database_id = '';
 
-	public function __construct(Base $f3, string $enum_database_type) {
+	public function __construct(Base $f3, string $enum_database_type, ?string $database_id = NULL) {
 		$this->config_f3 = $f3;
 		$this->config_enum_database_type = $enum_database_type;
+		$this->database_id = $database_id;
 
 		if ($this->validate_config()) {
 			return $this->handshake();
@@ -42,12 +44,25 @@ class job_db {
 	}
 
 	private function handshake(): bool {
+		$this->database_id = isset($this->database_id) && !empty($this->database_id) ? $this->database_id : $this->config_f3->get('job.db.default.id');
 		try {
-			// TODO: Put 'initialization' logics here.
-			$db = new transaction_f3jig($this->config_f3);
-			$data = $db->sample_reader('users.json');
+			switch ($this->config_enum_database_type) {
+				case enum_database_type::f3mysql:
+					$handle_f3msql = (new transaction_f3mysql($this->config_f3))->retrieve_handle();
+					$this->config_f3->set($this->database_id, $handle_f3msql);
+					break;
 
-			$this->handle_this = 'to be replaced with real basic object';
+				case enum_database_type::f3jig:
+					$handle_f3jig = (new transaction_f3jig($this->config_f3))->retrieve_handle();
+					$this->config_f3->set($this->database_id, $handle_f3jig);
+					break;
+
+				default:
+					throw new Exception('Database type is not valid.');
+					break;
+			}
+
+			$this->handle_this = true;
 
 			return true;
 		}
@@ -67,7 +82,7 @@ class job_db {
 		}
 	}
 
-	public function retrieve_handle(): ?string {
+	public function retrieve_handle(): ?bool {
 		if (isset($this->handle_this)) {
 			return $this->handle_this;
 		}

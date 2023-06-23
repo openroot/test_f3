@@ -96,7 +96,7 @@ class transaction_f3jig {
 
 	public function sample_writer(?string $table_name = NULL): bool {
 		if ($this->issuccess_init()) {
-			$table_name = (isset($table_name) && !empty($table_name)) ? $table_name : 'sample_table.json';
+			$table_name = (isset($table_name) && !empty($table_name)) ? $table_name : 'sample_table';
 			try {
 				if (isset($table_name) && !empty($table_name)) {
 					$mapper = $this->retrieve_table_mapper($table_name);
@@ -121,7 +121,7 @@ class transaction_f3jig {
 
 	public function sample_reader(?string $table_name = NULL): ?array {
 		if ($this->issuccess_init()) {
-			$table_name = (isset($table_name) && !empty($table_name)) ? $table_name : 'sample_table.json';
+			$table_name = (isset($table_name) && !empty($table_name)) ? $table_name : 'sample_table';
 			try {
 				if (isset($table_name) && !empty($table_name)) {
 					return $this->handle_this->read($table_name);
