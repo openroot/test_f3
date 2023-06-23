@@ -202,7 +202,10 @@ class operation_index {
 				if (isset($handle_db)) {
 					$f3->index_db_default = array('dbtype' => $database_type);
 
-					$job_db->create_table('orm_sample_cortex_1');
+					// Create a specific table, with optional specific orm model breadcrumb.
+					$job_db->create_table('orm_sample_cortex_1', '\models\orms');
+
+					// Create all the Cortex based tables, with optional specific containing directory.
 				}
 
 				$f3->segmentsrender = 'segment_job_db_default.htm';
