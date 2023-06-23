@@ -196,7 +196,7 @@ class operation_index {
 		if ($this->issuccess_init()) {
 			$database_type = enums\enum_database_type::f3mysql;
 
-			$job_db = new job_db($f3, $database_type, 'DB1');
+			$job_db = new job_db($f3, $database_type);
 			if (isset($job_db) && $job_db->issuccess_init()) {
 				$handle_db = $job_db->retrieve_handle();
 				if (isset($handle_db)) {
