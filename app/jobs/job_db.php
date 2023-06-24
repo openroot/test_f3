@@ -102,16 +102,41 @@ class job_db {
 		return isset($modelsormsbreadcrumb) && !empty($modelsormsbreadcrumb) ? $modelsormsbreadcrumb . '\\' : $this->config_f3->get('modelsormsbreadcrumb');
 	}
 
-	public function create_table(string $orm_model_name, ?string $modelsormsbreadcrumb = NULL): bool {
+	public function create_table($orm_model_name, ?string $modelsormsbreadcrumb = NULL): bool {
 		if ($this->issuccess_init()) {
 			try {
-				class_alias($this->get_modelsorms_breadcrumb($modelsormsbreadcrumb) . $orm_model_name, 'orm_model_alias');
-				'orm_model_alias'::class::setup();
+				$modelsormsbreadcrumb = $this->get_modelsorms_breadcrumb($modelsormsbreadcrumb);
+				$orm_model = $modelsormsbreadcrumb . $orm_model_name;
+				$orm_model::setup();
 				return true;
 			}
 			catch (Exception $exception) {
 				throw new job_exception('Table Couldn\'t created.', $exception);
 			}
+		}
+		return false;
+	}
+
+	public function create_tables(string $directory, ?string $modelsormsbreadcrumb = NULL): bool {
+		try {
+			$files = array_diff(scandir($directory), array('.', '..'));
+
+			$orm_model_names = array();
+			foreach ($files as $file) {
+				$model_name = substr($file, 0, -4);
+				if (get_parent_class($this->get_modelsorms_breadcrumb($modelsormsbreadcrumb) . $model_name) === 'DB\Cortex') {
+					array_push($orm_model_names, $model_name);
+				}
+			}
+
+			foreach ($orm_model_names as $orm_model_name) {
+			 	$this->create_table($orm_model_name, $modelsormsbreadcrumb);
+			}
+
+			return true;
+		}
+		catch (Exception $exception) {
+			throw new job_exception('Tables Couldn\'t created.', $exception);
 		}
 		return false;
 	}

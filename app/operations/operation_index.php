@@ -206,6 +206,7 @@ class operation_index {
 					$job_db->create_table('orm_sample_cortex_1', '\models\orms');
 
 					// Create all the Cortex based tables, with optional specific containing directory.
+					$job_db->create_tables('../app/models/orms', '\models\orms');
 				}
 
 				$f3->segmentsrender = 'segment_job_db_default.htm';
