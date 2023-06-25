@@ -11,7 +11,6 @@ use \jobs\job_db as job_db;
 use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
 use \models\enums as enums;
-use \models\orms as orms;
 
 class operation_index {
 	private ?string $handle_this = NULL;
@@ -205,7 +204,7 @@ class operation_index {
 					// Create a specific table, with optional specific orm model breadcrumb.
 					$job_db->create_table('orm_sample_cortex_1', '\models\orms');
 
-					// Create all the Cortex based tables, with optional specific containing directory.
+					// Create all the Cortex based tables, with optional specific orm model breadcrumb.
 					$job_db->create_tables('../app/models/orms', '\models\orms');
 				}
 
