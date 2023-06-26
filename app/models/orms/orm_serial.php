@@ -13,12 +13,9 @@ class orm_serial extends Cortex {
 				'nullable' => false,
 				'default' => Schema::DF_CURRENT_TIMESTAMP
 			],
-			'id_serial' => [
-				'type' => Schema::DT_VARCHAR512,
-				'nullable' => false,
-				'default' => '',
-				'index' => true,
-				'unique' => true
+			'id_order' => [
+				'type' => Schema::DT_INT4,
+				'nullable' => true
 			]
 		],
 		$db = 'DB1',
