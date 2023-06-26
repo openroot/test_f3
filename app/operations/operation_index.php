@@ -202,7 +202,7 @@ class operation_index {
 					$f3->index_db_default = array('dbtype' => $database_type);
 
 					// Create a specific table, with optional specific orm model breadcrumb.
-					$job_db->create_table('orm_sample_cortex_1', '\models\orms');
+					$job_db->create_table('orm_sample_cortex', '\models\orms');
 
 					// Create all the Cortex based tables, with optional specific orm model breadcrumb.
 					$job_db->create_tables('../app/models/orms', '\models\orms');
