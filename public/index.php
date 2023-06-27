@@ -116,15 +116,15 @@ class app_test_f3 {
 				// URI example: http://localhost:4000/
 				$this->handle_this->route(
 					'GET '.
-					'@indexdefault: '.
+					'@main_default: '.
 					'/',
 					function ($f3) {
 						// faster inbuilt function realization
-						$f3->index_default = array(
+						$f3->main_default = array(
 							'value1' => 'This user-defined value.'
 						);
 
-						$f3->segmentsrender = 'segment_operation_index_default.htm';
+						$f3->segmentsrender = 'segment_operation_main_default.htm';
 						echo Template::instance()->render($f3->segmentsdefaultrender);
 					}
 				);
@@ -132,47 +132,47 @@ class app_test_f3 {
 				// URI example: http://localhost:4000/template/
 				$this->handle_this->route(
 					'GET ' .
-					'@templatedefault: ' .
+					'@main_template_default: ' .
 					'/template',
-					'operations\operation_index->template_default'
+					'operations\operation_main->main_template_default'
 				);
 
 				// URI example: http://localhost:4000/helloworld/D Tapader/34/Software Engineer
 				$this->handle_this->route(
 					'GET|POST '.
-					'@indexhelloworld: '.
+					'@main_helloworld_getpost: '.
 					'/helloworld/@name/@age/@profession',
-					'operations\operation_index->helloworld_default'
+					'operations\operation_main->main_helloworld_getpost'
 				);
 
 				// URI example: http://localhost:4000/f3jig/
 				$this->handle_this->route(
 					'GET '.
-					'@f3jigdefault: '.
+					'@main_f3jig_default: '.
 					'/f3jig',
-					'operations\operation_index->f3jig_default'
+					'operations\operation_main->main_f3jig_default'
 				);
 
 				// URI example: http://localhost:4000/f3mysql/
 				$this->handle_this->route(
 					'GET ' .
-					'@f3mysqldefault: ' .
+					'@main_f3mysql_default: ' .
 					'/f3mysql',
-					'operations\operation_index->f3mysql_default'
+					'operations\operation_main->main_f3mysql_default'
 				);
 
 				// URI example: http://localhost:4000/db/
 				$this->handle_this->route(
 					'GET ' .
-					'@dbdefault: ' .
+					'@main_db_default: ' .
 					'/db',
-					'operations\operation_index->db_default'
+					'operations\operation_main->main_db_default'
 				);
 
 				// URI example: http://localhost:4000/info/
 				$this->handle_this->route(
 					'GET ' .
-					'@infodefault: ' .
+					'@info_default: ' .
 					'/info',
 					'operations\operation_info->info_default'
 				);
@@ -180,7 +180,7 @@ class app_test_f3 {
 				// URI example: http://localhost:4000/info/about
 				$this->handle_this->route(
 					'GET ' .
-					'@infoaboutdefault: ' .
+					'@info_about_default: ' .
 					'/info/about',
 					'operations\operation_info->info_about_default'
 				);

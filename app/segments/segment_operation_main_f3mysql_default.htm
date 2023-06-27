@@ -1,12 +1,12 @@
-<pre>This route: {{ @@ALIASES.f3mysqldefault }}</pre>
-<pre>F3-MySQL database ID: {{ @@index_f3mysql_default.uuid }}</pre>
+<pre>This route: {{ @@ALIASES.main_f3mysql_default }}</pre>
+<pre>F3-MySQL database ID: {{ @@main_f3mysql_default.uuid }}</pre>
 <pre>F3-MySQL table `users`:</pre>
 	<div class="viewtable" style="width: 400px">
 		<table>
 			<caption>users</caption>
 			<tr><th>Index</th><th>Username</th><th>Password</th></tr>
 			<F3:repeat
-				group="{{ @@index_f3mysql_default.sample_table_data }}"
+				group="{{ @@main_f3mysql_default.sample_table_data }}"
 				key="{{ @key }}"
 				value="{{ @value }}"
 				counter="{{ @counter }}">

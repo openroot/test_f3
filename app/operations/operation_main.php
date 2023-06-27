@@ -13,7 +13,7 @@ use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
 use \models\enums as enums;
 
-class operation_index {
+class operation_main {
 	private ?string $handle_this = NULL;
 	private ?Base $f3 = NULL;
 	private ?Template $f3template = NULL;
@@ -113,13 +113,14 @@ class operation_index {
 	}
 
 	// (todo): This would be a router specification.
-	public function template_default(Base $f3): bool {
+	public function main_template_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
+
 			$job_template = new job_template('A Random Value', 'Another Random Value');
 			if (isset($job_template) && $job_template->issuccess_init()) {
 				$handle_template = $job_template->retrieve_handle();
 				if (isset($handle_template)) {
-					$f3->index_template_default = array(
+					$f3->main_template_default = array(
 						'str' => 'dev.openroot@gmail.com',
 						'num' => 0420,
 						'boo' => true,
@@ -133,7 +134,7 @@ class operation_index {
 					);
 				}
 
-				$f3->segmentsrender = 'segment_job_template_default.htm';
+				$f3->segmentsrender = 'segment_operation_main_template_default.htm';
 				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 
@@ -142,18 +143,18 @@ class operation_index {
 		return false;
 	}
 
-	public function helloworld_default(Base $f3): bool {
+	public function main_helloworld_getpost(Base $f3): bool {
 		if ($this->issuccess_init()) {
 			echo '<html><head><title>Test F3</title></head><body>';
 			echo '<div id="header"><h4>' . $f3->sitename . '</h4></div>';
 
 			echo '<div id="content">';
-			echo '<pre>This Route: ' . $f3['ALIASES.indexhelloworld'] . '</pre>';
+			echo '<pre>This Route: ' . $f3->ALIASES['main_helloworld_getpost'] . '</pre>';
 			echo '<p>Hello World! This is a `' . $f3->VERB . '` verb.<br><br>';
 			echo 'Query string posted:';
-			echo '<pre>Name = ' . $f3['PARAMS.name'] . '</pre>';
-			echo '<pre>Age = ' . $f3['PARAMS.age'] . '</pre>';
-			echo '<pre>Profession = ' . $f3['PARAMS.profession'] . '</pre></p>';
+			echo '<pre>Name = ' . $f3->PARAMS['name'] . '</pre>';
+			echo '<pre>Age = ' . $f3->PARAMS['age'] . '</pre>';
+			echo '<pre>Profession = ' . $f3->PARAMS['profession'] . '</pre></p>';
 			echo '</div>';
 
 			echo '<div id="footer"><h4>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h4></div>';
@@ -165,13 +166,13 @@ class operation_index {
 		return false;
 	}
 
-	public function f3jig_default(Base $f3): bool {
+	public function main_f3jig_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
 			$transaction_f3jig = new transaction_f3jig($f3);
 			if (isset($transaction_f3jig) && $transaction_f3jig->issuccess_init()) {
 				$handle_f3jig = $transaction_f3jig->retrieve_handle();
 				if (isset($handle_f3jig)) {
-					$f3->index_f3jig_default = array(
+					$f3->main_f3jig_default = array(
 						'uuid' => $handle_f3jig->uuid(),
 						'dir' => $handle_f3jig->dir()
 					);
@@ -180,10 +181,10 @@ class operation_index {
 				$transaction_f3jig->sample_writer();
 				$table_data = $transaction_f3jig->sample_reader();
 				if (isset($table_data)) {
-					$f3->index_f3jig_default += array('sample_table_data' => $table_data);
+					$f3->main_f3jig_default += array('sample_table_data' => $table_data);
 				}
 
-				$f3->segmentsrender = 'segment_transaction_f3jig_default.htm';
+				$f3->segmentsrender = 'segment_operation_main_f3jig_default.htm';
 				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 
@@ -192,13 +193,13 @@ class operation_index {
 		return false;
 	}
 
-	public function f3mysql_default(Base $f3): bool {
+	public function main_f3mysql_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
 			$transaction_f3mysql = new transaction_f3mysql($f3);
 			if (isset($transaction_f3mysql) && $transaction_f3mysql->issuccess_init()) {
 				$handle_f3mysql = $transaction_f3mysql->retrieve_handle();
 				if (isset($handle_f3mysql)) {
-					$f3->index_f3mysql_default = array(
+					$f3->main_f3mysql_default = array(
 						'uuid' => $handle_f3mysql->uuid()
 					);
 				}
@@ -206,10 +207,10 @@ class operation_index {
 				$transaction_f3mysql->sample_writer();
 				$table_data = $transaction_f3mysql->sample_reader();
 				if (isset($table_data)) {
-					$f3->index_f3mysql_default += array('sample_table_data' => $table_data);
+					$f3->main_f3mysql_default += array('sample_table_data' => $table_data);
 				}
 
-				$f3->segmentsrender = 'segment_transaction_f3mysql_default.htm';
+				$f3->segmentsrender = 'segment_operation_main_f3mysql_default.htm';
 				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 
@@ -218,14 +219,14 @@ class operation_index {
 		return false;
 	}
 
-	public function db_default(Base $f3): bool {
+	public function main_db_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
 			$job_db = new job_db($f3, enums\enum_database_type::f3mysql);
 			if (isset($job_db) && $job_db->issuccess_init()) {
 
 				$handle_db = $job_db->retrieve_handle();
 				if (isset($handle_db)) {
-					$f3->index_db_default = array('dbtype' => enums\enum_database_type::f3mysql);
+					$f3->main_db_default = array('dbtype' => enums\enum_database_type::f3mysql);
 				}
 
 				// Create a specific orm table, with optional specific orm model breadcrumb.
@@ -236,10 +237,10 @@ class operation_index {
 
 				$result = $job_db->f3mysql_execute('SHOW TABLES');
 				if (isset($result)) {
-					$f3->index_db_default += array('tables' => $result);
+					$f3->main_db_default += array('tables' => $result);
 				}
 
-				$f3->segmentsrender = 'segment_job_db_default.htm';
+				$f3->segmentsrender = 'segment_operation_main_db_default.htm';
 				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 

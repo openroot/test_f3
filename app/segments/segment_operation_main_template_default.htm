@@ -1,10 +1,10 @@
-<pre>This route: {{ @@ALIASES.templatedefault }}</pre>
-<code>Template variable `str` (string): {{ @@index_template_default.str }}</code>
+<pre>This route: {{ @@ALIASES.main_template_default }}</pre>
+<code>Template variable `str` (string): {{ @@main_template_default.str }}</code>
 <br>
-<code>Template variable `num` (number): {{ @@index_template_default.num }}</code>
+<code>Template variable `num` (number): {{ @@main_template_default.num }}</code>
 <br>
 <code>Template variable `boo` (boolean) with [check]: 
-	<F3:check if="{{ @index_template_default.boo }}">
+	<F3:check if="{{ @@main_template_default.boo }}">
 		<true><span>True</span></true>
 		<false><span>False</span></false>
 	</F3:check>
@@ -22,9 +22,9 @@
 </code>
 <br>
 <code>Template variable `arr_inde` (indexed array) with [check] [loop]: 
-<F3:check if="{{ count(@@index_template_default.arr_inde) > 0 }}">
-	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@index_template_default.arr_inde) }}" step="{{ @i++ }}">
-		{{ @i+1 }}. {{ @@index_template_default.arr_inde[@i] }},&nbsp;
+<F3:check if="{{ count(@@main_template_default.arr_inde) > 0 }}">
+	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@main_template_default.arr_inde) }}" step="{{ @i++ }}">
+		{{ @i+1 }}. {{ @@main_template_default.arr_inde[@i] }},&nbsp;
 	</F3:loop>
 </F3:check>
 </code>
@@ -39,7 +39,7 @@
 			<th>Value</th>
 		</tr>
 		<F3:repeat
-			group="{{ @@index_template_default.arr_associa }}"
+			group="{{ @@main_template_default.arr_associa }}"
 			key="{{ @key }}"
 			value="{{ @value }}"
 			counter="{{ @counter }}">
