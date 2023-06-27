@@ -15,6 +15,7 @@ use \models\enums as enums;
 
 class operation_index {
 	private ?string $handle_this = NULL;
+	private ?Base $f3 = NULL;
 	private ?Template $f3template = NULL;
 
 	public function __construct() {
@@ -40,7 +41,8 @@ class operation_index {
 
 		if ($this->issuccess_init()) {
 			if ($this->initialize_f3singletones()) {
-				return true;
+				// Preparing transactions, perhaps can be put in an another different operation, to avoid repeating every run main-stream.
+				return $this->prepare_transactions();
 			}
 		}
 		return false;
@@ -74,6 +76,7 @@ class operation_index {
 	private function initialize_f3singletones(): bool {
 		if ($this->issuccess_init()) {
 			try {
+				$this->f3 = Base::instance();
 				$this->f3template = Template::instance();
 
 				return true;
@@ -84,6 +87,29 @@ class operation_index {
 			}
 		}
 		return false;
+	}
+
+	private function prepare_transactions(): bool {
+		$successchain = true;
+		try {
+			$job_rough = new job_rough($this->f3);
+
+			// Preparing MySQL database, perhaps can be put in an another different operation, to avoid repeating every run main-stream.
+			$job_db = new job_db($this->f3, enums\enum_database_type::f3mysql);
+			if (isset($job_db) && $job_db->issuccess_init()) {
+				if (!$job_rough->prepare_mysql($job_db)) {
+					throw new Exception('Preparing MySQL couldn\'t be done.');
+				}
+			}
+			else {
+				throw new Exception('Database job couldn\'t be initialized.');
+			}
+		}
+		catch (Exception $exception) {
+			$successchain = false;
+			throw new job_exception('Transactions couldn\'t be initialized.', $exception);
+		}
+		return $successchain;
 	}
 
 	// (todo): This would be a router specification.
@@ -202,11 +228,16 @@ class operation_index {
 					$f3->index_db_default = array('dbtype' => enums\enum_database_type::f3mysql);
 				}
 
-				// Create a specific table, with optional specific orm model breadcrumb.
+				// Create a specific orm table, with optional specific orm model breadcrumb.
 				$job_db->create_table('orm_sample_cortex', '\models\orms');
 
-				$job_rough = new job_rough($f3);
-				$job_rough->prepare_mysql($job_db);
+				// Create all orm tables in a directory, with optional specific orm model breadcrumb.
+				$job_db->create_tables('../app/models/orms');
+
+				$result = $job_db->f3mysql_execute('SHOW TABLES');
+				if (isset($result)) {
+					$f3->index_db_default += array('tables' => $result);
+				}
 
 				$f3->segmentsrender = 'segment_job_db_default.htm';
 				echo $this->f3template->render($f3->segmentsdefaultrender);

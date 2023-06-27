@@ -25,16 +25,14 @@ class job_rough {
 		}
 	}
 
-	public function prepare_mysql(job_db $job_db) {
+	public function prepare_mysql(job_db $job_db): bool {
 		 if ($this->issuccess_init()) {
 			if (isset($job_db)) {
 				$job_db->create_tables('../app/models/orms');
 
-				$result = $job_db->f3mysql_execute('SHOW TABLES');
-				if (isset($result)) {
-					$this->config_f3->index_db_default += array('tables' => $result);
-				}
+				return true;
 			}
 		 }
+		 return false;
 	}
 }

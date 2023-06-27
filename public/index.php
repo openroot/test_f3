@@ -169,6 +169,22 @@ class app_test_f3 {
 					'operations\operation_index->db_default'
 				);
 
+				// URI example: http://localhost:4000/info/
+				$this->handle_this->route(
+					'GET ' .
+					'@infodefault: ' .
+					'/info',
+					'operations\operation_info->info_default'
+				);
+
+				// URI example: http://localhost:4000/info/about
+				$this->handle_this->route(
+					'GET ' .
+					'@infoaboutdefault: ' .
+					'/info/about',
+					'operations\operation_info->info_about_default'
+				);
+
 				return true;
 			}
 			catch (Exception $exception) {
