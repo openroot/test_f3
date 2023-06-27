@@ -4,6 +4,7 @@ namespace jobs;
 
 use Exception;
 use \Base as Base;
+use \DB\SQL as SQL;
 use \jobs\job_exception as job_exception;
 use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
@@ -13,12 +14,13 @@ class job_db {
 	private ?bool $handle_this = NULL;
 	private Base $config_f3;
 	private string $config_enum_database_type = '';
-	private ?string $database_id = '';
+	private ?string $config_database_id = '';
+	private ?SQL $handle_f3msql = NULL;
 
 	public function __construct(Base $f3, string $enum_database_type, ?string $database_id = NULL) {
 		$this->config_f3 = $f3;
 		$this->config_enum_database_type = $enum_database_type;
-		$this->database_id = $database_id;
+		$this->config_database_id = $database_id;
 
 		if ($this->validate_config()) {
 			return $this->handshake();
@@ -44,17 +46,17 @@ class job_db {
 	}
 
 	private function handshake(): bool {
-		$this->database_id = isset($this->database_id) && !empty($this->database_id) ? $this->database_id : $this->config_f3->get('job.db.default.id');
+		$this->config_database_id = isset($this->config_database_id) && !empty($this->config_database_id) ? $this->config_database_id : $this->config_f3->get('job.db.default.id');
 		try {
 			switch ($this->config_enum_database_type) {
 				case enums\enum_database_type::f3mysql:
-					$handle_f3msql = (new transaction_f3mysql($this->config_f3))->retrieve_handle();
-					$this->config_f3->set($this->database_id, $handle_f3msql);
+					$this->handle_f3msql = (new transaction_f3mysql($this->config_f3))->retrieve_handle();
+					$this->config_f3->set($this->config_database_id, $this->handle_f3msql);
 					break;
 
 				case enums\enum_database_type::f3jig:
 					$handle_f3jig = (new transaction_f3jig($this->config_f3))->retrieve_handle();
-					$this->config_f3->set($this->database_id, $handle_f3jig);
+					$this->config_f3->set($this->config_database_id, $handle_f3jig);
 					break;
 
 				default:
@@ -139,5 +141,19 @@ class job_db {
 			throw new job_exception('Tables Couldn\'t created.', $exception);
 		}
 		return false;
+	}
+
+	public function f3mysql_execute(string $mysql_statement) {
+		if ($this->issuccess_init()) {
+			if (isset($mysql_statement) && !empty($mysql_statement)) {
+				try {
+					return $this->handle_f3msql->exec($mysql_statement);
+				}
+				catch (Exception $exception) {
+					throw new job_exception("MySQL were unable to execute.", $exception);
+				}
+			}
+		}
+		return NULL;
 	}
 }

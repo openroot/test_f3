@@ -24,7 +24,7 @@
 <code>Template variable `arr_inde` (indexed array) with [check] [loop]: 
 <F3:check if="{{ count(@@index_template_default.arr_inde) > 0 }}">
 	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@index_template_default.arr_inde) }}" step="{{ @i++ }}">
-		{{ @@index_template_default.arr_inde[@i] }},&nbsp;
+		{{ @i+1 }}. {{ @@index_template_default.arr_inde[@i] }},&nbsp;
 	</F3:loop>
 </F3:check>
 </code>

@@ -8,13 +8,14 @@ use \Template as Template;
 use \jobs\job_exception as job_exception;
 use \jobs\job_template as job_template;
 use \jobs\job_db as job_db;
+use \jobs\job_rough as job_rough;
 use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
 use \models\enums as enums;
 
 class operation_index {
 	private ?string $handle_this = NULL;
-	private ?Template $config_f3template = NULL;
+	private ?Template $f3template = NULL;
 
 	public function __construct() {
 		if ($this->validate_config()) {
@@ -73,7 +74,7 @@ class operation_index {
 	private function initialize_f3singletones(): bool {
 		if ($this->issuccess_init()) {
 			try {
-				$this->config_f3template = Template::instance();
+				$this->f3template = Template::instance();
 
 				return true;
 			}
@@ -107,7 +108,7 @@ class operation_index {
 				}
 
 				$f3->segmentsrender = 'segment_job_template_default.htm';
-				echo $this->config_f3template->render($f3->segmentsdefaultrender);
+				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;
@@ -157,7 +158,7 @@ class operation_index {
 				}
 
 				$f3->segmentsrender = 'segment_transaction_f3jig_default.htm';
-				echo $this->config_f3template->render($f3->segmentsdefaultrender);
+				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;
@@ -183,7 +184,7 @@ class operation_index {
 				}
 
 				$f3->segmentsrender = 'segment_transaction_f3mysql_default.htm';
-				echo $this->config_f3template->render($f3->segmentsdefaultrender);
+				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;
@@ -193,23 +194,22 @@ class operation_index {
 
 	public function db_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
-			$database_type = enums\enum_database_type::f3mysql;
-
-			$job_db = new job_db($f3, $database_type);
+			$job_db = new job_db($f3, enums\enum_database_type::f3mysql);
 			if (isset($job_db) && $job_db->issuccess_init()) {
+
 				$handle_db = $job_db->retrieve_handle();
 				if (isset($handle_db)) {
-					$f3->index_db_default = array('dbtype' => $database_type);
-
-					// Create a specific table, with optional specific orm model breadcrumb.
-					$job_db->create_table('orm_sample_cortex', '\models\orms');
-
-					// Create all the Cortex based tables, with optional specific orm model breadcrumb.
-					$job_db->create_tables('../app/models/orms', '\models\orms');
+					$f3->index_db_default = array('dbtype' => enums\enum_database_type::f3mysql);
 				}
 
+				// Create a specific table, with optional specific orm model breadcrumb.
+				$job_db->create_table('orm_sample_cortex', '\models\orms');
+
+				$job_rough = new job_rough($f3);
+				$job_rough->prepare_mysql($job_db);
+
 				$f3->segmentsrender = 'segment_job_db_default.htm';
-				echo $this->config_f3template->render($f3->segmentsdefaultrender);
+				echo $this->f3template->render($f3->segmentsdefaultrender);
 			}
 
 			return true;

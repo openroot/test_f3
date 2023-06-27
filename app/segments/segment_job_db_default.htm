@@ -1,2 +1,11 @@
 <pre>This route: {{ @@ALIASES.dbdefault }}</pre>
 <pre>Database type selected: {{ @@index_db_default.dbtype }}</pre>
+
+<br>
+<code>Tables: 
+<F3:check if="{{ count(@@index_db_default.tables) > 0 }}">
+	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@index_db_default.tables) }}" step="{{ @i++ }}">
+		{{ @i+1 }}. {{ @@index_db_default.tables[@i]['Tables_in_test_f3'] }},&nbsp;
+	</F3:loop>
+</F3:check>
+</code>

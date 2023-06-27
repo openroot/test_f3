@@ -7,12 +7,12 @@ use \jobs\job_exception as job_exception;
 
 class job_template {
 	private ?string $handle_this = NULL;
-	private string $config_1 = '';
-	private string $config_2 = '';
+	private string $config_config_1 = '';
+	private string $config_config_2 = '';
 
 	public function __construct(string $config_1, string $config_2) {
-		$this->config_1 = $config_1;
-		$this->config_2 = $config_2;
+		$this->config_config_1 = $config_1;
+		$this->config_config_2 = $config_2;
 
 		if ($this->validate_config()) {
 			return $this->handshake();
@@ -22,8 +22,8 @@ class job_template {
 
 	// (todo): This would be a class specification.
 	private function validate_config(): bool {
-		if (isset($this->config_1) && !empty($this->config_1)) {
-			if (isset($this->config_2) && !empty($this->config_2)) {
+		if (isset($this->config_config_1) && !empty($this->config_config_1)) {
+			if (isset($this->config_config_2) && !empty($this->config_config_2)) {
 				return true;
 			}
 			else {

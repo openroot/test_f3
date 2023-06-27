@@ -16,13 +16,6 @@ class orm_product extends Cortex {
 			'name' => [
 				'type' => Schema::DT_VARCHAR128,
 				'nullable' => false
-			],
-			'pid' => [
-				'type' => Schema::DT_VARCHAR128,
-				'nullable' => false,
-				'default' => '',
-				'index' => true,
-				'unique' => true
 			]
 		],
 		$db = 'DB1',

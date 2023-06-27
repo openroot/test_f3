@@ -15,14 +15,13 @@ class orm_customer extends Cortex {
 			],
 			'name' => [
 				'type' => Schema::DT_VARCHAR128,
-				'nullable' => false
+				'nullable' => false,
+				'default' => ''
 			],
 			'phone_number' => [
 				'type' => Schema::DT_VARCHAR128,
-				'nullable' => false,
-				'index' => true,
-				'unique' => true,
-				'default' => '+0910000000000'
+				'nullable' => true,
+				'unique' => true
 			],
 			'address' => [
 				'type' => self::DT_JSON,
