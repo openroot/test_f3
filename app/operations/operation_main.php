@@ -230,7 +230,7 @@ class operation_main {
 				}
 
 				// Create a specific orm table, with optional specific orm model breadcrumb.
-				$job_db->create_table('orm_sample_cortex', '\models\orms');
+				$job_db->create_table('orm_cortex_sample_table', '\models\orms');
 
 				// Create all orm tables in a directory, with optional specific orm model breadcrumb.
 				$job_db->create_tables('../app/models/orms');
