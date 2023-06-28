@@ -100,16 +100,35 @@ class job_db {
 		$this->handle_this = NULL;
 	}
 
-	public function get_modelsorms_breadcrumb(?string $modelsormsbreadcrumb = NULL): string {
-		return isset($modelsormsbreadcrumb) && !empty($modelsormsbreadcrumb) ? $modelsormsbreadcrumb . '\\' : $this->config_f3->get('modelsormsbreadcrumb');
+	public function get_modelsorms_breadcrumb(?string $modelsorms_breadcrumb = NULL): string {
+		return isset($modelsorms_breadcrumb) && !empty($modelsorms_breadcrumb) ? $modelsorms_breadcrumb . '\\' : $this->config_f3->get('modelsormsbreadcrumb');
 	}
 
-	public function create_table($orm_model_name, ?string $modelsormsbreadcrumb = NULL): bool {
+	public function get_modelsorms_names(string $directory, ?string $modelsorms_breadcrumb = NULL): array {
+		$modelsorms_names = array();
+
+		try {
+			$files = array_diff(scandir($directory), array('.', '..'));
+			foreach ($files as $file) {
+				$model_name = substr($file, 0, -4);
+				if (get_parent_class($this->get_modelsorms_breadcrumb($modelsorms_breadcrumb) . $model_name) === 'DB\Cortex') {
+					array_push($modelsorms_names, $model_name);
+				}
+			}
+		}
+		catch (Exception $exception) {
+			throw new job_exception('Model ORMs Couldn\'t get.', $exception);
+		}
+
+		return $modelsorms_names;
+	}
+
+	public function create_table($modelorm_name, ?string $modelsorms_breadcrumb = NULL): bool {
 		if ($this->issuccess_init()) {
 			try {
-				$modelsormsbreadcrumb = $this->get_modelsorms_breadcrumb($modelsormsbreadcrumb);
-				$orm_model = $modelsormsbreadcrumb . $orm_model_name;
-				$orm_model::setup();
+				$modelsorms_breadcrumb = $this->get_modelsorms_breadcrumb($modelsorms_breadcrumb);
+				$modelorm = $modelsorms_breadcrumb . $modelorm_name;
+				$modelorm::setup();
 				return true;
 			}
 			catch (Exception $exception) {
@@ -119,22 +138,11 @@ class job_db {
 		return false;
 	}
 
-	public function create_tables(string $directory, ?string $modelsormsbreadcrumb = NULL): bool {
+	public function create_tables(string $directory, ?string $modelsorms_breadcrumb = NULL): bool {
 		try {
-			$files = array_diff(scandir($directory), array('.', '..'));
-
-			$orm_model_names = array();
-			foreach ($files as $file) {
-				$model_name = substr($file, 0, -4);
-				if (get_parent_class($this->get_modelsorms_breadcrumb($modelsormsbreadcrumb) . $model_name) === 'DB\Cortex') {
-					array_push($orm_model_names, $model_name);
-				}
+			foreach ($this->get_modelsorms_names($directory, $modelsorms_breadcrumb) as $modelorm_name) {
+			 	$this->create_table($modelorm_name, $modelsorms_breadcrumb);
 			}
-
-			foreach ($orm_model_names as $orm_model_name) {
-			 	$this->create_table($orm_model_name, $modelsormsbreadcrumb);
-			}
-
 			return true;
 		}
 		catch (Exception $exception) {
