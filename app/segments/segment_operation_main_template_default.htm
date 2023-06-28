@@ -1,7 +1,10 @@
 <pre>This route: {{ @@ALIASES.main_template_default }}</pre>
+
 <code>Template variable `str` (string): {{ @@main_template_default.str }}</code>
+
 <br>
 <code>Template variable `num` (number): {{ @@main_template_default.num }}</code>
+
 <br>
 <code>Template variable `boo` (boolean) with [check]: 
 	<F3:check if="{{ @@main_template_default.boo }}">
@@ -9,6 +12,7 @@
 		<false><span>False</span></false>
 	</F3:check>
 </code>
+
 <br>
 <code>Template with [switch]: 
 <F3:switch expr="{{ 'Sunday' }}">
@@ -20,6 +24,7 @@
 	</default>
 </F3:switch>
 </code>
+
 <br>
 <code>Template variable `arr_inde` (indexed array) with [check] [loop]: 
 <F3:check if="{{ count(@@main_template_default.arr_inde) > 0 }}">
@@ -28,6 +33,7 @@
 	</F3:loop>
 </F3:check>
 </code>
+
 <br>
 <code>Template variable `arr_associa` (associative array) with [repeat]:</code>
 <div class="viewtable" style="width: 350px; height: 100%">
@@ -51,5 +57,6 @@
 		</F3:repeat>
 	</table>
 </div>
+
 <br>
 <F3:exclude>A Template comment</exclude>

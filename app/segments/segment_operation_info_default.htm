@@ -1,10 +1,22 @@
 <pre>This route: {{ @@ALIASES.info_default }}</pre>
 
-<br>
-<code>Tables in MySQL database: 
-<F3:check if="{{ count(@@info_default.tables) > 0 }}">
-	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@info_default.tables) }}" step="{{ @i++ }}">
-		{{ @i+1 }}. {{ @@info_default.tables[@i]['Tables_in_test_f3'] }},&nbsp;
-	</F3:loop>
-</F3:check>
-</code>
+<code>MySQL list of tables:</code>
+<div class="viewtable" style="width: 400px">
+	<table>
+		<caption>tables</caption>
+		<tr>
+			<th>Index</th>
+			<th>Name</th>
+		</tr>
+		<F3:repeat
+			group="{{ @@info_default.tables }}"
+			key="{{ @key }}"
+			value="{{ @value }}"
+			counter="{{ @counter }}">
+			<tr>
+				<td>{{ @@counter }}</td>
+				<td>{{ @@value.Tables_in_test_f3 }}</td>
+			</tr>
+		</F3:repeat>
+	</table>
+</div>

@@ -150,11 +150,11 @@ class operation_main {
 
 			echo '<div id="content">';
 			echo '<pre>This Route: ' . $f3->ALIASES['main_helloworld_getpost'] . '</pre>';
-			echo '<p>Hello World! This is a `' . $f3->VERB . '` verb.<br><br>';
-			echo 'Query string posted:';
-			echo '<pre>Name = ' . $f3->PARAMS['name'] . '</pre>';
-			echo '<pre>Age = ' . $f3->PARAMS['age'] . '</pre>';
-			echo '<pre>Profession = ' . $f3->PARAMS['profession'] . '</pre></p>';
+			echo '<br><code>Hello World! This is a `' . $f3->VERB . '` verb.</code><br>';
+			echo '<br><code>Query string posted:</code>';
+			echo '<br><code>Name = ' . $f3->PARAMS['name'] . '</code>';
+			echo '<br><code>Age = ' . $f3->PARAMS['age'] . '</code>';
+			echo '<br><code>Profession = ' . $f3->PARAMS['profession'] . '</code>';
 			echo '</div>';
 
 			echo '<div id="footer"><h4>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h4></div>';
