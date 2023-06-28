@@ -2,9 +2,7 @@
 
 namespace jobs;
 
-use Exception as Exception;
 use \Base as Base;
-use \jobs\job_exception as job_exception;
 use \jobs\job_db as job_db;
 
 class job_rough {
@@ -32,13 +30,13 @@ class job_rough {
 				$directory = '../app/models/orms';
 				$modelsorms_breadcrumb = '\models\orms';
 				
-				// Check if modelorm tables already exists in database
+				// Check if modelorm tables already exists in database.
 				$modelorm_names_temp = $job_db->get_modelsorms_names($directory, $modelsorms_breadcrumb);
 				$modelorm_names = array();
 				foreach ($modelorm_names_temp as $modelorm_name_temp) {
 					array_push($modelorm_names, str_replace('orm_', '', $modelorm_name_temp));
 				}
-				
+
 				$result = $job_db->f3mysql_execute('SHOW TABLES');
 				if (isset($result)) {
 					$table_names = array();
@@ -51,12 +49,11 @@ class job_rough {
 						$successchain = array_search($modelorm_name, $table_names) !== false ? $successchain : false;
 					}
 
-					// Create tables (only if one or many missing)
+					// Create tables (only if one or many missing).
 					if (!$successchain) {
 						if ($job_db->create_tables($directory)) {
-							// TODO: Create foreign_key adding script here.
-
-							return true;
+							// Create table foreign keys.
+							return $this->prepare_mysql_alter_foreign_key($job_db);
 						}
 					}
 					else {
@@ -67,5 +64,16 @@ class job_rough {
 			}
 		 }
 		 return false;
+	}
+
+	public function prepare_mysql_alter_foreign_key(job_db $job_db): bool {
+		if ($this->issuccess_init()) {
+			if (isset($job_db)) {
+				// TODO: Create foreign_key adding script here.
+
+				return true;
+			}
+		}
+		return false;
 	}
 }
