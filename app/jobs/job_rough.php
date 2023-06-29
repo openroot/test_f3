@@ -96,9 +96,9 @@ class job_rough {
 				$target_table = 'product';
 				$source_table_id = 'product_id';
 				$target_table_id = 'id';
-				$constraint_name = $source_table . '_' . $target_table . '_' . $target_table_id;
 				$ondelete = 'CASCADE';
 				$onupdate = 'RESTRICT';
+				$constraint_name = $source_table . '_' . $target_table . '_' . $target_table_id;
 
 				$statement = 'ALTER TABLE `' . $source_table . '`
 					ADD CONSTRAINT `' . $constraint_name . '`  
