@@ -27,51 +27,80 @@ class job_rough {
 		 if ($this->issuccess_init()) {
 			if (isset($job_db)) {
 
+				$successchain = false;
+
 				$directory = '../app/models/orms';
 				$modelsorms_breadcrumb = '\models\orms';
 				
-				// Check if modelorm tables already exists in database.
-				$modelorm_names_temp = $job_db->get_modelsorms_names($directory, $modelsorms_breadcrumb);
 				$modelorm_names = array();
+				$modelorm_names_temp = $job_db->get_modelsorms_names($directory, $modelsorms_breadcrumb);
 				foreach ($modelorm_names_temp as $modelorm_name_temp) {
 					array_push($modelorm_names, str_replace('orm_', '', $modelorm_name_temp));
 				}
 
-				$result = $job_db->f3mysql_execute('SHOW TABLES');
-				if (isset($result)) {
-					$table_names = array();
-					foreach ($result as $table) {
-						array_push($table_names, $table['Tables_in_test_f3']);
-					}
+				// Create modelorm tables.
+				$this->prepare_mysql_add_tables($job_db, $modelorm_names, $directory);
 
-					$successchain = true;
-					foreach ($modelorm_names as $modelorm_name) {
-						$successchain = array_search($modelorm_name, $table_names) !== false ? $successchain : false;
-					}
+				// Create modelorm foreignkeys.
+				$successchain = $this->prepare_mysql_add_foreignkeys($job_db);
 
-					// Create tables (only if one or many missing).
-					if (!$successchain) {
-						if ($job_db->create_tables($directory)) {
-							// Create table foreign keys.
-							return $this->prepare_mysql_add_foreign_keys($job_db);
-						}
-					}
-					else {
-						return true;
-					}
+				if ($successchain) {
+					// TODO: Put database-seeding script here.
 				}
+
+				return true;
 
 			}
 		 }
 		 return false;
 	}
 
-	public function prepare_mysql_add_foreign_keys(job_db $job_db): bool {
+	public function prepare_mysql_add_tables(job_db $job_db, array $modelorm_names, string $directory): bool {
+		if ($this->issuccess_init()) {
+			if (isset($job_db) && isset($modelorm_names) && isset($directory)) {
+
+				// Fetch tables exists in database.
+				$tableindatabase_names = array();
+				$result = $job_db->f3mysql_execute('SHOW TABLES');
+				if (isset($result)) {
+					foreach ($result as $table) {
+						array_push($tableindatabase_names, $table['Tables_in_test_f3']);
+					}
+				}
+
+				// Check if any modelorms are missing in database.
+				$successchain = true;
+				foreach ($modelorm_names as $modelorm_name) {
+					$successchain = array_search($modelorm_name, $tableindatabase_names) !== false ? $successchain : false;
+				}
+
+				// Create tables (only if any missing).
+				if (!$successchain) {
+					if ($job_db->create_tables($directory)) {
+						return true;
+					}
+				}
+
+			}
+		}
+		return false;
+	}
+
+	public function prepare_mysql_add_foreignkeys(job_db $job_db): bool {
 		if ($this->issuccess_init()) {
 			if (isset($job_db)) {
+
 				// TODO: Create foreign_key adding script here.
 
+				$statement = 'ALTER TABLE `order`
+					ADD CONSTRAINT `order_product_id`  
+					FOREIGN KEY ( `product_id` ) REFERENCES `product` ( `id` )
+					ON DELETE CASCADE ON UPDATE RESTRICT';
+
+				//$result = $job_db->f3mysql_execute($statement);
+
 				return true;
+
 			}
 		}
 		return false;
