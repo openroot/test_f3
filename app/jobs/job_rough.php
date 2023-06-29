@@ -53,7 +53,7 @@ class job_rough {
 					if (!$successchain) {
 						if ($job_db->create_tables($directory)) {
 							// Create table foreign keys.
-							return $this->prepare_mysql_alter_foreign_key($job_db);
+							return $this->prepare_mysql_add_foreign_keys($job_db);
 						}
 					}
 					else {
@@ -66,7 +66,7 @@ class job_rough {
 		 return false;
 	}
 
-	public function prepare_mysql_alter_foreign_key(job_db $job_db): bool {
+	public function prepare_mysql_add_foreign_keys(job_db $job_db): bool {
 		if ($this->issuccess_init()) {
 			if (isset($job_db)) {
 				// TODO: Create foreign_key adding script here.
