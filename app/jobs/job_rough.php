@@ -90,22 +90,40 @@ class job_rough {
 		if ($this->issuccess_init()) {
 			if (isset($job_db)) {
 
-				// TODO: Create foreign_key adding script here.
+				$config_foreignkeys = [[
+					'source_table' => 'order',
+					'target_table' => 'product',
+					'source_table_id' => 'product_id',
+					'target_table_id' => 'id',
+					'ondelete' => 'CASCADE',
+					'onupdate' => 'RESTRICT'
+				],[
+					'source_table' => 'order',
+					'target_table' => 'customer',
+					'source_table_id' => 'customer_id',
+					'target_table_id' => 'id',
+					'ondelete' => 'CASCADE',
+					'onupdate' => 'RESTRICT'
+				]];
 
-				$source_table = 'order';
-				$target_table = 'product';
-				$source_table_id = 'product_id';
-				$target_table_id = 'id';
-				$ondelete = 'CASCADE';
-				$onupdate = 'RESTRICT';
-				$constraint_name = $source_table . '_' . $target_table . '_' . $target_table_id;
+				foreach ($config_foreignkeys as $config_foreignkey) {
+					$source_table = $config_foreignkey['source_table'];
+					$target_table = $config_foreignkey['target_table'];
+					$source_table_id = $config_foreignkey['source_table_id'];
+					$target_table_id = $config_foreignkey['target_table_id'];
+					$ondelete = $config_foreignkey['ondelete'];
+					$onupdate = $config_foreignkey['onupdate'];
+					$constraint_name = $source_table . '_' . $target_table . '_' . $target_table_id;
 
-				$statement = 'ALTER TABLE `' . $source_table . '`
+					// TODO: Check constraint already exists.
+
+					$mysql_statement = 'ALTER TABLE `' . $source_table . '`
 					ADD CONSTRAINT `' . $constraint_name . '`  
-					FOREIGN KEY ( `' . $source_table_id .'` ) REFERENCES `' . $target_table . '` ( `' . $target_table_id . '` )
-					ON DELETE ' . $ondelete .' ON UPDATE ' . $onupdate;
+					FOREIGN KEY ( `' . $source_table_id . '` ) REFERENCES `' . $target_table . '` ( `' . $target_table_id . '` )
+					ON DELETE ' . $ondelete . ' ON UPDATE ' . $onupdate;
 
-				//$result = $job_db->f3mysql_execute($statement);
+					//$result = $job_db->f3mysql_execute($mysql_statement);
+				}
 
 				return true;
 
