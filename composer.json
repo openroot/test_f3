@@ -1,4 +1,8 @@
 {
+    "name": "devop/test_f3",
+    "description": "test_f3",
+    "type": "project",
+    "minimum-stability": "dev",
     "require": {
         "bcosca/fatfree-core": "^3.8",
         "ikkez/f3-cortex": "^1.7"
