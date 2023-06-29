@@ -92,10 +92,18 @@ class job_rough {
 
 				// TODO: Create foreign_key adding script here.
 
-				$statement = 'ALTER TABLE `order`
-					ADD CONSTRAINT `order_product_id`  
-					FOREIGN KEY ( `product_id` ) REFERENCES `product` ( `id` )
-					ON DELETE CASCADE ON UPDATE RESTRICT';
+				$source_table = 'order';
+				$target_table = 'product';
+				$source_table_id = 'product_id';
+				$target_table_id = 'id';
+				$constraint_name = $source_table . '_' . $target_table . '_' . $target_table_id;
+				$ondelete = 'CASCADE';
+				$onupdate = 'RESTRICT';
+
+				$statement = 'ALTER TABLE `' . $source_table . '`
+					ADD CONSTRAINT `' . $constraint_name . '`  
+					FOREIGN KEY ( `' . $source_table_id .'` ) REFERENCES `' . $target_table . '` ( `' . $target_table_id . '` )
+					ON DELETE ' . $ondelete .' ON UPDATE ' . $onupdate;
 
 				//$result = $job_db->f3mysql_execute($statement);
 
