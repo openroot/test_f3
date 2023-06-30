@@ -93,14 +93,14 @@ class job_rough {
 				$config_foreignkeys = [[
 					'source_table' => 'order',
 					'target_table' => 'product',
-					'source_table_id' => 'product_id',
+					'source_table_id' => 'fk_product_id',
 					'target_table_id' => 'id',
 					'ondelete' => 'CASCADE',
 					'onupdate' => 'RESTRICT'
 				],[
 					'source_table' => 'order',
 					'target_table' => 'customer',
-					'source_table_id' => 'customer_id',
+					'source_table_id' => 'fk_customer_id',
 					'target_table_id' => 'id',
 					'ondelete' => 'CASCADE',
 					'onupdate' => 'RESTRICT'
@@ -113,7 +113,7 @@ class job_rough {
 					$target_table_id = $config_foreignkey['target_table_id'];
 					$ondelete = $config_foreignkey['ondelete'];
 					$onupdate = $config_foreignkey['onupdate'];
-					$constraint_name = $source_table . '_' . $target_table . '_' . $target_table_id;
+					$constraint_name = 'fk_' . $source_table . '_' . $target_table . '_' . $target_table_id;
 
 					// TODO: Check constraint already exists.
 
@@ -122,7 +122,7 @@ class job_rough {
 					FOREIGN KEY ( `' . $source_table_id . '` ) REFERENCES `' . $target_table . '` ( `' . $target_table_id . '` )
 					ON DELETE ' . $ondelete . ' ON UPDATE ' . $onupdate;
 
-					//$result = $job_db->f3mysql_execute($mysql_statement);
+					$result = $job_db->f3mysql_execute($mysql_statement);
 				}
 
 				return true;

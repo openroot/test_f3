@@ -13,11 +13,15 @@ class orm_order extends Cortex {
 				'nullable' => false,
 				'default' => Schema::DF_CURRENT_TIMESTAMP
 			],
-			'product_id' => [
-				'belongs-to-one' => \models\orms\orm_product::class
+			'fk_product_id' => [
+				'type' => Schema::DT_INT,
+				'nullable' => false,
+				'index' => true
 			],
-			'customer_id' => [
-				'belongs-to-one' => \models\orms\orm_customer::class
+			'fk_customer_id' => [
+				'type' => Schema::DT_INT,
+				'nullable' => false,
+				'index' => true
 			],
 			'quantity' => [
 				'type' => Schema::DT_INT,
