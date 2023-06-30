@@ -122,7 +122,7 @@ class job_rough {
 					FOREIGN KEY ( `' . $source_table_id . '` ) REFERENCES `' . $target_table . '` ( `' . $target_table_id . '` )
 					ON DELETE ' . $ondelete . ' ON UPDATE ' . $onupdate;
 
-					$result = $job_db->f3mysql_execute($mysql_statement);
+					//$result = $job_db->f3mysql_execute($mysql_statement);
 				}
 
 				return true;
