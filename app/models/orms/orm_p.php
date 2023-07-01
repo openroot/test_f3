@@ -4,19 +4,29 @@ namespace models\orms;
 
 use \DB\SQL\Schema as Schema;
 use \models\abstracts\abstract_orm as abstract_orm;
+use \models\enums\enum_mysql_datatype as enum_mysql_datatype;
 
 class orm_p extends abstract_orm {
 	protected $field_configurations = [
 		'created_at' => [
-			'type' => Schema::DT_TIMESTAMP,
+			'type' => enum_mysql_datatype::TIMESTAMP,
 			'nullable' => false,
 			'default' => Schema::DF_CURRENT_TIMESTAMP
 		],
 		'name' => [
-			'type' => Schema::DT_VARCHAR128,
-			'nullable' => false
+			'type' => enum_mysql_datatype::VARCHAR128,
+			'nullable' => false,
+			'index' => true
+		],
+		'description' => [
+			'type' => enum_mysql_datatype::TEXT,
+			'nullable' => true
+		],
+		'privateid' => [
+			'type' => enum_mysql_datatype::VARCHAR512,
+			'nullable' => true,
+			'unique' => true
 		]
 	],
-	$table_name = 'p',
-	$primarykeyfield_name = 'id'; // Name of the primary key (auto-created), default: id.
+	$table_name = 'p';
 }
