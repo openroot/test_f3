@@ -121,12 +121,13 @@ abstract class abstract_orm extends abstract_model {
 
 				if ($type) {
 					$attributes = '';
-					if (isset($fieldconfig['attributes']) && isset($this->mysqlfield_attributes_signatures[$fieldconfig['attributes']])) {
-						$attributes = $this->mysqlfield_attributes_signatures[$fieldconfig['attributes']];
+					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::attributes])
+					&& isset($this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]])) {
+						$attributes = $this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]];
 					}
 
 					$nullable = '';
-					if (isset($fieldconfig['nullable']) && $fieldconfig['nullable'] === false) {
+					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::nullable]) && $fieldconfig[enums\enum_orm_fieldconfigparam::nullable] === false) {
 						$nullable = 'NOT NULL';
 					}
 					else {
@@ -134,38 +135,38 @@ abstract class abstract_orm extends abstract_model {
 					}
 
 					$autoincrement = '';
-					if (isset($fieldconfig['autoincrement']) && $fieldconfig['autoincrement'] === true) {
+					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::autoincrement]) && $fieldconfig[enums\enum_orm_fieldconfigparam::autoincrement] === true) {
 						$autoincrement = 'AUTO_INCREMENT';
 					}
 
 					$default = '';
-					if (isset($fieldconfig['default'])) {
-						if (isset($this->mysqlfield_default_signatures[$fieldconfig['default']])) {
-							$default = 'DEFAULT ' . $this->mysqlfield_default_signatures[$fieldconfig['default']];
+					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::default])) {
+						if (isset($this->mysqlfield_default_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::default]])) {
+							$default = 'DEFAULT ' . $this->mysqlfield_default_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::default]];
 						}
 						else {
-							$default = 'DEFAULT \'' . $fieldconfig['default'] . '\'';
+							$default = 'DEFAULT \'' . $fieldconfig[enums\enum_orm_fieldconfigparam::default] . '\'';
 						}
 					}
 
-					$index = isset($fieldconfig['index']) && isset($this->mysqlfield_index_signatures[$fieldconfig['index']])
-					? $this->mysqlfield_index_signatures[$fieldconfig['index']]
+					$index = isset($fieldconfig[enums\enum_orm_fieldconfigparam::index]) && isset($this->mysqlfield_index_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::index]])
+					? $this->mysqlfield_index_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::index]]
 					: '';
 
 					$comment = '';
-					if (isset($fieldconfig['comment']) && !empty($fieldconfig['comment'])) {
-						$comment = 'COMMENT \'' . $fieldconfig['comment'] . '\'';
+					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::comment]) && !empty($fieldconfig[enums\enum_orm_fieldconfigparam::comment])) {
+						$comment = 'COMMENT \'' . $fieldconfig[enums\enum_orm_fieldconfigparam::comment] . '\'';
 					}
 
 					array_push($column_strings, [
 						'fieldname' => $fieldname,
 						enums\enum_orm_fieldconfigparam::type => $type,
-						'attributes' => $attributes,
-						'nullable' => $nullable,
-						'autoincrement' => $autoincrement,
-						'default' => $default,
-						'index' => $index,
-						'comment' => $comment
+						enums\enum_orm_fieldconfigparam::attributes => $attributes,
+						enums\enum_orm_fieldconfigparam::nullable => $nullable,
+						enums\enum_orm_fieldconfigparam::autoincrement => $autoincrement,
+						enums\enum_orm_fieldconfigparam::default => $default,
+						enums\enum_orm_fieldconfigparam::index => $index,
+						enums\enum_orm_fieldconfigparam::comment => $comment
 					]);
 				}
 			}
@@ -187,12 +188,12 @@ abstract class abstract_orm extends abstract_model {
 
 				echo '<td>' . $column_string['fieldname'] . '</td>';
 				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::type] . '</td>';
-				echo '<td>' . $column_string['attributes'] . '</td>';
-				echo '<td>' . $column_string['nullable'] . '</td>';
-				echo '<td>' . $column_string['autoincrement'] . '</td>';
-				echo '<td>' . $column_string['default'] . '</td>';
-				echo '<td>' . $column_string['index'] . '</td>';
-				echo '<td>' . $column_string['comment'] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::attributes] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::nullable] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::autoincrement] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::default] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::index] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::comment] . '</td>';
 
 				echo '</tr>';
 			}
