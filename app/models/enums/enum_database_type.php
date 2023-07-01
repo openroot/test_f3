@@ -2,9 +2,9 @@
 
 namespace models\enums;
 
-use \models\abstracts as abstructs;
+use \models\abstracts\abstract_enum as abstract_enum;
 
-class enum_database_type extends abstructs\abstract_model {
+class enum_database_type extends abstract_enum {
 	public const f3jig = 'f3jig';
 	public const f3mysql = 'f3mysql';
 }
