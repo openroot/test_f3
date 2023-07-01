@@ -3,19 +3,12 @@
 namespace models\abstracts;
 
 use Exception as Exception;
-use \DB\SQL\Schema as Schema;
 use \models\abstracts\abstract_model as abstract_model;
-use \models\enums\enum_database_type as enum_database_type;
-use \models\enums\enum_mysql_datatype as enum_mysql_datatype;
+use \models\enums as enums;
 use \jobs\job_db as job_db;
 use \jobs\job_exception as job_exception;
 
 abstract class abstract_orm extends abstract_model {
-	protected ?job_db $job_db = NULL;
-	protected $field_configurations;
-	protected $table_name;
-	protected $primarykey_name;
-
 	private $datatype_signatures = [
 			'BOOLEAN' => 'TINYINT(1)',
 			'INT1' => 'TINYINT(4)',
@@ -41,9 +34,18 @@ abstract class abstract_orm extends abstract_model {
 			'TIMESTAMP' => 'TIMESTAMP',
 			'BLOB' => 'BLOB'
 	];
-	private $defaulttype_signatures = [
-		'CUR_STAMP' => 'CURRENT_TIMESTAMP'
+	private $attributestype_signatures = [
+		'UNSIGNED' => 'UNSIGNED',
+		'ON_UPDATE_CURRENT_TIMESTAMP' => 'on update CURRENT_TIMESTAMP'
 	];
+	private $defaulttype_signatures = [
+		'CURRENT_TIMESTAMP' => 'CURRENT_TIMESTAMP'
+	];
+
+	protected ?job_db $job_db = NULL;
+	protected $field_configurations;
+	protected $table_name;
+	protected $primarykey_name;
 
 	public function __construct() {
 		if (!isset($this->f3)) {
@@ -51,7 +53,7 @@ abstract class abstract_orm extends abstract_model {
 		}
 		if (isset($this->f3) && !isset($this->job_db)) {
 			try {
-				$this->job_db = new job_db($this->f3, enum_database_type::f3mysql);
+				$this->job_db = new job_db($this->f3, enums\enum_database_type::f3mysql);
 			}
 			catch (Exception $exception) {
 				throw new job_exception('Job db couldn\'t be instaniated.', $exception);
@@ -81,7 +83,7 @@ abstract class abstract_orm extends abstract_model {
 
 		$primarykey_name = isset($this->primarykey_name) && !empty($this->primarykey_name) ? $this->primarykey_name : 'id';
 		$field_configuration_primarykey = [
-			'type' => enum_mysql_datatype::BIGINT,
+			'type' => enums\enum_mysql_datatype::BIGINT,
 			'nullable' => false,
 			'autoincrement' => true
 		];
@@ -149,8 +151,6 @@ abstract class abstract_orm extends abstract_model {
 				echo '</tr>';
 			}
 			echo '</table>';
-
-			// print_r($this->field_configurations);
 
 			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
 			// if (isset($result)) {
