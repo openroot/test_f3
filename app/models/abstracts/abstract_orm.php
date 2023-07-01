@@ -41,6 +41,11 @@ abstract class abstract_orm extends abstract_model {
 	private $mysqlfield_default_signatures = [
 		'CURRENT_TIMESTAMP' => 'CURRENT_TIMESTAMP'
 	];
+	private $mysqlfield_index_signatures = [
+		'PRIMARYKEY' => 'PRIMARY KEY',
+		'INDEX' => 'INDEX',
+		'UNIQUE' => 'UNIQUE',
+	];
 
 	protected ?job_db $job_db = NULL;
 	protected $fieldconfigs;
@@ -94,9 +99,11 @@ abstract class abstract_orm extends abstract_model {
 		$fieldconfigs = [
 			isset($this->primarykeyname) && !empty($this->primarykeyname) ? $this->primarykeyname : 'id' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
+				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::UNSIGNED,
 				enums\enum_orm_fieldconfigparam::nullable => false,
 				enums\enum_orm_fieldconfigparam::autoincrement => true,
-				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::PRIMARYKEY
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::PRIMARYKEY,
+				enums\enum_orm_fieldconfigparam::comment => 'Primary key'
 			]
 		];
 
@@ -113,6 +120,11 @@ abstract class abstract_orm extends abstract_model {
 					: false;
 
 				if ($type) {
+					$attributes = '';
+					if (isset($fieldconfig['attributes']) && isset($this->mysqlfield_attributes_signatures[$fieldconfig['attributes']])) {
+						$attributes = $this->mysqlfield_attributes_signatures[$fieldconfig['attributes']];
+					}
+
 					$nullable = '';
 					if (isset($fieldconfig['nullable']) && $fieldconfig['nullable'] === false) {
 						$nullable = 'NOT NULL';
@@ -136,31 +148,51 @@ abstract class abstract_orm extends abstract_model {
 						}
 					}
 
+					$index = isset($fieldconfig['index']) && isset($this->mysqlfield_index_signatures[$fieldconfig['index']])
+					? $this->mysqlfield_index_signatures[$fieldconfig['index']]
+					: '';
+
+					$comment = '';
+					if (isset($fieldconfig['comment']) && !empty($fieldconfig['comment'])) {
+						$comment = 'COMMENT \'' . $fieldconfig['comment'] . '\'';
+					}
+
 					array_push($column_strings, [
 						'fieldname' => $fieldname,
 						enums\enum_orm_fieldconfigparam::type => $type,
+						'attributes' => $attributes,
 						'nullable' => $nullable,
 						'autoincrement' => $autoincrement,
-						'default' => $default
+						'default' => $default,
+						'index' => $index,
+						'comment' => $comment
 					]);
 				}
 			}
 
 			echo '<table><tr>';
 			echo '<caption>Table Name: ' . $this->tablename . '</caption>';
-			echo '<th>Field Name</th>
+			echo '
+			<th>Field-name</th>
 			<th>Type</th>
-			<th>IS NULL</th>
-			<th>Autoincrement</th>
-			<th>Default Value</th></tr>';
+			<th>Attributes</th>
+			<th>Is-NULL</th>
+			<th>Auto-increment</th>
+			<th>Default-value</th>
+			<th>Index</th>
+			<th>Comment</th>
+			</tr>';
 			foreach ($column_strings as $column_string) {
 				echo '<tr>';
 
 				echo '<td>' . $column_string['fieldname'] . '</td>';
 				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::type] . '</td>';
+				echo '<td>' . $column_string['attributes'] . '</td>';
 				echo '<td>' . $column_string['nullable'] . '</td>';
 				echo '<td>' . $column_string['autoincrement'] . '</td>';
 				echo '<td>' . $column_string['default'] . '</td>';
+				echo '<td>' . $column_string['index'] . '</td>';
+				echo '<td>' . $column_string['comment'] . '</td>';
 
 				echo '</tr>';
 			}
