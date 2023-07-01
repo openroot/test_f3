@@ -113,8 +113,10 @@ abstract class abstract_orm extends abstract_model {
 	public function create_table() {
 		try {
 			$column_strings = [];
-			foreach ($this->fieldconfigs as $field_name => $fieldconfig) {
-				$fieldname = isset($field_name) && !empty($field_name) ? '`' . $field_name . '`' : false;
+			foreach ($this->fieldconfigs as $fieldname => $fieldconfig) {
+				$name = isset($fieldname) && !empty($fieldname)
+					? '`' . $fieldname . '`'
+					: false;
 				$type = isset($fieldconfig[enums\enum_orm_fieldconfigparam::type]) && isset($this->mysqlfield_type_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::type]])
 					? $this->mysqlfield_type_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::type]]
 					: false;
@@ -122,7 +124,7 @@ abstract class abstract_orm extends abstract_model {
 				if ($type) {
 					$attributes = '';
 					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::attributes])
-					&& isset($this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]])) {
+						&& isset($this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]])) {
 						$attributes = $this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]];
 					}
 
@@ -159,7 +161,7 @@ abstract class abstract_orm extends abstract_model {
 					}
 
 					array_push($column_strings, [
-						'fieldname' => $fieldname,
+						enums\enum_orm_fieldconfigparam::name => $name,
 						enums\enum_orm_fieldconfigparam::type => $type,
 						enums\enum_orm_fieldconfigparam::attributes => $attributes,
 						enums\enum_orm_fieldconfigparam::nullable => $nullable,
@@ -186,7 +188,7 @@ abstract class abstract_orm extends abstract_model {
 			foreach ($column_strings as $column_string) {
 				echo '<tr>';
 
-				echo '<td>' . $column_string['fieldname'] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::name] . '</td>';
 				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::type] . '</td>';
 				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::attributes] . '</td>';
 				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::nullable] . '</td>';
