@@ -9,7 +9,7 @@ use \jobs\job_db as job_db;
 use \jobs\job_exception as job_exception;
 
 abstract class abstract_orm extends abstract_model {
-	private $datatype_signatures = [
+	private $mysqlfield_type_signatures = [
 			'BOOLEAN' => 'TINYINT(1)',
 			'INT1' => 'TINYINT(4)',
 			'INT2' => 'SMALLINT(6)',
@@ -34,18 +34,18 @@ abstract class abstract_orm extends abstract_model {
 			'TIMESTAMP' => 'TIMESTAMP',
 			'BLOB' => 'BLOB'
 	];
-	private $attributestype_signatures = [
+	private $mysqlfield_attributes_signatures = [
 		'UNSIGNED' => 'UNSIGNED',
 		'ON_UPDATE_CURRENT_TIMESTAMP' => 'on update CURRENT_TIMESTAMP'
 	];
-	private $defaulttype_signatures = [
+	private $mysqlfield_default_signatures = [
 		'CURRENT_TIMESTAMP' => 'CURRENT_TIMESTAMP'
 	];
 
 	protected ?job_db $job_db = NULL;
-	protected $field_configurations;
-	protected $table_name;
-	protected $primarykey_name;
+	protected $fieldconfigs;
+	protected $tablename;
+	protected $primarykeyname;
 
 	public function __construct() {
 		if (!isset($this->f3)) {
@@ -60,48 +60,59 @@ abstract class abstract_orm extends abstract_model {
 				return false;
 			}
 		}
-		return $this->validate_config();
+		if ($this->validate_config()) {
+			$this->add_meta_fieldconfigs();
+		}
+		else {
+			return false;
+		}
+		return true;
 	}
 
 	private function validate_config(): bool {
-		if (!(isset($this->field_configurations) && !empty($this->field_configurations))) {
+		if (!(isset($this->fieldconfigs) && !empty($this->fieldconfigs))) {
 			throw new job_exception('Field configurations are invalid.');
 			return false;
 		}
 
-		if (!(isset($this->table_name) && !empty($this->table_name))) {
+		if (!(isset($this->tablename) && !empty($this->tablename))) {
 			throw new job_exception('Table name is invalid.');
 			return false;
 		}
 
-		if (isset($this->primarykey_name) && empty($this->primarykey_name)) {
+		if (isset($this->primarykeyname) && empty($this->primarykeyname)) {
 			throw new job_exception('Primarykey name is invalid.');
 			return false;
 		}
 
-		$this->table_name = '`' . $this->table_name . '`';
-
-		$primarykey_name = isset($this->primarykey_name) && !empty($this->primarykey_name) ? $this->primarykey_name : 'id';
-		$field_configuration_primarykey = [
-			'type' => enums\enum_mysql_datatype::BIGINT,
-			'nullable' => false,
-			'autoincrement' => true
-		];
-		$this->field_configurations = array_merge([$primarykey_name => $field_configuration_primarykey], $this->field_configurations);
-
 		return true;
+	}
+
+	private function add_meta_fieldconfigs() {
+		$this->tablename = '`' . $this->tablename . '`';
+
+		$fieldconfigs = [
+			isset($this->primarykeyname) && !empty($this->primarykeyname) ? $this->primarykeyname : 'id' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
+				enums\enum_orm_fieldconfigparam::nullable => false,
+				enums\enum_orm_fieldconfigparam::autoincrement => true,
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::PRIMARYKEY
+			]
+		];
+
+		$this->fieldconfigs = array_merge($fieldconfigs, $this->fieldconfigs);
 	}
 
 	public function create_table() {
 		try {
 			$column_strings = [];
-			foreach ($this->field_configurations as $field_name => $field_configuration) {
+			foreach ($this->fieldconfigs as $field_name => $fieldconfig) {
 				$fieldname = '`' . $field_name . '`';
 
-				$type = isset($field_configuration['type']) ? $this->datatype_signatures[$field_configuration['type']] : false;
+				$type = isset($fieldconfig['type']) ? $this->mysqlfield_type_signatures[$fieldconfig['type']] : false;
 
 				$nullable = '';
-				if (isset($field_configuration['nullable']) && $field_configuration['nullable'] === false) {
+				if (isset($fieldconfig['nullable']) && $fieldconfig['nullable'] === false) {
 					$nullable = 'NOT NULL';
 				}
 				else {
@@ -109,17 +120,17 @@ abstract class abstract_orm extends abstract_model {
 				}
 
 				$autoincrement = '';
-				if (isset($field_configuration['autoincrement']) && $field_configuration['autoincrement'] === true) {
+				if (isset($fieldconfig['autoincrement']) && $fieldconfig['autoincrement'] === true) {
 					$autoincrement = 'AUTO_INCREMENT';
 				}
 
 				$default = '';
-				if (isset($field_configuration['default'])) {
-					if (isset($this->defaulttype_signatures[$field_configuration['default']])) {
-						$default = 'DEFAULT ' . $this->defaulttype_signatures[$field_configuration['default']];
+				if (isset($fieldconfig['default'])) {
+					if (isset($this->mysqlfield_default_signatures[$fieldconfig['default']])) {
+						$default = 'DEFAULT ' . $this->mysqlfield_default_signatures[$fieldconfig['default']];
 					}
 					else {
-						$default = 'DEFAULT \'' . $field_configuration['default'] . '\'';
+						$default = 'DEFAULT \'' . $fieldconfig['default'] . '\'';
 					}
 				}
 
@@ -133,7 +144,7 @@ abstract class abstract_orm extends abstract_model {
 			}
 
 			echo '<table><tr>';
-			echo '<caption>Table Name: ' . $this->table_name . '</caption>';
+			echo '<caption>Table Name: ' . $this->tablename . '</caption>';
 			echo '<th>Field Name</th>
 			<th>Type</th>
 			<th>IS NULL</th>
@@ -158,7 +169,7 @@ abstract class abstract_orm extends abstract_model {
 			// }
 		}
 		catch (Exception $exception) {
-			throw new job_exception('Table \'' . $this->table_name . '\' couldn\'t be created.', $exception);
+			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
 		}
 	}
 }

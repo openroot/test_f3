@@ -4,7 +4,7 @@ namespace models\enums;
 
 use \models\abstracts\abstract_enum as abstract_enum;
 
-class enum_mysql_datatype extends abstract_enum {
+class enum_mysqlfield_type extends abstract_enum {
 	public const BOOLEAN = 'BOOLEAN';
 	public const INT1 = 'INT1';
 	public const INT2 = 'INT2';

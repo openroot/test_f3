@@ -6,26 +6,24 @@ use \models\abstracts\abstract_orm as abstract_orm;
 use \models\enums as enums;
 
 class orm_p extends abstract_orm {
-	protected $field_configurations = [
+	protected $fieldconfigs = [
 		'created_at' => [
-			'type' => enums\enum_mysql_datatype::TIMESTAMP,
-			'nullable' => false,
-			'default' => enums\enum_mysql_defaulttype::CURRENT_TIMESTAMP
+			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TIMESTAMP,
+			enums\enum_orm_fieldconfigparam::nullable => false,
+			enums\enum_orm_fieldconfigparam::default => enums\enum_mysqlfield_default::CURRENT_TIMESTAMP
 		],
 		'name' => [
-			'type' => enums\enum_mysql_datatype::VARCHAR128,
-			'nullable' => false,
-			'index' => true
+			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR128,
+			enums\enum_orm_fieldconfigparam::nullable => false,
+			enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX
 		],
 		'description' => [
-			'type' => enums\enum_mysql_datatype::TEXT,
-			'nullable' => true
+			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TEXT
 		],
 		'privateid' => [
-			'type' => enums\enum_mysql_datatype::VARCHAR512,
-			'nullable' => true,
-			'unique' => true
+			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR512,
+			enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::UNIQUE
 		]
-	],
-	$table_name = 'p';
+	];
+	protected $tablename = 'p';
 }
