@@ -17,11 +17,11 @@ abstract class abstract_orm extends abstract_model {
 			'INT8' => 'BIGINT(20)',
 			'BIGINT' => 'BIGINT(20)',
 			'FLOAT' => 'FLOAT',
-			'DOUBLE' => 'DECIMAL(18,6)',
+			'DOUBLE' => 'DECIMAL(20,6)',
 			'VARCHAR32' => 'VARCHAR(32)',
 			'VARCHAR64' => 'VARCHAR(64)',
 			'VARCHAR128' => 'VARCHAR(128)',
-			'VARCHAR256' => 'VARCHAR(255)',
+			'VARCHAR256' => 'VARCHAR(256)',
 			'VARCHAR512' => 'VARCHAR(512)',
 			'VARCHAR1024' => 'VARCHAR(1024)',
 			'VARCHAR2048' => 'VARCHAR(2048)',
@@ -104,6 +104,17 @@ abstract class abstract_orm extends abstract_model {
 				enums\enum_orm_fieldconfigparam::autoincrement => true,
 				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::PRIMARYKEY,
 				enums\enum_orm_fieldconfigparam::comment => 'Primary key'
+			],
+			'created_at' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TIMESTAMP,
+				enums\enum_orm_fieldconfigparam::nullable => false,
+				enums\enum_orm_fieldconfigparam::default => enums\enum_mysqlfield_default::CURRENT_TIMESTAMP,
+				enums\enum_orm_fieldconfigparam::comment => 'Creation time'
+			],
+			'updated_at' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TIMESTAMP,
+				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::ON_UPDATE_CURRENT_TIMESTAMP,
+				enums\enum_orm_fieldconfigparam::comment => 'Last updated time'
 			]
 		];
 
@@ -173,6 +184,8 @@ abstract class abstract_orm extends abstract_model {
 				}
 			}
 
+
+			// Testing echoing table configuration filtrations. (Comment section, after testing.)
 			echo '<table><tr>';
 			echo '<caption>Table Name: ' . $this->tablename . '</caption>';
 			echo '
