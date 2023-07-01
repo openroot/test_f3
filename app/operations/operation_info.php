@@ -142,6 +142,11 @@ class operation_info {
 			// TODO: Debug css miss-reading (from 2nd sub-routing).
 			echo $f3->segmentspath . $f3->segmentsrender;
 
+			echo '<pre>';
+			$orm_p = new \models\orms\orm_p();
+			$orm_p->create_table();
+			echo '</pre>';
+
 			return true;
 		}
 		return false;

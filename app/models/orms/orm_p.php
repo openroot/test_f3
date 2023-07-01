@@ -16,7 +16,7 @@ class orm_p extends abstract_orm {
 			'type' => Schema::DT_VARCHAR128,
 			'nullable' => false
 		]
-		],
-	$table = 'p',
-	$primary = 'id'; // Name of the primary key (auto-created), default: id.
+	],
+	$table_name = 'p',
+	$primarykeyfield_name = 'id'; // Name of the primary key (auto-created), default: id.
 }
