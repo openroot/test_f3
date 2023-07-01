@@ -107,40 +107,43 @@ abstract class abstract_orm extends abstract_model {
 		try {
 			$column_strings = [];
 			foreach ($this->fieldconfigs as $field_name => $fieldconfig) {
-				$fieldname = '`' . $field_name . '`';
+				$fieldname = isset($field_name) && !empty($field_name) ? '`' . $field_name . '`' : false;
+				$type = isset($fieldconfig[enums\enum_orm_fieldconfigparam::type]) && isset($this->mysqlfield_type_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::type]])
+					? $this->mysqlfield_type_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::type]]
+					: false;
 
-				$type = isset($fieldconfig['type']) ? $this->mysqlfield_type_signatures[$fieldconfig['type']] : false;
-
-				$nullable = '';
-				if (isset($fieldconfig['nullable']) && $fieldconfig['nullable'] === false) {
-					$nullable = 'NOT NULL';
-				}
-				else {
-					$nullable = 'NULL';
-				}
-
-				$autoincrement = '';
-				if (isset($fieldconfig['autoincrement']) && $fieldconfig['autoincrement'] === true) {
-					$autoincrement = 'AUTO_INCREMENT';
-				}
-
-				$default = '';
-				if (isset($fieldconfig['default'])) {
-					if (isset($this->mysqlfield_default_signatures[$fieldconfig['default']])) {
-						$default = 'DEFAULT ' . $this->mysqlfield_default_signatures[$fieldconfig['default']];
+				if ($type) {
+					$nullable = '';
+					if (isset($fieldconfig['nullable']) && $fieldconfig['nullable'] === false) {
+						$nullable = 'NOT NULL';
 					}
 					else {
-						$default = 'DEFAULT \'' . $fieldconfig['default'] . '\'';
+						$nullable = 'NULL';
 					}
-				}
 
-				array_push($column_strings, [
-					'fieldname' => $fieldname,
-					'type' => $type,
-					'nullable' => $nullable,
-					'autoincrement' => $autoincrement,
-					'default' => $default
-				]);
+					$autoincrement = '';
+					if (isset($fieldconfig['autoincrement']) && $fieldconfig['autoincrement'] === true) {
+						$autoincrement = 'AUTO_INCREMENT';
+					}
+
+					$default = '';
+					if (isset($fieldconfig['default'])) {
+						if (isset($this->mysqlfield_default_signatures[$fieldconfig['default']])) {
+							$default = 'DEFAULT ' . $this->mysqlfield_default_signatures[$fieldconfig['default']];
+						}
+						else {
+							$default = 'DEFAULT \'' . $fieldconfig['default'] . '\'';
+						}
+					}
+
+					array_push($column_strings, [
+						'fieldname' => $fieldname,
+						enums\enum_orm_fieldconfigparam::type => $type,
+						'nullable' => $nullable,
+						'autoincrement' => $autoincrement,
+						'default' => $default
+					]);
+				}
 			}
 
 			echo '<table><tr>';
@@ -154,7 +157,7 @@ abstract class abstract_orm extends abstract_model {
 				echo '<tr>';
 
 				echo '<td>' . $column_string['fieldname'] . '</td>';
-				echo '<td>' . $column_string['type'] . '</td>';
+				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::type] . '</td>';
 				echo '<td>' . $column_string['nullable'] . '</td>';
 				echo '<td>' . $column_string['autoincrement'] . '</td>';
 				echo '<td>' . $column_string['default'] . '</td>';
