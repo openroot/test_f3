@@ -157,24 +157,17 @@ abstract class abstract_orm extends abstract_model {
 		try {
 			$liquor = $this->liquor_create_table();
 
-			// Testing echoing table configuration filtrations. (Remove section, after testing.)
-			echo($this->get_html_table('Prefixes', $liquor['prefixes']));
-			echo($this->get_html_table(['Field-name', 'Type', 'Attributes', 'Is-NULL', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']));
-			echo($this->get_html_table('Indexes', $liquor['indexes']));
-			echo($this->get_html_table('Suffixes', $liquor['suffixes']));
-			// Testing echoing table configuration filtrations. (Remove section, after testing.)
-
-			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
-			// if (isset($result)) {
-			// 	print_r($result);
-			// }
+			$result = $this->job_db->f3mysql_execute('SHOW TABLES');
+			if (isset($result)) {
+				print_r($result);
+			}
 		}
 		catch (Exception $exception) {
 			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
 		}
 	}
 
-	public function liquor_create_table() {
+	public function liquor_create_table(): ?array {
 		try {
 			$liquor = ['prefixes' => [], 'fields' => [], 'indexes' => [], 'suffixes' => []];
 
@@ -271,7 +264,7 @@ abstract class abstract_orm extends abstract_model {
 		}
 
 		if (($heading_column_count > 0) && ($heading_column_count === $data_column_count)) {
-			$rendered_html .= '<div class="viewtable" style="width: ' . ($heading_column_count * 50) . 'px; height: 100%">';
+			$rendered_html .= '<div class="viewtable" style="height: 100%">';
 			$rendered_html .= '<table>';
 			
 			if (isset($caption)) {

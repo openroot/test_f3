@@ -185,6 +185,22 @@ class app_test_f3 {
 					'operations\operation_info->info_about_default'
 				);
 
+				// URI example: http://localhost:4000/instruct/
+				$this->handle_this->route(
+					'GET ' .
+					'@instruct_default: ' .
+					'/instruct',
+					'operations\operation_instruct->instruct_default'
+				);
+
+				// URI example: http://localhost:4000/instruct/tryinstall
+				$this->handle_this->route(
+					'GET ' .
+					'@instruct_tryinstall_default: ' .
+					'/instruct/tryinstall',
+					'operations\operation_instruct->instruct_tryinstall_default'
+				);
+
 				return true;
 			}
 			catch (Exception $exception) {

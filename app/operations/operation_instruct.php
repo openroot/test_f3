@@ -13,7 +13,7 @@ use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
 use \models\enums as enums;
 
-class operation_info {
+class operation_instruct {
 	private ?string $handle_this = NULL;
 	private ?Base $f3 = NULL;
 	private ?Template $f3template = NULL;
@@ -112,19 +112,11 @@ class operation_info {
 		return $successchain;
 	}
 
-	public function info_default(Base $f3): bool {
+	public function instruct_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
-			$f3->info_default = [];
+			$f3->instruct_default = [];
 
-			$job_db = new job_db($f3, enums\enum_database_type::f3mysql);
-			if (isset($job_db) && $job_db->issuccess_init()) {
-				$result = $job_db->f3mysql_execute('SHOW TABLES');
-				if (isset($result)) {
-					$f3->info_default += ['tablelist' => $result];
-				}
-			}
-
-			$f3->segmentsrender = 'segment_operation_info_default.htm';
+			$f3->segmentsrender = 'segment_operation_instruct_default.htm';
 			echo $this->f3template->render($f3->segmentsdefaultrender);
 
 			return true;
@@ -132,11 +124,24 @@ class operation_info {
 		return false;
 	}
 
-	public function info_about_default(Base $f3): bool {
+	public function instruct_tryinstall_default(Base $f3): bool {
 		if ($this->issuccess_init()) {
-			$f3->info_about_default = [];
+			$f3->instruct_tryinstall_default = [];
 
-			$f3->segmentsrender = 'segment_operation_info_about_default.htm';
+			$html1 = '';
+
+			$orm_p = new \models\orms\orm_p();
+			$liquor = $orm_p->liquor_create_table();
+			if (isset($liquor)) {
+				$html1 .= $orm_p->get_html_table('Prefixes', $liquor['prefixes'], '`p`');
+				$html1 .= $orm_p->get_html_table(['Field-name', 'Type', 'Attributes', 'Is-NULL', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
+				$html1 .= $orm_p->get_html_table('Indexes', $liquor['indexes']);
+				$html1 .= $orm_p->get_html_table('Suffixes', $liquor['suffixes']);
+			}
+
+			$f3->instruct_tryinstall_default += ['html1' => $html1];
+
+			$f3->segmentsrender = 'segment_operation_instruct_tryinstall_default.htm';
 			echo $this->f3template->render($f3->segmentsdefaultrender);
 
 			return true;
