@@ -49,28 +49,34 @@ abstract class abstract_orm extends abstract_model {
 		'UNIQUE' => 'UNIQUE',
 	];
 
-	protected ?job_db $job_db = NULL;
 	protected $fieldconfigs;
 	protected $tablename;
-	protected $primarykeyname;
+	protected ?job_db $job_db = NULL;
 
 	public function __construct() {
-		if (!isset($this->f3)) {
-			parent::__construct();
-		}
-		if (isset($this->f3) && !isset($this->job_db)) {
-			try {
-				$this->job_db = new job_db($this->f3, enums\enum_database_type::f3mysql);
+		if (strstr(get_parent_class($this), 'abstract_orm')) {
+			if (!isset($this->f3)) {
+				parent::__construct();
 			}
-			catch (Exception $exception) {
-				throw new job_exception('Job db couldn\'t be instaniated.', $exception);
+			if (isset($this->f3) && !isset($this->job_db)) {
+				try {
+					$this->job_db = new job_db($this->f3, enums\enum_database_type::f3mysql);
+				}
+				catch (Exception $exception) {
+					throw new job_exception('Job db couldn\'t be instaniated.', $exception);
+					return false;
+				}
+			}
+			if ($this->validate_config()) {
+				$this->add_meta_fieldconfigs();
+			}
+			else {
+				throw new job_exception('Table configurations are invalid.');
 				return false;
 			}
 		}
-		if ($this->validate_config()) {
-			$this->add_meta_fieldconfigs();
-		}
 		else {
+			throw new job_exception('It is not an orm class.');
 			return false;
 		}
 		return true;
@@ -82,24 +88,20 @@ abstract class abstract_orm extends abstract_model {
 			return false;
 		}
 
-		if (!(isset($this->tablename) && !empty($this->tablename))) {
+		if (isset($this->tablename) && empty($this->tablename)) {
 			throw new job_exception('Table name is invalid.');
 			return false;
 		}
-
-		if (isset($this->primarykeyname) && empty($this->primarykeyname)) {
-			throw new job_exception('Primarykey name is invalid.');
-			return false;
+		else {
+			$this->tablename = substr(get_class($this), stripos(get_class($this), 'orm_') + 4);
 		}
 
 		return true;
 	}
 
 	private function add_meta_fieldconfigs() {
-		$this->tablename = '`' . $this->tablename . '`';
-
 		$fieldconfigs = [
-			isset($this->primarykeyname) && !empty($this->primarykeyname) ? $this->primarykeyname : 'meta_id' => [
+			'meta_id' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
 				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::UNSIGNED,
 				enums\enum_orm_fieldconfigparam::nullable => false,
@@ -153,6 +155,10 @@ abstract class abstract_orm extends abstract_model {
 		$this->fieldconfigs = array_merge($fieldconfigs, $this->fieldconfigs);
 	}
 
+	public function get_tablename(): string {
+		return $this->tablename;
+	}
+
 	public function create_table() {
 		try {
 			$liquor = $this->liquor_create_table();
@@ -171,7 +177,7 @@ abstract class abstract_orm extends abstract_model {
 		try {
 			$liquor = ['prefixes' => [], 'fields' => [], 'indexes' => [], 'suffixes' => []];
 
-			$liquor['prefixes'] = ['CREATE TABLE ' . $this->tablename, '('];
+			$liquor['prefixes'] = ['CREATE TABLE `' . $this->tablename . '`', '('];
 
 			foreach ($this->fieldconfigs as $fieldname => $fieldconfig) {
 				$name = isset($fieldname) && !empty($fieldname)

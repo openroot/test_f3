@@ -5,7 +5,7 @@ namespace models\orms;
 use \models\abstracts\abstract_orm as abstract_orm;
 use \models\enums as enums;
 
-class orm_p extends abstract_orm {
+class orm_prod extends abstract_orm {
 	protected $fieldconfigs = [
 		'name' => [
 			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TINYTEXT,
@@ -33,5 +33,4 @@ class orm_p extends abstract_orm {
 			enums\enum_orm_fieldconfigparam::comment => 'Product public identifier'
 		]
 	];
-	protected $tablename = 'p';
 }

@@ -130,13 +130,13 @@ class operation_instruct {
 
 			$html1 = '';
 
-			$orm_p = new \models\orms\orm_p();
-			$liquor = $orm_p->liquor_create_table();
+			$orm_prod = new \models\orms\orm_prod();
+			$liquor = $orm_prod->liquor_create_table();
 			if (isset($liquor)) {
-				$html1 .= $orm_p->get_html_table('Prefixes', $liquor['prefixes'], '`p`');
-				$html1 .= $orm_p->get_html_table(['Field-name', 'Type', 'Attributes', 'Is-NULL', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
-				$html1 .= $orm_p->get_html_table('Indexes', $liquor['indexes']);
-				$html1 .= $orm_p->get_html_table('Suffixes', $liquor['suffixes']);
+				$html1 .= $orm_prod->get_html_table('Prefixes', $liquor['prefixes'], $orm_prod->get_tablename());
+				$html1 .= $orm_prod->get_html_table(['Field-name', 'Type', 'Attributes', 'Is-NULL', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
+				$html1 .= $orm_prod->get_html_table('Indexes', $liquor['indexes']);
+				$html1 .= $orm_prod->get_html_table('Suffixes', $liquor['suffixes']);
 			}
 
 			$f3->instruct_tryinstall_default += ['html1' => $html1];
