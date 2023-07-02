@@ -155,10 +155,31 @@ abstract class abstract_orm extends abstract_model {
 
 	public function create_table() {
 		try {
+			$liquor = $this->liquor_create_table();
+
+			// Testing echoing table configuration filtrations. (Remove section, after testing.)
+			echo($this->get_html_table('Prefixes', $liquor['prefixes']));
+			echo($this->get_html_table(['Field-name', 'Type', 'Attributes', 'Is-NULL', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']));
+			echo($this->get_html_table('Indexes', $liquor['indexes']));
+			echo($this->get_html_table('Suffixes', $liquor['suffixes']));
+			// Testing echoing table configuration filtrations. (Remove section, after testing.)
+
+			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
+			// if (isset($result)) {
+			// 	print_r($result);
+			// }
+		}
+		catch (Exception $exception) {
+			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
+		}
+	}
+
+	public function liquor_create_table() {
+		try {
 			$liquor = ['prefixes' => [], 'fields' => [], 'indexes' => [], 'suffixes' => []];
 
 			$liquor['prefixes'] = ['CREATE TABLE ' . $this->tablename, '('];
-			
+
 			foreach ($this->fieldconfigs as $fieldname => $fieldconfig) {
 				$name = isset($fieldname) && !empty($fieldname)
 					? '`' . $fieldname . '`'
@@ -169,16 +190,17 @@ abstract class abstract_orm extends abstract_model {
 
 				if ($type) {
 					$attributes = '';
-					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::attributes])
-						&& isset($this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]])) {
+					if (
+						isset($fieldconfig[enums\enum_orm_fieldconfigparam::attributes])
+						&& isset($this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]])
+					) {
 						$attributes = $this->mysqlfield_attributes_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::attributes]];
 					}
 
 					$nullable = '';
 					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::nullable]) && $fieldconfig[enums\enum_orm_fieldconfigparam::nullable] === false) {
 						$nullable = 'NOT NULL';
-					}
-					else {
+					} else {
 						$nullable = 'NULL';
 					}
 
@@ -191,15 +213,14 @@ abstract class abstract_orm extends abstract_model {
 					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::default])) {
 						if (isset($this->mysqlfield_default_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::default]])) {
 							$default = 'DEFAULT ' . $this->mysqlfield_default_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::default]];
-						}
-						else {
+						} else {
 							$default = 'DEFAULT \'' . $fieldconfig[enums\enum_orm_fieldconfigparam::default] . '\'';
 						}
 					}
 
 					$index = isset($fieldconfig[enums\enum_orm_fieldconfigparam::index]) && isset($this->mysqlfield_index_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::index]])
-					? $this->mysqlfield_index_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::index]]
-					: false;
+						? $this->mysqlfield_index_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::index]]
+						: false;
 
 					$comment = '';
 					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::comment]) && !empty($fieldconfig[enums\enum_orm_fieldconfigparam::comment])) {
@@ -224,61 +245,15 @@ abstract class abstract_orm extends abstract_model {
 
 			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
 
-			// Testing echoing table configuration filtrations. (Comment section, after testing.)
-
-			$this->render_html_table(['Col1', 'Col2'], [['foo', 'bar'], ['lorem', 'ipsum']]);
-
-			echo '<table><tr><th>Prefixes</th></tr>';
-			foreach ($liquor['prefixes'] as $liquor_prefix) {
-				echo '<tr><td>' . $liquor_prefix . '</td></tr>';
-			}
-			echo '</table>';
-			echo '<table>';
-			echo '<caption>Table Name: ' . $this->tablename . '</caption>';
-			echo '<tr>
-			<th>Field-name</th>
-			<th>Type</th>
-			<th>Attributes</th>
-			<th>Is-NULL</th>
-			<th>Auto-increment</th>
-			<th>Default-value</th>
-			<th>Comment</th>
-			</tr>';
-			foreach ($liquor['fields'] as $liquor_field) {
-				echo '<tr>';
-				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::name] . '</td>';
-				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::type] . '</td>';
-				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::attributes] . '</td>';
-				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::nullable] . '</td>';
-				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::autoincrement] . '</td>';
-				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::default] . '</td>';
-				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::comment] . '</td>';
-				echo '</tr>';
-			}
-			echo '</table>';
-			echo '<table><tr><th>Indexes</th></tr>';
-			foreach ($liquor['indexes'] as $liquor_index) {
-				echo '<tr><td>' . $liquor_index . '</td></tr>';
-			}
-			echo '</table>';
-			echo '<table><tr><th>Suffixes</th></tr>';
-			foreach ($liquor['suffixes'] as $liquor_suffix) {
-				echo '<tr><td>' . $liquor_suffix . '</td></tr>';
-			}
-			echo '</table>';
-			// Testing echoing table configuration filtrations. (Comment section, after testing.)
-
-			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
-			// if (isset($result)) {
-			// 	print_r($result);
-			// }
+			return $liquor;
 		}
 		catch (Exception $exception) {
 			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
 		}
+		return NULL;
 	}
 
-	public function render_html_table($ths, $rows, ?string $caption = NULL) {
+	public function get_html_table($ths, $rows, ?string $caption = NULL) {
 		$rendered_html = '';
 
 		$heading_column_count = 0;
@@ -332,6 +307,6 @@ abstract class abstract_orm extends abstract_model {
 			$rendered_html .= 'Table column head count and minimum cell count in rows is differing.';
 		}
 
-		echo $rendered_html;
+		return $rendered_html;
 	}
 }
