@@ -131,6 +131,7 @@ class operation_instruct {
 			$html1 = '';
 
 			$orm_prod = new \models\orms\orm_prod();
+
 			$liquor = $orm_prod->liquor_create_table();
 			if (isset($liquor)) {
 				$html1 .= $orm_prod->get_html_table('Prefixes', $liquor['prefixes'], $orm_prod->get_tablename());
