@@ -27,12 +27,14 @@ abstract class abstract_orm extends abstract_model {
 			'VARCHAR2048' => 'VARCHAR(2048)',
 			'VARCHAR4096' => 'VARCHAR(4096)',
 			'VARCHAR10240' => 'VARCHAR(10240)',
+			'TINYTEXT' => 'TINYTEXT',
 			'TEXT' => 'TEXT',
 			'LONGTEXT' => 'LONGTEXT',
 			'DATE' => 'DATE',
 			'DATETIME' => 'DATETIME',
 			'TIMESTAMP' => 'TIMESTAMP',
-			'BLOB' => 'BLOB'
+			'BLOB' => 'BLOB',
+			'JSON' => 'JSON'
 	];
 	private $mysqlfield_attributes_signatures = [
 		'UNSIGNED' => 'UNSIGNED',
@@ -97,24 +99,54 @@ abstract class abstract_orm extends abstract_model {
 		$this->tablename = '`' . $this->tablename . '`';
 
 		$fieldconfigs = [
-			isset($this->primarykeyname) && !empty($this->primarykeyname) ? $this->primarykeyname : 'id' => [
+			isset($this->primarykeyname) && !empty($this->primarykeyname) ? $this->primarykeyname : 'meta_id' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
 				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::UNSIGNED,
 				enums\enum_orm_fieldconfigparam::nullable => false,
 				enums\enum_orm_fieldconfigparam::autoincrement => true,
 				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::PRIMARYKEY,
-				enums\enum_orm_fieldconfigparam::comment => 'Primary key'
+				enums\enum_orm_fieldconfigparam::comment => 'Table\'s primary key'
 			],
-			'created_at' => [
+			'meta_created_at' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TIMESTAMP,
 				enums\enum_orm_fieldconfigparam::nullable => false,
 				enums\enum_orm_fieldconfigparam::default => enums\enum_mysqlfield_default::CURRENT_TIMESTAMP,
-				enums\enum_orm_fieldconfigparam::comment => 'Creation time'
+				enums\enum_orm_fieldconfigparam::comment => 'Creation timestamp'
 			],
-			'updated_at' => [
+			'meta_updated_at' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TIMESTAMP,
 				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::ON_UPDATE_CURRENT_TIMESTAMP,
-				enums\enum_orm_fieldconfigparam::comment => 'Last updated time'
+				enums\enum_orm_fieldconfigparam::comment => 'Updation timestamp'
+			],
+			'meta_z_order' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::UNIQUE,
+				enums\enum_orm_fieldconfigparam::comment => 'Rational aspect'
+			],
+			'meta_authentication' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
+				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::UNSIGNED,
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
+				enums\enum_orm_fieldconfigparam::comment => 'Author of record'
+			],
+			'meta_dictionary' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR4096,
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
+				enums\enum_orm_fieldconfigparam::comment => 'External reference'
+			],
+			'meta_expired_statement' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR10240,
+				enums\enum_orm_fieldconfigparam::comment => 'Expired description'
+			],
+			'meta_domain_swift' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR1024,
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
+				enums\enum_orm_fieldconfigparam::comment => 'Interest and domain'
+			],
+			'meta_binary_statement' => [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR2048,
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
+				enums\enum_orm_fieldconfigparam::comment => 'Binary file path'
 			]
 		];
 

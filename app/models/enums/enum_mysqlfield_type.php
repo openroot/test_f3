@@ -22,10 +22,12 @@ class enum_mysqlfield_type extends abstract_enum {
 	public const VARCHAR2048 = 'VARCHAR2048';
 	public const VARCHAR4096 = 'VARCHAR4096';
 	public const VARCHAR10240 = 'VARCHAR10240';
+	public const TINYTEXT = 'TINYTEXT';
 	public const TEXT = 'TEXT';
 	public const LONGTEXT = 'LONGTEXT';
 	public const DATE = 'DATE';
 	public const DATETIME = 'DATETIME';
 	public const TIMESTAMP = 'TIMESTAMP';
 	public const BLOB = 'BLOB';
+	public const JSON = 'JSON';
 }
