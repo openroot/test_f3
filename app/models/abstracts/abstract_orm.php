@@ -155,7 +155,8 @@ abstract class abstract_orm extends abstract_model {
 
 	public function create_table() {
 		try {
-			$column_strings = [];
+			$liquor = ['prefixes' => [], 'fields' => [], 'indexes' => [], 'suffixes' => []];
+			
 			foreach ($this->fieldconfigs as $fieldname => $fieldconfig) {
 				$name = isset($fieldname) && !empty($fieldname)
 					? '`' . $fieldname . '`'
@@ -196,25 +197,30 @@ abstract class abstract_orm extends abstract_model {
 
 					$index = isset($fieldconfig[enums\enum_orm_fieldconfigparam::index]) && isset($this->mysqlfield_index_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::index]])
 					? $this->mysqlfield_index_signatures[$fieldconfig[enums\enum_orm_fieldconfigparam::index]]
-					: '';
+					: false;
 
 					$comment = '';
 					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::comment]) && !empty($fieldconfig[enums\enum_orm_fieldconfigparam::comment])) {
 						$comment = 'COMMENT \'' . $fieldconfig[enums\enum_orm_fieldconfigparam::comment] . '\'';
 					}
 
-					array_push($column_strings, [
+					array_push($liquor['fields'], [
 						enums\enum_orm_fieldconfigparam::name => $name,
 						enums\enum_orm_fieldconfigparam::type => $type,
 						enums\enum_orm_fieldconfigparam::attributes => $attributes,
 						enums\enum_orm_fieldconfigparam::nullable => $nullable,
 						enums\enum_orm_fieldconfigparam::autoincrement => $autoincrement,
 						enums\enum_orm_fieldconfigparam::default => $default,
-						enums\enum_orm_fieldconfigparam::index => $index,
 						enums\enum_orm_fieldconfigparam::comment => $comment
 					]);
+
+					if ($index !== false) {
+						array_push($liquor['indexes'], $index . ' (' . $name . ')');
+					}
 				}
 			}
+
+
 
 
 			// Testing echoing table configuration filtrations. (Comment section, after testing.)
@@ -227,24 +233,34 @@ abstract class abstract_orm extends abstract_model {
 			<th>Is-NULL</th>
 			<th>Auto-increment</th>
 			<th>Default-value</th>
-			<th>Index</th>
 			<th>Comment</th>
 			</tr>';
-			foreach ($column_strings as $column_string) {
+			foreach ($liquor['fields'] as $liquor_field) {
 				echo '<tr>';
-
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::name] . '</td>';
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::type] . '</td>';
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::attributes] . '</td>';
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::nullable] . '</td>';
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::autoincrement] . '</td>';
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::default] . '</td>';
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::index] . '</td>';
-				echo '<td>' . $column_string[enums\enum_orm_fieldconfigparam::comment] . '</td>';
-
+				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::name] . '</td>';
+				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::type] . '</td>';
+				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::attributes] . '</td>';
+				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::nullable] . '</td>';
+				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::autoincrement] . '</td>';
+				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::default] . '</td>';
+				echo '<td>' . $liquor_field[enums\enum_orm_fieldconfigparam::comment] . '</td>';
 				echo '</tr>';
 			}
 			echo '</table>';
+			echo '<table><tr>';
+			echo '
+			<th>Indexes</th>
+			</tr>';
+			foreach ($liquor['indexes'] as $liquor_index) {
+				echo '<tr>';
+				echo '<td>' . $liquor_index . '</td>';
+				echo '</tr>';
+			}
+			echo '</table>';
+			// Testing echoing table configuration filtrations. (Comment section, after testing.)
+
+
+
 
 			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
 			// if (isset($result)) {
