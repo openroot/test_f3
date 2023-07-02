@@ -225,14 +225,17 @@ abstract class abstract_orm extends abstract_model {
 			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
 
 			// Testing echoing table configuration filtrations. (Comment section, after testing.)
+
+			$this->render_html_table(['Col1', 'Col2'], [['foo', 'bar'], ['lorem', 'ipsum']]);
+
 			echo '<table><tr><th>Prefixes</th></tr>';
 			foreach ($liquor['prefixes'] as $liquor_prefix) {
 				echo '<tr><td>' . $liquor_prefix . '</td></tr>';
 			}
 			echo '</table>';
-			echo '<table><tr>';
+			echo '<table>';
 			echo '<caption>Table Name: ' . $this->tablename . '</caption>';
-			echo '
+			echo '<tr>
 			<th>Field-name</th>
 			<th>Type</th>
 			<th>Attributes</th>
@@ -273,5 +276,62 @@ abstract class abstract_orm extends abstract_model {
 		catch (Exception $exception) {
 			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
 		}
+	}
+
+	public function render_html_table($ths, $rows, ?string $caption = NULL) {
+		$rendered_html = '';
+
+		$heading_column_count = 0;
+		$data_column_count = 0;
+
+		if (is_array($ths)) {
+			$heading_column_count = count($ths);
+			foreach ($rows as $cells) {
+				$data_column_count = $data_column_count < count($cells) ? count($cells) : $data_column_count;
+			}
+		}
+		else {
+			$heading_column_count = 1;
+			$data_column_count = 1;
+		}
+
+		if (($heading_column_count > 0) && ($heading_column_count === $data_column_count)) {
+			$rendered_html .= '<div class="viewtable" style="width: ' . ($heading_column_count * 50) . 'px; height: 100%">';
+			$rendered_html .= '<table>';
+			
+			if (isset($caption)) {
+				$rendered_html .= '<caption>' . $caption . '</caption>';
+			}
+			
+			if ($data_column_count > 1) {
+				$rendered_html .= '<tr>';
+				foreach ($ths as $th) {
+					$rendered_html .= '<th>' . $th . '</th>';
+				}
+				$rendered_html .= '</tr>';
+
+				foreach ($rows as $cells) {
+					$rendered_html .= '<tr>';
+					foreach ($cells as $cell) {
+						$rendered_html .= '<td>' . $cell . '</td>';
+					}
+					$rendered_html .= '</tr>';
+				}
+			}
+			else {
+				$rendered_html .= '<tr><th>' . $ths . '</th></tr>';
+				foreach ($rows as $cell) {
+					$rendered_html .= '<tr><td>' . $cell . '</td></tr>';
+				}
+			}
+			
+			$rendered_html .= '</table>';
+			$rendered_html .= '</div>';
+		}
+		else {
+			$rendered_html .= 'Table column head count and minimum cell count in rows is differing.';
+		}
+
+		echo $rendered_html;
 	}
 }
