@@ -120,18 +120,18 @@ class operation_main {
 			if (isset($job_template) && $job_template->issuccess_init()) {
 				$handle_template = $job_template->retrieve_handle();
 				if (isset($handle_template)) {
-					$f3->main_template_default = array(
+					$f3->main_template_default = [
 						'str' => 'dev.openroot@gmail.com',
 						'num' => 0420,
 						'boo' => true,
-						'arr_inde' => array('tues', 'wed', 'thurs', 'fri'),
-						'arr_associa' => array(
+						'arr_inde' => ['tues', 'wed', 'thurs', 'fri'],
+						'arr_associa' => [
 							'animal' => 'snake',
 							'plant' => 'grass',
 							'flower' => 'sunflower',
 							'leaf' => 'banana'
-						)
-					);
+						]
+					];
 				}
 
 				$f3->segmentsrender = 'segment_operation_main_template_default.htm';
@@ -172,16 +172,16 @@ class operation_main {
 			if (isset($transaction_f3jig) && $transaction_f3jig->issuccess_init()) {
 				$handle_f3jig = $transaction_f3jig->retrieve_handle();
 				if (isset($handle_f3jig)) {
-					$f3->main_f3jig_default = array(
+					$f3->main_f3jig_default = [
 						'uuid' => $handle_f3jig->uuid(),
 						'dir' => $handle_f3jig->dir()
-					);
+					];
 				}
 
 				$transaction_f3jig->sample_writer();
 				$table_data = $transaction_f3jig->sample_reader();
 				if (isset($table_data)) {
-					$f3->main_f3jig_default += array('sample_table_data' => $table_data);
+					$f3->main_f3jig_default += ['sample_table_data' => $table_data];
 				}
 
 				$f3->segmentsrender = 'segment_operation_main_f3jig_default.htm';
@@ -199,15 +199,13 @@ class operation_main {
 			if (isset($transaction_f3mysql) && $transaction_f3mysql->issuccess_init()) {
 				$handle_f3mysql = $transaction_f3mysql->retrieve_handle();
 				if (isset($handle_f3mysql)) {
-					$f3->main_f3mysql_default = array(
-						'uuid' => $handle_f3mysql->uuid()
-					);
+					$f3->main_f3mysql_default = ['uuid' => $handle_f3mysql->uuid()];
 				}
 
 				$transaction_f3mysql->sample_writer();
 				$table_data = $transaction_f3mysql->sample_reader();
 				if (isset($table_data)) {
-					$f3->main_f3mysql_default += array('sample_table_data' => $table_data);
+					$f3->main_f3mysql_default += ['sample_table_data' => $table_data];
 				}
 
 				$f3->segmentsrender = 'segment_operation_main_f3mysql_default.htm';
@@ -226,7 +224,7 @@ class operation_main {
 
 				$handle_db = $job_db->retrieve_handle();
 				if (isset($handle_db)) {
-					$f3->main_db_default = array('dbtype' => enums\enum_database_type::f3mysql);
+					$f3->main_db_default = ['dbtype' => enums\enum_database_type::f3mysql];
 				}
 
 				// Create a specific orm table, with optional specific orm model breadcrumb.
@@ -237,7 +235,7 @@ class operation_main {
 
 				$result = $job_db->f3mysql_execute('SHOW TABLES');
 				if (isset($result)) {
-					$f3->main_db_default += array('tables' => $result);
+					$f3->main_db_default += ['tables' => $result];
 				}
 
 				$f3->segmentsrender = 'segment_operation_main_db_default.htm';
