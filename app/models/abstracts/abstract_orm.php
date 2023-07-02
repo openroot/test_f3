@@ -156,6 +156,8 @@ abstract class abstract_orm extends abstract_model {
 	public function create_table() {
 		try {
 			$liquor = ['prefixes' => [], 'fields' => [], 'indexes' => [], 'suffixes' => []];
+
+			$liquor['prefixes'] = ['CREATE TABLE ' . $this->tablename, '('];
 			
 			foreach ($this->fieldconfigs as $fieldname => $fieldconfig) {
 				$name = isset($fieldname) && !empty($fieldname)
@@ -220,10 +222,14 @@ abstract class abstract_orm extends abstract_model {
 				}
 			}
 
-
-
+			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
 
 			// Testing echoing table configuration filtrations. (Comment section, after testing.)
+			echo '<table><tr><th>Prefixes</th></tr>';
+			foreach ($liquor['prefixes'] as $liquor_prefix) {
+				echo '<tr><td>' . $liquor_prefix . '</td></tr>';
+			}
+			echo '</table>';
 			echo '<table><tr>';
 			echo '<caption>Table Name: ' . $this->tablename . '</caption>';
 			echo '
@@ -247,20 +253,17 @@ abstract class abstract_orm extends abstract_model {
 				echo '</tr>';
 			}
 			echo '</table>';
-			echo '<table><tr>';
-			echo '
-			<th>Indexes</th>
-			</tr>';
+			echo '<table><tr><th>Indexes</th></tr>';
 			foreach ($liquor['indexes'] as $liquor_index) {
-				echo '<tr>';
-				echo '<td>' . $liquor_index . '</td>';
-				echo '</tr>';
+				echo '<tr><td>' . $liquor_index . '</td></tr>';
+			}
+			echo '</table>';
+			echo '<table><tr><th>Suffixes</th></tr>';
+			foreach ($liquor['suffixes'] as $liquor_suffix) {
+				echo '<tr><td>' . $liquor_suffix . '</td></tr>';
 			}
 			echo '</table>';
 			// Testing echoing table configuration filtrations. (Comment section, after testing.)
-
-
-
 
 			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
 			// if (isset($result)) {
