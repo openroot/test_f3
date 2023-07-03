@@ -5,11 +5,12 @@ namespace jobs;
 use Exception;
 
 class job_exception extends Exception {
-	private ?string $handle_this = NULL;
+	private ?string $handle_this = null;
+	
 	private string $config_message = '';
-	private ?Exception $config_exception = NULL;
+	private ?Exception $config_exception = null;
 
-	public function __construct(string $message, Exception $exception = NULL) {
+	public function __construct(string $message, Exception $exception = null) {
 		$this->config_message = $message;
 		$this->config_exception = $exception;
 
@@ -20,13 +21,11 @@ class job_exception extends Exception {
 	}
 
 	private function validate_config(): bool {
-		if (isset($this->config_message) && !empty($this->config_message)) {
-			return true;
-		}
-		else {
+		if (!(isset($this->config_message) && !empty($this->config_message))) {
 			throw new Exception('Exception message is invalid.');
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	private function handshake(): bool {
@@ -43,12 +42,10 @@ class job_exception extends Exception {
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->handle_this)) {
-			return true;
-		}
-		else {
+		if (!isset($this->handle_this)) {
 			return false;
 		}
+		return true;
 	}
 
 	public function retrieve_handle(): ?string {
@@ -60,10 +57,10 @@ class job_exception extends Exception {
 				return $this->handle_this;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	public function destroy_handle() {
-		$this->handle_this = NULL;
+		$this->handle_this = null;
 	}
 }

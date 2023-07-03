@@ -6,7 +6,8 @@ use Exception as Exception;
 use \jobs\job_exception as job_exception;
 
 class job_template {
-	private ?string $handle_this = NULL;
+	private ?string $handle_this = null;
+
 	private string $config_config_1 = '';
 	private string $config_config_2 = '';
 
@@ -22,18 +23,16 @@ class job_template {
 
 	// (todo): This would be a class specification.
 	private function validate_config(): bool {
-		if (isset($this->config_config_1) && !empty($this->config_config_1)) {
-			if (isset($this->config_config_2) && !empty($this->config_config_2)) {
-				return true;
-			}
-			else {
-				throw new job_exception('Config 2 is invalid.');
-			}
-		}
-		else {
+		if (!(isset($this->config_config_1) && !empty($this->config_config_1))) {
 			throw new job_exception('Config 1 is invalid.');
+			return false;
 		}
-		return false;
+		if (!(isset($this->config_config_2) && !empty($this->config_config_2))) {
+			throw new job_exception('Config 2 is invalid.');
+			return false;
+		}
+
+		return true;
 	}
 
 	// (todo): This would be a class specification.
@@ -41,23 +40,20 @@ class job_template {
 		try {
 			// (todo): Put 'initialization' logics here.
 			$this->handle_this = 'To be replaced with real basic object';
-
-			return true;
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle(); // (todo): Keep this destroyer only when this method concerned is crucial to operational completion.
 			throw new job_exception('<[This-job] unable to initialized>.', $exception);
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->handle_this)) {
-			return true;
-		}
-		else {
+		if (!isset($this->handle_this)) {
 			return false;
 		}
+		return true;
 	}
 
 	public function retrieve_handle(): ?string {
@@ -69,10 +65,10 @@ class job_template {
 				return $this->handle_this;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	public function destroy_handle() {
-		$this->handle_this = NULL;
+		$this->handle_this = null;
 	}
 }

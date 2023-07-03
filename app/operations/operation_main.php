@@ -14,9 +14,10 @@ use \transactions\transaction_f3mysql as transaction_f3mysql;
 use \models\enums as enums;
 
 class operation_main {
-	private ?string $handle_this = NULL;
-	private ?Base $f3 = NULL;
-	private ?Template $f3template = NULL;
+	private ?string $handle_this = null;
+
+	private ?Base $f3 = null;
+	private ?Template $f3template = null;
 
 	public function __construct() {
 		if ($this->validate_config()) {
@@ -49,12 +50,10 @@ class operation_main {
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->handle_this)) {
-			return true;
-		}
-		else {
+		if (!isset($this->handle_this)) {
 			return false;
 		}
+		return true;
 	}
 
 	public function retrieve_handle(): ?string {
@@ -66,11 +65,11 @@ class operation_main {
 				return $this->handle_this;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	public function destroy_handle() {
-		$this->handle_this = NULL;
+		$this->handle_this = null;
 	}
 
 	private function initialize_f3singletones(): bool {
@@ -178,8 +177,8 @@ class operation_main {
 					];
 				}
 
-				$transaction_f3jig->sample_writer();
-				$table_data = $transaction_f3jig->sample_reader();
+				$transaction_f3jig->demo_insert();
+				$table_data = $transaction_f3jig->demo_select();
 				if (isset($table_data)) {
 					$f3->main_f3jig_default += ['sample_table_data' => $table_data];
 				}
@@ -202,8 +201,8 @@ class operation_main {
 					$f3->main_f3mysql_default = ['uuid' => $handle_f3mysql->uuid()];
 				}
 
-				$transaction_f3mysql->sample_writer();
-				$table_data = $transaction_f3mysql->sample_reader();
+				$transaction_f3mysql->demo_insert();
+				$table_data = $transaction_f3mysql->demo_select();
 				if (isset($table_data)) {
 					$f3->main_f3mysql_default += ['sample_table_data' => $table_data];
 				}

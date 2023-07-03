@@ -51,7 +51,7 @@ abstract class abstract_orm extends abstract_model {
 
 	protected $fieldconfigs;
 	protected $tablename;
-	protected ?job_db $job_db = NULL;
+	protected ?job_db $job_db = null;
 
 	public function __construct() {
 		if (strstr(get_parent_class($this), 'abstract_orm')) {
@@ -198,9 +198,9 @@ abstract class abstract_orm extends abstract_model {
 
 					$nullable = '';
 					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::nullable]) && $fieldconfig[enums\enum_orm_fieldconfigparam::nullable] === false) {
-						$nullable = 'NOT NULL';
+						$nullable = 'NOT null';
 					} else {
-						$nullable = 'NULL';
+						$nullable = 'null';
 					}
 
 					$autoincrement = '';
@@ -249,10 +249,10 @@ abstract class abstract_orm extends abstract_model {
 		catch (Exception $exception) {
 			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
 		}
-		return NULL;
+		return null;
 	}
 
-	public function get_html_table($ths, $rows, ?string $caption = NULL) {
+	public function get_html_table($ths, $rows, ?string $caption = null) {
 		$rendered_html = '';
 
 		$heading_column_count = 0;

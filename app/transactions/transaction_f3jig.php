@@ -8,59 +8,58 @@ use \DB\Jig as Jig;
 use \jobs\job_exception as job_exception;
 
 class transaction_f3jig {
-	private ?Jig $handle_this = NULL;
-	private Base $config_f3;
-	private string $config_f3jig_database_name = '';
-	
-	public function __construct(Base $f3, ?string $f3jig_database_name = NULL) {
-		if (isset($f3)) {
-			$default_database_name = $f3->get('transactions.f3jig.databasename');
-			$this->config_f3 = $f3;
-			$this->config_f3jig_database_name = (isset($f3jig_database_name) && !empty($f3jig_database_name)) ? $f3jig_database_name : $default_database_name;
-			$this->config_f3jig_database_name .= '/';
+	private ?Jig $handle_this = null;
 
-			if ($this->validate_config()) {
-				return $this->handshake();
-			}
+	private Base $config_f3;
+	private ?string $config_databasename = '';
+
+	public function __construct(Base $f3, ?string $databasename = null) {
+		$this->config_f3 = $f3;
+		$this->config_databasename = $databasename;
+
+		if ($this->validate_config()) {
+			return $this->handshake();
 		}
 		return false;
 	}
 
 	private function validate_config(): bool {
-		if (isset($this->config_f3)) {
-			if (isset($this->config_f3jig_database_name) && !empty($this->config_f3jig_database_name)) {
-				return true;
-			}
-			else {
-				throw new job_exception('F3-Jig database name is invalid.');
-			}
-		}
-		else {
+		if (!isset($this->config_f3)) {
 			throw new job_exception('F3 instance is null.');
+			return false;
 		}
-		return false;
+
+		$this->config_databasename = (isset($this->config_databasename) && !empty($this->config_databasename))
+			? $this->config_databasename
+			: $this->config_f3->get('transactions.f3jig.databasename');
+		$this->config_databasename .= '/';
+
+		if (!(isset($this->config_databasename) && !empty($this->config_databasename))) {
+			throw new job_exception('F3jig database name is invalid.');
+			return false;
+		}
+
+		return true;
 	}
 
 	private function handshake(): bool {
 		try {
-			$this->handle_this = new Jig($this->config_f3->get('transactions.blobs.f3jigpath') . $this->config_f3jig_database_name, Jig::FORMAT_JSON);
-
-			return true;
+			$this->handle_this = new Jig($this->config_f3->get('transactions.blobs.f3jigpath') . $this->config_databasename,
+				Jig::FORMAT_JSON);
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle();
 			throw new job_exception('F3-Jig plug-in unable to initialized.', $exception);
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->handle_this)) {
-			return true;
-		}
-		else {
+		if (!isset($this->handle_this)) {
 			return false;
 		}
+		return true;
 	}
 
 	public function retrieve_handle(): ?Jig {
@@ -72,65 +71,64 @@ class transaction_f3jig {
 				return $this->handle_this;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	public function destroy_handle() {
-		$this->handle_this = NULL;
+		$this->handle_this = null;
 	}
 
-	public function retrieve_table_mapper(string $table_name): Jig\Mapper {
+	public function f3mappedtable(string $tablename): Jig\Mapper {
 		if ($this->issuccess_init()) {
-			if (!empty($table_name)) {
+			if (!empty($tablename)) {
 				try {
-					$mapper = new Jig\Mapper($this->handle_this, $table_name);
+					$mapper = new Jig\Mapper($this->handle_this, $tablename);
 					return $mapper;
 				}
 				catch (Exception $exception) {
-					throw new job_exception('Unable to retrieve table mapper.', $exception);
+					throw new job_exception('Unable to create f3mapped table.', $exception);
 				}
 			}
 		}
-		return NULL;
+		return null;
 	}
 
-	public function sample_writer(?string $table_name = NULL): bool {
+	public function demo_insert(?string $tablename = null): bool {
 		if ($this->issuccess_init()) {
-			$table_name = (isset($table_name) && !empty($table_name)) ? $table_name : 'sample_table';
+			$tablename = (isset($tablename) && !empty($tablename)) ? $tablename : 'sample_table';
 			try {
-				if (isset($table_name) && !empty($table_name)) {
-					$mapper = $this->retrieve_table_mapper($table_name);
-					
-					$mapper->username = 'userA';
-					$mapper->password = '57d82jg05';
-					$mapper->save();
-					$mapper->reset();
-					$mapper->username = 'userB';
-					$mapper->password = 'kbjd94973';
-					$mapper->save();
+				if (isset($tablename) && !empty($tablename)) {
+					$sample_table = $this->f3mappedtable($tablename);
 
-					return true;
+					$sample_table->username = 'userA';
+					$sample_table->password = '57d82jg05';
+					$sample_table->save();
+					$sample_table->reset();
+					$sample_table->username = 'userB';
+					$sample_table->password = 'kbjd94973';
+					$sample_table->save();
 				}
 			}
 			catch (Exception $exception) {
-				throw new job_exception('Unable to write data.', $exception);
+				throw new job_exception('Unable to insert data.', $exception);
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
-	public function sample_reader(?string $table_name = NULL): ?array {
+	public function demo_select(?string $tablename = null): ?array {
 		if ($this->issuccess_init()) {
-			$table_name = (isset($table_name) && !empty($table_name)) ? $table_name : 'sample_table';
+			$tablename = (isset($tablename) && !empty($tablename)) ? $tablename : 'sample_table';
 			try {
-				if (isset($table_name) && !empty($table_name)) {
-					return $this->handle_this->read($table_name);
+				if (isset($tablename) && !empty($tablename)) {
+					return $this->handle_this->read($tablename);
 				}
 			}
 			catch (Exception $exception) {
-				throw new job_exception('Unable to read data.', $exception);
+				throw new job_exception('Unable to select data.', $exception);
 			}
 		}
-		return NULL;
+		return null;
 	}
 }

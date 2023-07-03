@@ -14,9 +14,10 @@ use \transactions\transaction_f3mysql as transaction_f3mysql;
 use \models\enums as enums;
 
 class operation_instruct {
-	private ?string $handle_this = NULL;
-	private ?Base $f3 = NULL;
-	private ?Template $f3template = NULL;
+	private ?string $handle_this = null;
+	
+	private ?Base $f3 = null;
+	private ?Template $f3template = null;
 
 	public function __construct() {
 		if ($this->validate_config()) {
@@ -49,12 +50,10 @@ class operation_instruct {
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->handle_this)) {
-			return true;
-		}
-		else {
+		if (!isset($this->handle_this)) {
 			return false;
 		}
+		return true;
 	}
 
 	public function retrieve_handle(): ?string {
@@ -66,11 +65,11 @@ class operation_instruct {
 				return $this->handle_this;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	public function destroy_handle() {
-		$this->handle_this = NULL;
+		$this->handle_this = null;
 	}
 
 	private function initialize_f3singletones(): bool {
@@ -135,7 +134,7 @@ class operation_instruct {
 			$liquor = $orm_prod->liquor_create_table();
 			if (isset($liquor)) {
 				$html1 .= $orm_prod->get_html_table('Prefixes', $liquor['prefixes'], $orm_prod->get_tablename());
-				$html1 .= $orm_prod->get_html_table(['Field-name', 'Type', 'Attributes', 'Is-NULL', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
+				$html1 .= $orm_prod->get_html_table(['Field-name', 'Type', 'Attributes', 'Is-null', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
 				$html1 .= $orm_prod->get_html_table('Indexes', $liquor['indexes']);
 				$html1 .= $orm_prod->get_html_table('Suffixes', $liquor['suffixes']);
 			}

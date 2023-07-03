@@ -9,7 +9,8 @@ use \Template as Template;
 require(__DIR__ . '/../vendor/autoload.php');
 
 class app_test_f3 {
-	private ?Base $handle_this = NULL;
+	private ?Base $handle_this = null;
+
 	private string $config_app_name = '';
 
 	public function __construct(string $app_name) {
@@ -22,13 +23,11 @@ class app_test_f3 {
 	}
 
 	private function validate_config(): bool {
-		if (isset($this->config_app_name) && !empty($this->config_app_name)) {
-			return true;
-		}
-		else {
+		if (!(isset($this->config_app_name) && !empty($this->config_app_name))) {
 			echo 'Package Exception: App name is invalid. EOL';
 		}
-		return false;
+
+		return true;
 	}
 
 	private function handshake(): bool {
@@ -74,11 +73,11 @@ class app_test_f3 {
 				return $this->handle_this;
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	public function destroy_handle() {
-		$this->handle_this = NULL;
+		$this->handle_this = null;
 	}
 
 	private function set_globalvalues(): bool {

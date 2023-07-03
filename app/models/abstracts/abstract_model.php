@@ -12,11 +12,11 @@ abstract class abstract_model {
 	public function __construct() {
 		try {
 			$this->f3 = Base::instance();
-			return true;
 		}
 		catch (Exception $exception) {
 			throw new job_exception('F3 Base instance couldn\'t be initialized.', $exception);
+			return false;
 		}
-		return false;
+		return true;
 	}
 }

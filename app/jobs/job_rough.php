@@ -15,12 +15,10 @@ class job_rough {
 	}
 
 	public function issuccess_init(): bool {
-		if (isset($this->config_f3)) {
-			return true;
-		}
-		else {
+		if (!isset($this->config_f3)) {
 			return false;
 		}
+		return true;
 	}
 
 	public function prepare_mysql(job_db $job_db): bool {
@@ -49,10 +47,9 @@ class job_rough {
 				}
 
 				return true;
-
 			}
-		 }
-		 return false;
+		}
+		return false;
 	}
 
 	public function prepare_mysql_add_tables(job_db $job_db, array $modelorm_names, string $directory): bool {
