@@ -14,6 +14,65 @@ class job_rough {
 		return debug_backtrace()[$level]['function'];
 	}
 
+	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $inlinestyle = null): string {
+		$rendered_html = '';
+
+		$heading_column_count = 0;
+		$data_column_count = 0;
+
+		if (is_array($ths)) {
+			$heading_column_count = count($ths);
+			foreach ($rows as $cells) {
+				$data_column_count = $data_column_count < count($cells) ? count($cells) : $data_column_count;
+			}
+		}
+		else {
+			$heading_column_count = 1;
+			$data_column_count = 1;
+		}
+
+		if (($heading_column_count > 0) && ($heading_column_count === $data_column_count)) {
+			$inlinestyle = isset($inlinestyle) ? $inlinestyle : 'height: 100%';
+
+			$rendered_html .= '<div class="viewtable" style="' . $inlinestyle . '">';
+			$rendered_html .= '<table>';
+
+			if (isset($caption)) {
+				$rendered_html .= '<caption>' . $caption . '</caption>';
+			}
+
+			if ($data_column_count > 1) {
+				$rendered_html .= '<tr>';
+				foreach ($ths as $th) {
+					$rendered_html .= '<th>' . $th . '</th>';
+				}
+				$rendered_html .= '</tr>';
+
+				foreach ($rows as $cells) {
+					$rendered_html .= '<tr>';
+					foreach ($cells as $cell) {
+						$rendered_html .= '<td>' . $cell . '</td>';
+					}
+					$rendered_html .= '</tr>';
+				}
+			}
+			else {
+				$rendered_html .= '<tr><th>' . $ths . '</th></tr>';
+				foreach ($rows as $cell) {
+					$rendered_html .= '<tr><td>' . $cell . '</td></tr>';
+				}
+			}
+
+			$rendered_html .= '</table>';
+			$rendered_html .= '</div>';
+		}
+		else {
+			$rendered_html .= 'Table column head count and minimum cell count in rows is differing.';
+		}
+
+		return $rendered_html;
+	}
+
 	public function prepare_mysql(job_db $job_db): bool {
 		if (isset($job_db)) {
 
