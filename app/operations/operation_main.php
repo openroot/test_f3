@@ -2,11 +2,8 @@
 
 namespace operations;
 
-use Exception as Exception;
 use \Base as Base;
 use \models\abstracts\abstract_operation as abstract_operation;
-use \jobs\job_rough as job_rough;
-use \jobs\job_exception as job_exception;
 use \jobs\job_template as job_template;
 use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
