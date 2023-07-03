@@ -1,6 +1,5 @@
 <?php
 
-
 namespace models\abstracts;
 
 use Exception as Exception;
