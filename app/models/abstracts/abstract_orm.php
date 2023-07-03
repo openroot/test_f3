@@ -198,9 +198,9 @@ abstract class abstract_orm extends abstract_model {
 
 					$nullable = '';
 					if (isset($fieldconfig[enums\enum_orm_fieldconfigparam::nullable]) && $fieldconfig[enums\enum_orm_fieldconfigparam::nullable] === false) {
-						$nullable = 'NOT null';
+						$nullable = 'NOT NULL';
 					} else {
-						$nullable = 'null';
+						$nullable = 'NULL';
 					}
 
 					$autoincrement = '';
