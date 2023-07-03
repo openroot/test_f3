@@ -6,6 +6,7 @@ use Exception as Exception;
 use \Template as Template;
 use \jobs\job_exception as job_exception;
 
+use \jobs\job_rough as job_rough;
 use \jobs\job_db as job_db;
 use \models\enums as enums;
 
@@ -16,6 +17,8 @@ abstract class abstract_operation extends abstract_model {
 	protected job_db $job_db;
 
 	public function __construct() {
+		parent::__construct();
+
 		if ($this->validate_config()) {
 			return $this->handshake();
 		}
@@ -54,14 +57,14 @@ abstract class abstract_operation extends abstract_model {
 		return true;
 	}
 
-	public function issuccess_init(): bool {
+	protected function issuccess_init(): bool {
 		if (!isset($this->handle_this)) {
 			return false;
 		}
 		return true;
 	}
 
-	public function retrieve_handle(): ?string {
+	protected function retrieve_handle(): ?string {
 		if (isset($this->handle_this)) {
 			return $this->handle_this;
 		}
@@ -73,7 +76,20 @@ abstract class abstract_operation extends abstract_model {
 		return null;
 	}
 
-	public function destroy_handle() {
+	protected function destroy_handle() {
 		$this->handle_this = null;
+	}
+
+	protected function render() {
+		$segmentoughtfile = 'segment_operation_' . job_rough::get_invokerfunctionname() . '.htm';
+
+		if (file_exists(($this->f3->get('segments.path') . $segmentoughtfile))) {
+			$this->f3->segmentsrender = $segmentoughtfile;
+		}
+		else {
+			$this->f3->segmentsrender = 'segment_operation_pagenotavailable.htm';
+		}
+
+		echo $this->f3template->render($this->f3->segmentsdefaultrender);
 	}
 }
