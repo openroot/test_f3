@@ -106,6 +106,8 @@ class operation_main extends abstract_operation {
 	}
 
 	public function main_db_default(Base $f3): bool {
+		$f3->main_db_default = [];
+
 		$job_db = new job_db($f3, enums\enum_database_type::f3mysql);
 
 		$handle_db = $job_db->retrieve_handle();
