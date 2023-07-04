@@ -35,6 +35,13 @@ class operation_instruct extends abstract_operation {
 			$liquor = $ormobject->liquor_create_table();
 			array_push($rows, '<h2>' . ($index + 1) . '. ' . $ormobject->get_tablename() . '</h2>');
 			array_push($rows, $this->span($liquor));
+
+			if ($ormobject->create_table()) {
+				array_push($rows, '<div class="positivetext">Table \''. $ormobject->get_tablename() . '\' created.</div>');
+			}
+			else {
+				array_push($rows, '<div class="negativetext">Table \'' . $ormobject->get_tablename() . '\' created.</div>');
+			}
 		}
 		$html1 .= job_rough::get_htmlstring_table('List of tables', $rows);
 

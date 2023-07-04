@@ -183,18 +183,20 @@ abstract class abstract_orm extends abstract_model {
 		return $this->tablename;
 	}
 
-	public function create_table() {
+	public function create_table(): bool {
 		try {
 			$liquor = $this->liquor_create_table();
 
-			$result = $this->job_db->f3mysql_execute('SHOW TABLES');
-			if (isset($result)) {
-				print_r($result);
-			}
+			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
+			// if (isset($result)) {
+			// 	print_r($result);
+			// }
 		}
 		catch (Exception $exception) {
 			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
 		}
+
+		return true;
 	}
 
 	public function liquor_create_table(): ?array {

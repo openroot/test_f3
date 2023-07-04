@@ -20,6 +20,16 @@ div#footer {
 	border: 1px solid white;
 }
 
+div.positivetext {
+	color: white;
+	background-color: #3DED97;
+}
+
+div.negativetext {
+	color: white;
+	background-color: #FF5C5C;
+}
+
 a:link,
 a:visited {
 	background-color: #fffae5;
