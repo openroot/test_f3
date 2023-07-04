@@ -89,13 +89,10 @@ abstract class abstract_orm extends abstract_model {
 			return false;
 		}
 
-		$classname = get_class($this);
-		if (!stripos($classname, 'orm_')) {
+		$this->tablename = $this->extract_tablename_from_classname(get_class($this));
+		if (!isset($this->tablename)) {
 			throw new job_exception('Table name is invalid, must have been preceded with \'orm_\'.');
 			return false;
-		}
-		else {
-			$this->tablename = substr($classname, stripos($classname, 'orm_') + 4);
 		}
 
 		return true;
@@ -244,12 +241,35 @@ abstract class abstract_orm extends abstract_model {
 				}
 			}
 
+			// INDEX `BRAND_ID`(`brand_id` ASC) ,
+			// CONSTRAINT `brand_id` FOREIGN KEY(`brand_id`) REFERENCES `e_store`.`brands`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE ,
+			// CONSTRAINT `category_id` FOREIGN KEY(`category_id`) REFERENCES `e_store`.`categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
+			// );
+			if (isset($this->fkconfigs) && is_array($this->fkconfigs) && (count($this->fkconfigs) > 0)) {
+				foreach ($this->fkconfigs as $fkconfig) {
+					$parenttablename = $this->extract_tablename_from_classname($fkconfig);
+					if (isset($parenttablename)) {
+						//echo $parenttablename . '<br>';
+					}
+					else {
+						throw new job_exception('Parent table name for foreign key is invalid, must have been preceded with \'orm_\'.');
+					}
+				}
+			}
+
 			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
 
 			return $liquor;
 		}
 		catch (Exception $exception) {
 			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
+		}
+		return null;
+	}
+
+	private function extract_tablename_from_classname(string $classname): ?string {
+		if (stripos($classname, 'orm_')) {
+			return substr($classname, stripos($classname, 'orm_') + 4);
 		}
 		return null;
 	}

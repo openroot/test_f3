@@ -28,6 +28,7 @@ class operation_instruct extends abstract_operation {
 
 		$ormobjects = [];
 		array_push($ormobjects, new orms\orm_prod());
+		array_push($ormobjects, new orms\orm_cust());
 		array_push($ormobjects, new orms\orm_orde());
 
 		foreach ($ormobjects as $index => $ormobject) {
