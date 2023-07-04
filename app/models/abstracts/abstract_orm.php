@@ -266,12 +266,10 @@ abstract class abstract_orm extends abstract_model {
 				}
 			}
 
-			// INDEX `BRAND_ID`(`brand_id` ASC) ,
-			// CONSTRAINT `brand_id` FOREIGN KEY(`brand_id`) REFERENCES `e_store`.`brands`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE ,
-			// CONSTRAINT `category_id` FOREIGN KEY(`category_id`) REFERENCES `e_store`.`categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-			// );
 			foreach ($this->fktablenames as $fkfieldname => $fktablename) {
-				array_push($liquor['fks'], $fkfieldname);
+				$constraintname = 'fk_' . $this->tablename . '_' . $fktablename . '_meta_id';
+				$e = 'CONSTRAINT `' . $constraintname . '` FOREIGN KEY(`' . $fkfieldname . '`) REFERENCES `' . $fktablename . '`(`meta_id`) ON DELETE CASCADE ON UPDATE RESTRICT';
+				array_push($liquor['fks'], $e);
 			}
 
 			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
