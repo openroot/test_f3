@@ -192,12 +192,28 @@ class app_test_f3 {
 					'operations\operation_instruct->instruct_default'
 				);
 
-				// URI example: http://localhost:4000/instruct/tryinstall
+				// URI example: http://localhost:4000/instruct/orm
 				$this->handle_this->route(
 					'GET ' .
-					'@instruct_tryinstall_default: ' .
-					'/instruct/tryinstall',
-					'operations\operation_instruct->instruct_tryinstall_default'
+					'@instruct_orm_default: ' .
+					'/instruct/orm',
+					'operations\operation_instruct->instruct_orm_default'
+				);
+
+				// URI example: http://localhost:4000/instruct/orm/explore
+				$this->handle_this->route(
+					'GET ' .
+					'@instruct_orm_explore_default: ' .
+					'/instruct/orm/explore',
+					'operations\operation_instruct->instruct_orm_explore_default'
+				);
+
+				// URI example: http://localhost:4000/instruct/orm/execute
+				$this->handle_this->route(
+					'GET ' .
+					'@instruct_orm_execute_default: ' .
+					'/instruct/orm/execute',
+					'operations\operation_instruct->instruct_orm_execute_default'
 				);
 
 				return true;

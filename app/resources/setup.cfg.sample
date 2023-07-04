@@ -5,7 +5,7 @@ appname="Test F3"
 
 f3app.autoload="../app/"
 f3app.debuglevel=3
-f3app.gui="../gui/"
+f3app.gui="/../gui/"
 
 segments.path="../app/segments/"
 segments.defaultrender="../app/segments/segment_app_default.htm"

@@ -19,8 +19,22 @@ class operation_instruct extends abstract_operation {
 		return true;
 	}
 
-	public function instruct_tryinstall_default(Base $f3): bool {
-		$f3->instruct_tryinstall_default = [];
+	public function instruct_orm_default(Base $f3): bool {
+		$f3->instruct_orm_default = [];
+
+		$this->render();
+		return true;
+	}
+
+	public function instruct_orm_explore_default(Base $f3): bool {
+		$f3->instruct_orm_explore_default = [];
+
+		$this->render();
+		return true;
+	}
+
+	public function instruct_orm_execute_default(Base $f3): bool {
+		$f3->instruct_orm_execute_default = [];
 
 		$html1 = '';
 
@@ -45,7 +59,7 @@ class operation_instruct extends abstract_operation {
 		}
 		$html1 .= job_rough::get_htmlstring_table('List of tables', $rows);
 
-		$f3->instruct_tryinstall_default += ['html1' => $html1];
+		$f3->instruct_orm_execute_default += ['html1' => $html1];
 
 		$this->render();
 		return true;
