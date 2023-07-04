@@ -50,6 +50,7 @@ class operation_instruct extends abstract_operation {
 			$html .= job_rough::get_htmlstring_table('Prefixes', $liquor['prefixes']);
 			$html .= job_rough::get_htmlstring_table(['Field-name', 'Type', 'Attributes', 'Is-null', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
 			$html .= job_rough::get_htmlstring_table('Indexes', $liquor['indexes']);
+			$html .= job_rough::get_htmlstring_table('Foreign keys', $liquor['fks']);
 			$html .= job_rough::get_htmlstring_table('Suffixes', $liquor['suffixes']);
 		}
 		return $html;

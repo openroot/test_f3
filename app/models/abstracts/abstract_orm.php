@@ -104,7 +104,7 @@ abstract class abstract_orm extends abstract_model {
 					throw new job_exception('Parent table name for foreign key is invalid, must have been preceded with \'orm_\'.');
 				}
 				else {
-					array_push($this->fktablenames, $parenttablename);
+					$this->fktablenames += ['fk_' . $parenttablename . '_meta_id' => $parenttablename];
 				}
 			}
 		}
@@ -167,8 +167,7 @@ abstract class abstract_orm extends abstract_model {
 
 		$this->fieldconfigs = array_merge($fieldconfigs, $this->fieldconfigs);
 
-		foreach ($this->fktablenames as $fktablename) {
-			$fkfieldname = 'fk_' . $fktablename . '_meta_id';
+		foreach ($this->fktablenames as $fkfieldname => $fktablename) {
 			$fkfieldconfig = [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
 				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::UNSIGNED,
@@ -200,7 +199,7 @@ abstract class abstract_orm extends abstract_model {
 
 	public function liquor_create_table(): ?array {
 		try {
-			$liquor = ['prefixes' => [], 'fields' => [], 'indexes' => [], 'suffixes' => []];
+			$liquor = ['prefixes' => [], 'fields' => [], 'indexes' => [], 'fks' => [], 'suffixes' => []];
 
 			$liquor['prefixes'] = ['CREATE TABLE `' . $this->tablename . '`', '('];
 
@@ -271,8 +270,8 @@ abstract class abstract_orm extends abstract_model {
 			// CONSTRAINT `brand_id` FOREIGN KEY(`brand_id`) REFERENCES `e_store`.`brands`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE ,
 			// CONSTRAINT `category_id` FOREIGN KEY(`category_id`) REFERENCES `e_store`.`categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 			// );
-			foreach ($this->fktablenames as $fktablename) {
-				
+			foreach ($this->fktablenames as $fkfieldname => $fktablename) {
+				array_push($liquor['fks'], $fkfieldname);
 			}
 
 			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
