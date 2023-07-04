@@ -51,8 +51,10 @@ abstract class abstract_orm extends abstract_model {
 
 	protected $fieldconfigs;
 	protected $fkconfigs;
+
 	protected ?job_db $job_db = null;
 	private $tablename;
+	private array $fktablenames = [];
 
 	public function __construct() {
 		if (strstr(get_parent_class($this), 'abstract_orm')) {
@@ -93,6 +95,18 @@ abstract class abstract_orm extends abstract_model {
 		if (!isset($this->tablename)) {
 			throw new job_exception('Table name is invalid, must have been preceded with \'orm_\'.');
 			return false;
+		}
+
+		if (isset($this->fkconfigs) && is_array($this->fkconfigs) && (count($this->fkconfigs) > 0)) {
+			foreach ($this->fkconfigs as $fkconfig) {
+				$parenttablename = $this->extract_tablename_from_classname($fkconfig);
+				if (!isset($parenttablename)) {
+					throw new job_exception('Parent table name for foreign key is invalid, must have been preceded with \'orm_\'.');
+				}
+				else {
+					array_push($this->fktablenames, $parenttablename);
+				}
+			}
 		}
 
 		return true;
@@ -152,6 +166,18 @@ abstract class abstract_orm extends abstract_model {
 		];
 
 		$this->fieldconfigs = array_merge($fieldconfigs, $this->fieldconfigs);
+
+		foreach ($this->fktablenames as $fktablename) {
+			$fkfieldname = 'fk_' . $fktablename . '_meta_id';
+			$fkfieldconfig = [
+				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::BIGINT,
+				enums\enum_orm_fieldconfigparam::attributes => enums\enum_mysqlfield_attributes::UNSIGNED,
+				enums\enum_orm_fieldconfigparam::nullable => false,
+				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
+				enums\enum_orm_fieldconfigparam::comment => 'Foreign key to `' . $fktablename . '`'
+			];
+			$this->fieldconfigs = array_merge($this->fieldconfigs, [$fkfieldname => $fkfieldconfig]);
+		}
 	}
 
 	public function get_tablename(): string {
@@ -245,16 +271,8 @@ abstract class abstract_orm extends abstract_model {
 			// CONSTRAINT `brand_id` FOREIGN KEY(`brand_id`) REFERENCES `e_store`.`brands`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE ,
 			// CONSTRAINT `category_id` FOREIGN KEY(`category_id`) REFERENCES `e_store`.`categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 			// );
-			if (isset($this->fkconfigs) && is_array($this->fkconfigs) && (count($this->fkconfigs) > 0)) {
-				foreach ($this->fkconfigs as $fkconfig) {
-					$parenttablename = $this->extract_tablename_from_classname($fkconfig);
-					if (isset($parenttablename)) {
-						//echo $parenttablename . '<br>';
-					}
-					else {
-						throw new job_exception('Parent table name for foreign key is invalid, must have been preceded with \'orm_\'.');
-					}
-				}
+			foreach ($this->fktablenames as $fktablename) {
+				
 			}
 
 			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
