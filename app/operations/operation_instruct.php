@@ -24,19 +24,33 @@ class operation_instruct extends abstract_operation {
 
 		$html1 = '';
 
-		$orm_prod = new orms\orm_prod();
+		$rows = [];
 
-		$liquor = $orm_prod->liquor_create_table();
-		if (isset($liquor)) {
-			$html1 .= job_rough::get_htmlstring_table('Prefixes', $liquor['prefixes'], $orm_prod->get_tablename());
-			$html1 .= job_rough::get_htmlstring_table(['Field-name', 'Type', 'Attributes', 'Is-null', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
-			$html1 .= job_rough::get_htmlstring_table('Indexes', $liquor['indexes']);
-			$html1 .= job_rough::get_htmlstring_table('Suffixes', $liquor['suffixes']);
+		$ormobjects = [];
+		array_push($ormobjects, new orms\orm_prod());
+		array_push($ormobjects, new orms\orm_orde());
+
+		foreach ($ormobjects as $index => $ormobject) {
+			$liquor = $ormobject->liquor_create_table();
+			array_push($rows, '<h2>' . ($index + 1) . '. ' . $ormobject->get_tablename() . '</h2>');
+			array_push($rows, $this->span($liquor));
 		}
+		$html1 .= job_rough::get_htmlstring_table('List of tables', $rows);
 
 		$f3->instruct_tryinstall_default += ['html1' => $html1];
 
 		$this->render();
 		return true;
+	}
+
+	private function span(array $liquor): string {
+		$html = '';
+		if (isset($liquor)) {
+			$html .= job_rough::get_htmlstring_table('Prefixes', $liquor['prefixes']);
+			$html .= job_rough::get_htmlstring_table(['Field-name', 'Type', 'Attributes', 'Is-null', 'Auto-increment', 'Default-value', 'Comment'], $liquor['fields']);
+			$html .= job_rough::get_htmlstring_table('Indexes', $liquor['indexes']);
+			$html .= job_rough::get_htmlstring_table('Suffixes', $liquor['suffixes']);
+		}
+		return $html;
 	}
 }
