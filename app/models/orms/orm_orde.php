@@ -15,4 +15,5 @@ class orm_orde extends abstract_orm {
 			enums\enum_orm_fieldconfigparam::comment => 'Ordered quantity'
 		]
 	];
+	protected $fkconfigs = [orm_prod::class, orm_cust::class];
 }

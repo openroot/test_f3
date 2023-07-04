@@ -50,6 +50,7 @@ abstract class abstract_orm extends abstract_model {
 	];
 
 	protected $fieldconfigs;
+	protected $fkconfigs;
 	protected $tablename;
 	protected ?job_db $job_db = null;
 
