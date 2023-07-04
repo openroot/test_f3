@@ -29,6 +29,12 @@ class operation_instruct extends abstract_operation {
 	public function instruct_orm_explore_default(Base $f3): bool {
 		$f3->instruct_orm_explore_default = [];
 
+		$html = '';
+
+
+
+		$f3->instruct_orm_explore_default += ['html' => $html];
+
 		$this->render();
 		return true;
 	}
@@ -36,7 +42,7 @@ class operation_instruct extends abstract_operation {
 	public function instruct_orm_execute_default(Base $f3): bool {
 		$f3->instruct_orm_execute_default = [];
 
-		$html1 = '';
+		$html = '';
 
 		$rows = [];
 
@@ -48,7 +54,7 @@ class operation_instruct extends abstract_operation {
 		foreach ($ormobjects as $index => $ormobject) {
 			$liquor = $ormobject->liquor_create_table();
 			array_push($rows, '<h2>' . ($index + 1) . '. ' . $ormobject->get_tablename() . '</h2>');
-			array_push($rows, $this->span($liquor));
+			array_push($rows, $this->convert_liquor_to_htmlstring_table($liquor));
 
 			if ($ormobject->create_table()) {
 				array_push($rows, '<div class="positivetext">Table \''. $ormobject->get_tablename() . '\' created.</div>');
@@ -57,15 +63,15 @@ class operation_instruct extends abstract_operation {
 				array_push($rows, '<div class="negativetext">Table \'' . $ormobject->get_tablename() . '\' created.</div>');
 			}
 		}
-		$html1 .= job_rough::get_htmlstring_table('List of tables', $rows);
+		$html .= job_rough::get_htmlstring_table('List of tables', $rows);
 
-		$f3->instruct_orm_execute_default += ['html1' => $html1];
+		$f3->instruct_orm_execute_default += ['html' => $html];
 
 		$this->render();
 		return true;
 	}
 
-	private function span(array $liquor): string {
+	private function convert_liquor_to_htmlstring_table(array $liquor): string {
 		$html = '';
 		if (isset($liquor)) {
 			$html .= job_rough::get_htmlstring_table('Prefixes', $liquor['prefixes']);
