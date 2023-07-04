@@ -51,8 +51,8 @@ abstract class abstract_orm extends abstract_model {
 
 	protected $fieldconfigs;
 	protected $fkconfigs;
-	protected $tablename;
 	protected ?job_db $job_db = null;
+	private $tablename;
 
 	public function __construct() {
 		if (strstr(get_parent_class($this), 'abstract_orm')) {
@@ -89,12 +89,13 @@ abstract class abstract_orm extends abstract_model {
 			return false;
 		}
 
-		if (isset($this->tablename) && empty($this->tablename)) {
-			throw new job_exception('Table name is invalid.');
+		$classname = get_class($this);
+		if (!stripos($classname, 'orm_')) {
+			throw new job_exception('Table name is invalid, must have been preceded with \'orm_\'.');
 			return false;
 		}
 		else {
-			$this->tablename = substr(get_class($this), stripos(get_class($this), 'orm_') + 4);
+			$this->tablename = substr($classname, stripos($classname, 'orm_') + 4);
 		}
 
 		return true;
