@@ -5,7 +5,7 @@ namespace models\orms;
 use \models\abstracts\abstract_orm as abstract_orm;
 use \models\enums as enums;
 
-class orm_cust extends abstract_orm {
+class orm_customer extends abstract_orm {
 	protected $fieldconfigs = [
 		'fullname' => [
 			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR512,

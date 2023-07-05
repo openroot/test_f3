@@ -3,7 +3,6 @@
 namespace jobs;
 
 use \Base as Base;
-use \jobs\job_db as job_db;
 
 class job_rough {
 	private ?Base $f3;
@@ -25,9 +24,9 @@ class job_rough {
 
 	public static function get_ormclass_orderedlist(): array {
 		$ormclass_orderedlist = [
-			\models\orms\orm_prod::class,
-			\models\orms\orm_cust::class,
-			\models\orms\orm_orde::class
+			\models\orms\orm_product::class,
+			\models\orms\orm_customer::class,
+			\models\orms\orm_order::class
 		];
 		return $ormclass_orderedlist;
 	}
