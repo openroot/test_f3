@@ -4,7 +4,6 @@ namespace operations;
 
 use \Base as Base;
 use \models\abstracts\abstract_operation as abstract_operation;
-use \models\orms as orms;
 use \jobs\job_rough as job_rough;
 
 class operation_instruct extends abstract_operation {
@@ -50,7 +49,15 @@ class operation_instruct extends abstract_operation {
 
 		$htmlstring = '';
 
-		$htmlstring .= $qs_ormclass;
+		$namespace = '\models\orms\\';
+		$orminstance = job_rough::get_instance_class($qs_ormclass, '\models\orms');
+		if (isset($orminstance)) {
+			$orm_liquor = $orminstance->liquor_create_table();
+			$htmlstring .= job_rough::get_liquorinto_htmlstring_table($orm_liquor, $this->orm_liquor_identifiers);
+		}
+		else {
+			$htmlstring .= 'ORM Class \'' . $namespace . $qs_ormclass . '\' not found.';
+		}
 
 		$f3->instruct_orm_explore_default += ['htmlstring' => $htmlstring];
 
@@ -65,17 +72,17 @@ class operation_instruct extends abstract_operation {
 
 		$rows = [];
 		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
-			$ormobject = new $ormclass();
+			$orminstance = new $ormclass();
 
-			$orm_liquor = $ormobject->liquor_create_table();
+			$orm_liquor = $orminstance->liquor_create_table();
 
-			array_push($rows, '<h2>' . ($index + 1) . '. ' . $ormobject->get_tablename() . '</h2>');
+			array_push($rows, '<h2>' . ($index + 1) . '. ' . $orminstance->get_tablename() . '</h2>');
 			array_push($rows, job_rough::get_liquorinto_htmlstring_table($orm_liquor, $this->orm_liquor_identifiers));
-			if ($ormobject->create_table()) {
-				array_push($rows, '<div class="positivetext">Table \''. $ormobject->get_tablename() . '\' created.</div>');
+			if ($orminstance->create_table()) {
+				array_push($rows, '<div class="positivetext">Table \''. $orminstance->get_tablename() . '\' created.</div>');
 			}
 			else {
-				array_push($rows, '<div class="negativetext">Table \'' . $ormobject->get_tablename() . '\' created.</div>');
+				array_push($rows, '<div class="negativetext">Table \'' . $orminstance->get_tablename() . '\' created.</div>');
 			}
 		}
 

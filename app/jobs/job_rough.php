@@ -10,6 +10,19 @@ class job_rough {
 
 	public function __construct() { }
 
+	public static function get_invokerfunctionname(int $level = 2): string {
+		return debug_backtrace()[$level]['function'];
+	}
+
+	public static function get_instance_class(string $classname, ?string $namespace = null): mixed {
+		$trueclassname = isset($namespace) ? $namespace . '\\' . $classname : $classname;
+		if (class_exists($trueclassname)) {
+			$instance = new $trueclassname();
+			return $instance;
+		}
+		return null;
+	}
+
 	public static function get_ormclass_orderedlist(): array {
 		$ormclass_orderedlist = [
 			\models\orms\orm_prod::class,
@@ -17,10 +30,6 @@ class job_rough {
 			\models\orms\orm_orde::class
 		];
 		return $ormclass_orderedlist;
-	}
-
-	public static function get_invokerfunctionname(int $level = 2): string {
-		return debug_backtrace()[$level]['function'];
 	}
 
 	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $inlinestyle = null): string {
