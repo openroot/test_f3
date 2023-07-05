@@ -8,7 +8,7 @@ use \models\enums as enums;
 class orm_prod extends abstract_orm {
 	protected $fieldconfigs = [
 		'name' => [
-			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TINYTEXT,
+			enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR512,
 			enums\enum_orm_fieldconfigparam::nullable => false,
 			enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
 			enums\enum_orm_fieldconfigparam::comment => 'Product name'

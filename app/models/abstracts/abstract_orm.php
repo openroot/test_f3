@@ -121,7 +121,7 @@ abstract class abstract_orm extends abstract_model {
 				enums\enum_orm_fieldconfigparam::nullable => false,
 				enums\enum_orm_fieldconfigparam::autoincrement => true,
 				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::PRIMARYKEY,
-				enums\enum_orm_fieldconfigparam::comment => 'Table\'s primary key'
+				enums\enum_orm_fieldconfigparam::comment => '`' . $this->get_tablename() . '` primary key'
 			],
 			'meta_created_at' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::TIMESTAMP,
@@ -147,7 +147,6 @@ abstract class abstract_orm extends abstract_model {
 			],
 			'meta_dictionary' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR4096,
-				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
 				enums\enum_orm_fieldconfigparam::comment => 'External reference'
 			],
 			'meta_expired_statement' => [
@@ -161,7 +160,6 @@ abstract class abstract_orm extends abstract_model {
 			],
 			'meta_binary_statement' => [
 				enums\enum_orm_fieldconfigparam::type => enums\enum_mysqlfield_type::VARCHAR2048,
-				enums\enum_orm_fieldconfigparam::index => enums\enum_mysqlfield_index::INDEX,
 				enums\enum_orm_fieldconfigparam::comment => 'Binary file path'
 			]
 		];
@@ -189,18 +187,38 @@ abstract class abstract_orm extends abstract_model {
 			$liquor = $this->liquor_create_table();
 
 			$mysqlstatement = '';
+
+			foreach ($liquor as $net => $lint) {
+				if (count($lint) > 0) {
+					switch ($net) {
+						case 'prefixes':
+						case 'suffixes':
+							$mysqlstatement .= implode(' ', $lint);
+							break;
+						case 'fields':
+							foreach ($lint as $tin) {
+								$mysqlstatement .= implode(' ', $tin) . ', ';
+							}
+							break;
+						case 'indexes':
+							$mysqlstatement .= implode(', ', $lint);
+							break;
+						case 'fks':
+							$mysqlstatement .= ', ' . implode(', ', $lint);
+					}
+				}
+			}
 			
-			// $result = $this->job_db->f3mysql_execute($mysqlstatement);
-			// if (isset($result)) {
-			// 	return true;
-			// }
+			$result = $this->job_db->f3mysql_execute($mysqlstatement);
+			if (isset($result)) {
+				return true;
+			}
 		}
 		catch (Exception $exception) {
-			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
+			return false;
 		}
 
-		return true;
-		// return false;
+		return false;
 	}
 
 	public function liquor_create_table(): ?array {
@@ -278,7 +296,7 @@ abstract class abstract_orm extends abstract_model {
 				array_push($liquor['fks'], $e);
 			}
 
-			$liquor['suffixes'] = [')', 'ENGINE = InnoDB;'];
+			$liquor['suffixes'] = [')', 'ENGINE = InnoDB CHARSET=utf8 COLLATE utf8_unicode_ci;'];
 
 			return $liquor;
 		}

@@ -86,7 +86,7 @@ class operation_instruct extends abstract_operation {
 				array_push($rows, '<div class="positivetext">Table \''. $orminstance->get_tablename() . '\' created.</div>');
 			}
 			else {
-				array_push($rows, '<div class="negativetext">Table \'' . $orminstance->get_tablename() . '\' created.</div>');
+				array_push($rows, '<div class="negativetext">Table \'' . $orminstance->get_tablename() . '\' either exist or not created.</div>');
 			}
 		}
 
