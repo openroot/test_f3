@@ -46,9 +46,11 @@ class operation_instruct extends abstract_operation {
 	public function instruct_orm_explore_default(Base $f3): bool {
 		$f3->instruct_orm_explore_default = [];
 
+		$qs_ormclass = $f3->PARAMS['ormclass'];
+
 		$htmlstring = '';
 
-
+		$htmlstring .= $qs_ormclass;
 
 		$f3->instruct_orm_explore_default += ['htmlstring' => $htmlstring];
 
