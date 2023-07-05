@@ -216,6 +216,14 @@ class app_test_f3 {
 					'operations\operation_instruct->instruct_orm_execute_default'
 				);
 
+				// URI example: http://localhost:4000/instruct/orm/litter/seed
+				$this->handle_this->route(
+					'GET ' .
+					'@instruct_orm_litter_seed_default: ' .
+					'/instruct/orm/litter/seed',
+					'operations\operation_instruct->instruct_orm_litter_seed_default'
+				);
+
 				return true;
 			}
 			catch (Exception $exception) {

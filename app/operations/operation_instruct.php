@@ -98,4 +98,17 @@ class operation_instruct extends abstract_operation {
 		return true;
 	}
 
+	public function instruct_orm_litter_seed_default(Base $f3): bool {
+		$f3->instruct_orm_litter_seed_default = [];
+
+		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
+			$orminstance = new $ormclass();
+
+			$map = $orminstance->get_map();
+
+		}
+
+		$this->render();
+		return true;
+	}
 }

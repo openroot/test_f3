@@ -307,10 +307,10 @@ abstract class abstract_orm extends abstract_model {
 		return null;
 	}
 
-	public function get_map(): mixed {
+	public function get_map() {
 		try {
-			$mapper = new Mapper($this->job_db->retrieve_handle(), $this->tablename);
-			return $mapper;
+			$map = new Mapper($this->job_db->retrieve_handle(), $this->tablename);
+			return $map;
 		}
 		catch (Exception $exception) {
 			throw new job_exception('Unable to create map.', $exception);
