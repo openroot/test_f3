@@ -10,12 +10,21 @@ class job_rough {
 
 	public function __construct() { }
 
+	public static function get_ormclass_orderedlist(): array {
+		$ormclass_orderedlist = [
+			\models\orms\orm_prod::class,
+			\models\orms\orm_cust::class,
+			\models\orms\orm_orde::class
+		];
+		return $ormclass_orderedlist;
+	}
+
 	public static function get_invokerfunctionname(int $level = 2): string {
 		return debug_backtrace()[$level]['function'];
 	}
 
 	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $inlinestyle = null): string {
-		$rendered_html = '';
+		$htmlstring = '';
 
 		$heading_column_count = 0;
 		$data_column_count = 0;
@@ -34,44 +43,60 @@ class job_rough {
 		if (($heading_column_count > 0) && ($heading_column_count === $data_column_count)) {
 			$inlinestyle = isset($inlinestyle) ? $inlinestyle : 'height: 100%';
 
-			$rendered_html .= '<div class="viewtable" style="' . $inlinestyle . '">';
-			$rendered_html .= '<table>';
+			$htmlstring .= '<div class="viewtable" style="' . $inlinestyle . '">';
+			$htmlstring .= '<table>';
 
 			if (isset($caption)) {
-				$rendered_html .= '<caption>' . $caption . '</caption>';
+				$htmlstring .= '<caption>' . $caption . '</caption>';
 			}
 
 			if ($data_column_count > 1) {
-				$rendered_html .= '<tr>';
+				$htmlstring .= '<tr>';
 				foreach ($ths as $th) {
-					$rendered_html .= '<th>' . $th . '</th>';
+					$htmlstring .= '<th>' . $th . '</th>';
 				}
-				$rendered_html .= '</tr>';
+				$htmlstring .= '</tr>';
 
 				foreach ($rows as $cells) {
-					$rendered_html .= '<tr>';
+					$htmlstring .= '<tr>';
 					foreach ($cells as $cell) {
-						$rendered_html .= '<td>' . $cell . '</td>';
+						$htmlstring .= '<td>' . $cell . '</td>';
 					}
-					$rendered_html .= '</tr>';
+					$htmlstring .= '</tr>';
 				}
 			}
 			else {
-				$rendered_html .= '<tr><th>' . $ths . '</th></tr>';
+				$htmlstring .= '<tr><th>' . $ths . '</th></tr>';
 				foreach ($rows as $cell) {
-					$rendered_html .= '<tr><td>' . $cell . '</td></tr>';
+					$htmlstring .= '<tr><td>' . $cell . '</td></tr>';
 				}
 			}
 
-			$rendered_html .= '</table>';
-			$rendered_html .= '</div>';
+			$htmlstring .= '</table>';
+			$htmlstring .= '</div>';
 		}
 		else {
-			$rendered_html .= 'Table column head count and minimum cell count in rows is differing.';
+			$htmlstring .= 'Table column head count and minimum cell count in rows is differing.';
 		}
 
-		return $rendered_html;
+		return $htmlstring;
 	}
+
+	public static function get_liquorinto_htmlstring_table(array $liquor, array $liquor_identifiers): string {
+		$htmlstring = '';
+
+		if (isset($liquor) && isset($liquor_identifiers)) {
+			if (count($liquor_identifiers) === count($liquor)) {
+				foreach ($liquor_identifiers as $key => $liquor_identifier) {
+					$htmlstring .= job_rough::get_htmlstring_table($liquor_identifier, $liquor[$key]);
+				}
+			}
+		}
+
+		return $htmlstring;
+	}
+
+	// TODO: Following methods would be no neccessary.
 
 	public function prepare_mysql(job_db $job_db): bool {
 		if (isset($job_db)) {
