@@ -80,6 +80,7 @@ class transaction_f3mysql {
 		$this->handle_this = null;
 	}
 
+	// TODO: Remove the following methods post CRUD settlement
 	public function f3mappedtable(string $tablename): SQL\Mapper {
 		if ($this->issuccess_init()) {
 			if (!empty($tablename)) {

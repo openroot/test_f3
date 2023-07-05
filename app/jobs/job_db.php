@@ -4,15 +4,13 @@ namespace jobs;
 
 use Exception;
 use \Base as Base;
-use \DB\SQL as SQL;
 use \jobs\job_exception as job_exception;
 use \transactions\transaction_f3jig as transaction_f3jig;
 use \transactions\transaction_f3mysql as transaction_f3mysql;
 use \models\enums as enums;
 
 class job_db {
-	private ?bool $handle_this = null;
-	private ?SQL $handle_f3msql = null;
+	private mixed $handle_this = null;
 
 	private Base $config_f3;
 	private string $config_enum_database_type = '';
@@ -55,21 +53,19 @@ class job_db {
 		try {
 			switch ($this->config_enum_database_type) {
 				case enums\enum_database_type::f3mysql:
-					$this->handle_f3msql = (new transaction_f3mysql($this->config_f3))->retrieve_handle();
-					$this->config_f3->set($this->config_database_id, $this->handle_f3msql);
+					$this->handle_this = (new transaction_f3mysql($this->config_f3))->retrieve_handle();
+					$this->config_f3->set($this->config_database_id, $this->handle_this);
 					break;
 
 				case enums\enum_database_type::f3jig:
-					$handle_f3jig = (new transaction_f3jig($this->config_f3))->retrieve_handle();
-					$this->config_f3->set($this->config_database_id, $handle_f3jig);
+					$this->handle_this = (new transaction_f3jig($this->config_f3))->retrieve_handle();
+					$this->config_f3->set($this->config_database_id, $this->handle_this);
 					break;
 
 				default:
 					throw new job_exception('Database type is invalid.');
 					break;
 			}
-
-			$this->handle_this = true;
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle();
@@ -86,7 +82,7 @@ class job_db {
 		return true;
 	}
 
-	public function retrieve_handle(): ?bool {
+	public function retrieve_handle(): mixed {
 		if (isset($this->handle_this)) {
 			return $this->handle_this;
 		}
@@ -102,11 +98,11 @@ class job_db {
 		$this->handle_this = null;
 	}
 
-	public function f3mysql_execute(string $mysqlstatement) {
+	public function mysqlexec(string $mysqlstatement) {
 		if ($this->issuccess_init()) {
 			if (isset($mysqlstatement) && !empty($mysqlstatement)) {
 				try {
-					return $this->handle_f3msql->exec($mysqlstatement);
+					return $this->handle_this->exec($mysqlstatement);
 				}
 				catch (Exception $exception) {
 					throw new job_exception("MySQL were unable to execute.", $exception);
@@ -115,5 +111,4 @@ class job_db {
 		}
 		return null;
 	}
-
 }

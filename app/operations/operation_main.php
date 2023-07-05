@@ -73,10 +73,11 @@ class operation_main extends abstract_operation {
 			];
 		}
 
-		$transaction_f3jig->demo_insert();
-		$table_data = $transaction_f3jig->demo_select();
-		if (isset($table_data)) {
-			$f3->main_f3jig_default += ['sample_table_data' => $table_data];
+		$tablename = 'sample_table';
+		$transaction_f3jig->demo_insert($tablename);
+		$tabledata = $transaction_f3jig->demo_select($tablename);
+		if (isset($tabledata)) {
+			$f3->main_f3jig_default += ['tablename' => $tablename, 'tabledata' => $tabledata];
 		}
 
 		$this->render();
@@ -92,10 +93,11 @@ class operation_main extends abstract_operation {
 			$f3->main_f3mysql_default += ['uuid' => $handle_f3mysql->uuid()];
 		}
 
-		$transaction_f3mysql->demo_insert();
-		$table_data = $transaction_f3mysql->demo_select();
-		if (isset($table_data)) {
-			$f3->main_f3mysql_default += ['sample_table_data' => $table_data];
+		$tablename = 'sample_table';
+		$transaction_f3mysql->demo_insert($tablename);
+		$tabledata = $transaction_f3mysql->demo_select($tablename);
+		if (isset($tabledata)) {
+			$f3->main_f3mysql_default += ['tablename' => $tablename, 'tabledata' => $tabledata];
 		}
 
 		$this->render();
@@ -109,12 +111,15 @@ class operation_main extends abstract_operation {
 
 		$handle_db = $job_db->retrieve_handle();
 		if (isset($handle_db)) {
-			$f3->main_db_default += ['dbtype' => enums\enum_database_type::f3mysql];
+			$f3->main_db_default += [
+				'dbtype' => enums\enum_database_type::f3mysql,
+				'uuid' => $handle_db->uuid()
+			];
 		}
 
-		$result = $job_db->f3mysql_execute('SHOW TABLES');
+		$result = $job_db->mysqlexec('SHOW TABLES');
 		if (isset($result)) {
-			$f3->main_db_default += ['tables' => $result];
+			$f3->main_db_default += ['tablelist' => $result];
 		}
 
 		$this->render();

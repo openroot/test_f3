@@ -6,13 +6,13 @@
 <code>F3-Jig database directory: {{ @@main_f3jig_default.dir }}</code>
 
 <br>
-<code>F3-Jig table `users`:</code>
+<code>F3-Jig table `{{ @@main_f3jig_default.tablename }}`:</code>
 <div class="viewtable" style="width: 400px">
 	<table>
-		<caption>users</caption>
+		<caption>{{ @@main_f3jig_default.tablename }}</caption>
 		<tr><th>Index</th><th>Username</th><th>Password</th></tr>
 		<F3:repeat
-			group="{{ @@main_f3jig_default.sample_table_data }}"
+			group="{{ @@main_f3jig_default.tabledata }}"
 			key="{{ @key }}"
 			value="{{ @value }}"
 			counter="{{ @counter }}">

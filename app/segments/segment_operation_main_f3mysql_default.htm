@@ -3,13 +3,13 @@
 <code>F3-MySQL database ID: {{ @@main_f3mysql_default.uuid }}</code>
 
 <br>
-<code>F3-MySQL table `users`:</code>
+<code>F3-MySQL table `{{ @@main_f3mysql_default.tablename }}`:</code>
 <div class="viewtable" style="width: 400px">
 	<table>
-		<caption>users</caption>
+		<caption>{{ @@main_f3mysql_default.tablename }}</caption>
 		<tr><th>Index</th><th>Username</th><th>Password</th></tr>
 		<F3:repeat
-			group="{{ @@main_f3mysql_default.sample_table_data }}"
+			group="{{ @@main_f3mysql_default.tabledata }}"
 			key="{{ @key }}"
 			value="{{ @value }}"
 			counter="{{ @counter }}">

@@ -8,6 +8,7 @@ use \models\enums as enums;
 use \jobs\job_db as job_db;
 use \jobs\job_exception as job_exception;
 use \jobs\job_rough as job_rough;
+use \DB\SQL\Mapper as Mapper;
 
 abstract class abstract_orm extends abstract_model {
 	private $mysqlfield_type_signatures = [
@@ -209,7 +210,7 @@ abstract class abstract_orm extends abstract_model {
 				}
 			}
 			
-			$result = $this->job_db->f3mysql_execute($mysqlstatement);
+			$result = $this->job_db->mysqlexec($mysqlstatement);
 			if (isset($result)) {
 				return true;
 			}
@@ -305,4 +306,16 @@ abstract class abstract_orm extends abstract_model {
 		}
 		return null;
 	}
+
+	public function get_map(): mixed {
+		try {
+			$mapper = new Mapper($this->job_db->retrieve_handle(), $this->tablename);
+			return $mapper;
+		}
+		catch (Exception $exception) {
+			throw new job_exception('Unable to create map.', $exception);
+		}
+		return null;
+	}
+
 }
