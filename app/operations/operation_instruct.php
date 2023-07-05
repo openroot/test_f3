@@ -32,7 +32,11 @@ class operation_instruct extends abstract_operation {
 		$htmlstring = '';
 		$rows = [];
 		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
-			array_push($rows, [($index + 1), $ormclass]);
+			$href = '<a href="/instruct/orm/explore/orm_'
+				. job_rough::extract_tablename_from_ormclassname($ormclass)
+				. '">' . $ormclass . '</a>';
+
+			array_push($rows, [($index + 1), $href]);
 		}
 		$htmlstring .= job_rough::get_htmlstring_table(['Index', 'Class name'], $rows, 'Ordered list of orm classes');
 

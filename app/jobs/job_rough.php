@@ -32,6 +32,13 @@ class job_rough {
 		return $ormclass_orderedlist;
 	}
 
+	public static function extract_tablename_from_ormclassname(string $classname): ?string {
+		if (stripos($classname, 'orm_')) {
+			return substr($classname, stripos($classname, 'orm_') + 4);
+		}
+		return null;
+	}
+
 	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $inlinestyle = null): string {
 		$htmlstring = '';
 

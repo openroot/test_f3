@@ -7,6 +7,7 @@ use \models\abstracts\abstract_model as abstract_model;
 use \models\enums as enums;
 use \jobs\job_db as job_db;
 use \jobs\job_exception as job_exception;
+use \jobs\job_rough as job_rough;
 
 abstract class abstract_orm extends abstract_model {
 	private $mysqlfield_type_signatures = [
@@ -91,7 +92,7 @@ abstract class abstract_orm extends abstract_model {
 			return false;
 		}
 
-		$this->tablename = $this->extract_tablename_from_classname(get_class($this));
+		$this->tablename = job_rough::extract_tablename_from_ormclassname(get_class($this));
 		if (!isset($this->tablename)) {
 			throw new job_exception('Table name is invalid, must have been preceded with \'orm_\'.');
 			return false;
@@ -99,7 +100,7 @@ abstract class abstract_orm extends abstract_model {
 
 		if (isset($this->fkconfigs) && is_array($this->fkconfigs) && (count($this->fkconfigs) > 0)) {
 			foreach ($this->fkconfigs as $fkconfig) {
-				$parenttablename = $this->extract_tablename_from_classname($fkconfig);
+				$parenttablename = job_rough::extract_tablename_from_ormclassname($fkconfig);
 				if (!isset($parenttablename)) {
 					throw new job_exception('Parent table name for foreign key is invalid, must have been preceded with \'orm_\'.');
 				}
@@ -283,13 +284,6 @@ abstract class abstract_orm extends abstract_model {
 		}
 		catch (Exception $exception) {
 			throw new job_exception('Table \'' . $this->tablename . '\' couldn\'t be created.', $exception);
-		}
-		return null;
-	}
-
-	private function extract_tablename_from_classname(string $classname): ?string {
-		if (stripos($classname, 'orm_')) {
-			return substr($classname, stripos($classname, 'orm_') + 4);
 		}
 		return null;
 	}
