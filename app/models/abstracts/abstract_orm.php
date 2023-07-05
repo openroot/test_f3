@@ -187,9 +187,11 @@ abstract class abstract_orm extends abstract_model {
 		try {
 			$liquor = $this->liquor_create_table();
 
-			// $result = $this->job_db->f3mysql_execute('SHOW TABLES');
+			$mysqlstatement = '';
+			
+			// $result = $this->job_db->f3mysql_execute($mysqlstatement);
 			// if (isset($result)) {
-			// 	print_r($result);
+			// 	return true;
 			// }
 		}
 		catch (Exception $exception) {
@@ -197,6 +199,7 @@ abstract class abstract_orm extends abstract_model {
 		}
 
 		return true;
+		// return false;
 	}
 
 	public function liquor_create_table(): ?array {
