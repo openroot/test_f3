@@ -112,12 +112,6 @@ class operation_main extends abstract_operation {
 			$f3->main_db_default += ['dbtype' => enums\enum_database_type::f3mysql];
 		}
 
-		// Create a specific orm table, with optional specific orm model breadcrumb.
-		$job_db->create_table('orm_cortex_sample_table', '\models\orms');
-
-		// Create all orm tables in a directory, with optional specific orm model breadcrumb.
-		$job_db->create_tables('../app/models/orms');
-
 		$result = $job_db->f3mysql_execute('SHOW TABLES');
 		if (isset($result)) {
 			$f3->main_db_default += ['tables' => $result];
