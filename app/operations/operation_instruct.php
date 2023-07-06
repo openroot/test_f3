@@ -101,12 +101,31 @@ class operation_instruct extends abstract_operation {
 	public function instruct_orm_litter_seed_default(Base $f3): bool {
 		$f3->instruct_orm_litter_seed_default = [];
 
-		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
-			$orminstance = new $ormclass();
+			$p1 = (new \models\orms\orm_product())->get_map();
+			$c1 = (new \models\orms\orm_customer())->get_map();
+			$o1 = (new \models\orms\orm_order())->get_map();
 
-			$map = $orminstance->get_map();
+			$o1_id = null;
+		// TODO: Check tables to seed are empty.
+		 	if (count($p1->find('')) === 0) {
+				$p1->name = 'Cello Plastic Pen';
+				$p1->save();
+				$p1_id = $p1->meta_id;
+				$c1->fullname = 'Debaprasad Tapader';
+				$c1->save();
+				$c1_id = $c1->meta_id;
+				$o1->quantity = 12;
+				$o1->fk_product_meta_id = $p1_id;
+				$o1->fk_customer_meta_id = $c1_id;
+				$o1->save();
+				$o1_id = $o1->meta_id;
+			}
+			else {
+				$o1_id = 1;
+			}
 
-		}
+			echo 'Order ID: ' . $o1_id;
+
 
 		$this->render();
 		return true;
