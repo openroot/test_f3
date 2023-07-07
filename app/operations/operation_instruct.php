@@ -128,13 +128,15 @@ class operation_instruct extends abstract_operation {
 			}
 
 			if (isset($o1_id)) {
-				$o1->product_name = 'SELECT name FROM product WHERE product.meta_id=order.meta_id';
-				$o1->customer_fullname = 'SELECT fullname FROM customer WHERE customer.meta_id=order.meta_id';
-				$o1->load(array('meta_id=?', $o1_id)); // TODO: Instead 'abstract' it to a added function 'public functoin load_withfkdata(int? $depthlevel = 1): bool { }'
+				$o = (new \models\orms\orm_order())->get_map();
+
+				$o->product_name = 'SELECT name FROM product WHERE product.meta_id=order.meta_id';
+				$o->customer_fullname = 'SELECT fullname FROM customer WHERE customer.meta_id=order.meta_id';
+				$o->load_withfkdata(array('meta_id=?', $o1_id));
 
 				$f3->instruct_orm_litter_seed_default += ['htmlstring' => job_rough::get_htmlstring_table(
 					['Order ID', 'Product name', 'Customer name', 'Quantity'],
-					[[$o1_id, $o1->product_name, $o1->customer_fullname, $o1->quantity]]
+					[[$o->meta_id, $o->product_name, $o->customer_fullname, $o->quantity]]
 				)];
 			}
 
