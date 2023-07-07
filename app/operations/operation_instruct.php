@@ -129,9 +129,6 @@ class operation_instruct extends abstract_operation {
 
 			if (isset($o1_id)) {
 				$o = (new \models\orms\orm_order())->get_map();
-
-				$o->product_name = 'SELECT name FROM product WHERE product.meta_id=order.meta_id';
-				$o->customer_fullname = 'SELECT fullname FROM customer WHERE customer.meta_id=order.meta_id';
 				$o->load_withfkdata(array('meta_id=?', $o1_id));
 
 				$f3->instruct_orm_litter_seed_default += ['htmlstring' => job_rough::get_htmlstring_table(

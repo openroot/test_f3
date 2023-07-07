@@ -20,12 +20,16 @@ class mapper extends SQL\Mapper {
 	 * @param integer|null $depthlevel : 0 is maximum possible. Rest depth levels are interim, defaulted to first most level.
 	 */
 	public function load_withfkdata($filter = null, array $options = null, $ttl = 0, ?int $depthlevel = 1) {
-		return $this->load($filter, $options, $ttl);
 		if ($depthlevel > -1) {
-
+			// TODO: Make it dynamic recursive fetch.
+			if ($this->table() === 'order') {
+				$this->__set('product_name', 'SELECT name FROM product WHERE product.meta_id=order.meta_id');
+				$this->__set('customer_fullname', 'SELECT fullname FROM customer WHERE customer.meta_id=order.meta_id');
+			}
 		}
 		else {
 			throw new job_exception('Depth level of foreign data must be above 0');
 		}
+		return $this->load($filter, $options, $ttl);
 	}
 }
