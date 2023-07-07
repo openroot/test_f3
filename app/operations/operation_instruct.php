@@ -101,46 +101,46 @@ class operation_instruct extends abstract_operation {
 	public function instruct_orm_litter_seed_default(Base $f3): bool {
 		$f3->instruct_orm_litter_seed_default = [];
 
-			$b1 = (new \models\orms\orm_brand())->get_map();
-			$p1 = (new \models\orms\orm_product())->get_map();
-			$c1 = (new \models\orms\orm_customer())->get_map();
-			$o1 = (new \models\orms\orm_order())->get_map();
+		$b1 = (new \models\orms\orm_brand())->get_map();
+		$p1 = (new \models\orms\orm_product())->get_map();
+		$c1 = (new \models\orms\orm_customer())->get_map();
+		$o1 = (new \models\orms\orm_order())->get_map();
 
-			$o1_id = null;
-		 	if (count($p1->find('')) === 0) {
-				$b1->name = 'Cello Ltd.';
-				$b1->save();
+		$o1_id = null;
+		if (count($p1->find('')) === 0) {
+			$b1->name = 'Cello Ltd.';
+			$b1->save();
 
-				$p1->name = 'Cello Plastic Pen';
-				$p1->fk_brand_meta_id = 1;
-				$p1->save();
+			$p1->name = 'Cello Plastic Pen';
+			$p1->fk_brand_meta_id = 1;
+			$p1->save();
 
-				$p1_id = $p1->meta_id;
-				$c1->fullname = 'Debaprasad Tapader';
-				$c1->save();
+			$p1_id = $p1->meta_id;
+			$c1->fullname = 'Debaprasad Tapader';
+			$c1->save();
 
-				$c1_id = $c1->meta_id;
-				$o1->quantity = 12;
-				$o1->fk_product_meta_id = $p1_id;
-				$o1->fk_customer_meta_id = $c1_id;
-				$o1->save();
+			$c1_id = $c1->meta_id;
+			$o1->quantity = 12;
+			$o1->fk_product_meta_id = $p1_id;
+			$o1->fk_customer_meta_id = $c1_id;
+			$o1->save();
 
-				$o1_id = $o1->meta_id;
-			}
-			else {
-				$o1->load(array('meta_id=?', 1));
-				$o1_id = $o1->meta_id;
-			}
+			$o1_id = $o1->meta_id;
+		}
+		else {
+			$o1->load(array('meta_id=?', 1));
+			$o1_id = $o1->meta_id;
+		}
 
-			if (isset($o1_id)) {
-				$o = (new \models\orms\orm_order())->get_map();
-				$o->load_withfkdata(array('meta_id=?', $o1_id), null, 0, null);
+		if (isset($o1_id)) {
+			$o = (new \models\orms\orm_order())->get_map();
+			$o->load_withfkdata(array('meta_id=?', $o1_id), null, 0, null);
 
-				$f3->instruct_orm_litter_seed_default += ['htmlstring' => job_rough::get_htmlstring_table(
-					['Order ID', 'Product', 'Customer name', 'Quantity'],
-					[[$o->meta_id, $o->product->name . ' ( ' . $o->product->brand->name . ' )', $o->customer->fullname, $o->quantity]]
-				)];
-			}
+			$f3->instruct_orm_litter_seed_default += ['htmlstring' => job_rough::get_htmlstring_table(
+				['Order ID', 'Product', 'Customer name', 'Quantity'],
+				[[$o->meta_id, $o->product->name . ' ( ' . $o->product->brand->name . ' )', $o->customer->fullname, $o->quantity]]
+			)];
+		}
 
 		$this->render();
 		return true;
