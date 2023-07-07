@@ -134,11 +134,11 @@ class operation_instruct extends abstract_operation {
 
 			if (isset($o1_id)) {
 				$o = (new \models\orms\orm_order())->get_map();
-				$o->load_withfkdata(array('meta_id=?', $o1_id));
+				$o->load_withfkdata(array('meta_id=?', $o1_id), null, 0, null);
 
 				$f3->instruct_orm_litter_seed_default += ['htmlstring' => job_rough::get_htmlstring_table(
-					['Order ID', 'Product name', 'Customer name', 'Quantity'],
-					[[$o->meta_id, $o->product_name, $o->customer_fullname, $o->quantity]]
+					['Order ID', 'Product', 'Customer name', 'Quantity'],
+					[[$o->meta_id, $o->product->name . ' ( ' . $o->product->brand->name . ' )', $o->customer->fullname, $o->quantity]]
 				)];
 			}
 
