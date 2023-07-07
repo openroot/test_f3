@@ -33,4 +33,5 @@ class orm_product extends abstract_orm {
 			enums\enum_orm_fieldconfigparam::comment => 'Product public identifier'
 		]
 	];
+	protected $fkconfigs = [orm_brand::class];
 }

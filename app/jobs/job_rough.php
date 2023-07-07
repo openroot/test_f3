@@ -24,6 +24,7 @@ class job_rough {
 
 	public static function get_ormclass_orderedlist(): array {
 		$ormclass_orderedlist = [
+			\models\orms\orm_brand::class,
 			\models\orms\orm_product::class,
 			\models\orms\orm_customer::class,
 			\models\orms\orm_order::class

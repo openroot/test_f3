@@ -101,13 +101,18 @@ class operation_instruct extends abstract_operation {
 	public function instruct_orm_litter_seed_default(Base $f3): bool {
 		$f3->instruct_orm_litter_seed_default = [];
 
+			$b1 = (new \models\orms\orm_brand())->get_map();
 			$p1 = (new \models\orms\orm_product())->get_map();
 			$c1 = (new \models\orms\orm_customer())->get_map();
 			$o1 = (new \models\orms\orm_order())->get_map();
 
 			$o1_id = null;
 		 	if (count($p1->find('')) === 0) {
+				$b1->name = 'Cello Ltd.';
+				$b1->save();
+
 				$p1->name = 'Cello Plastic Pen';
+				$p1->fk_brand_meta_id = 1;
 				$p1->save();
 
 				$p1_id = $p1->meta_id;
