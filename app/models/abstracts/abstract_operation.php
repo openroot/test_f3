@@ -81,12 +81,19 @@ abstract class abstract_operation extends abstract_model {
 	}
 
 	protected function render() {
-		$segmentoughtfile = 'segment_operation_' . job_rough::get_invokerfunctionname() . '.htm';
+		$this->f3->segmentsrender = '';
 
+		$invokerfunctionname = job_rough::get_invokerfunctionname();
+
+		$segmentoughtfile = 'segment_operation_' . $invokerfunctionname . '.htm';
 		if (file_exists(($this->f3->get('segments.path') . $segmentoughtfile))) {
 			$this->f3->segmentsrender = $segmentoughtfile;
 		}
 		else {
+
+		}
+
+		if (empty($this->f3->segmentsrender)) {
 			$this->f3->segmentsrender = 'segment_operation_pagenotavailable.htm';
 		}
 

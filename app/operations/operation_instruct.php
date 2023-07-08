@@ -98,6 +98,13 @@ class operation_instruct extends abstract_operation {
 		return true;
 	}
 
+	public function instruct_orm_litter_default(Base $f3): bool {
+		$f3->instruct_orm_litter_default = [];
+
+		$this->render();
+		return true;
+	}
+
 	public function instruct_orm_litter_seed_default(Base $f3): bool {
 		$f3->instruct_orm_litter_seed_default = [];
 
