@@ -123,7 +123,7 @@ class app_test_f3 {
 							'value1' => 'This user-defined value.'
 						);
 
-						$f3->segmentsrender = 'segment_operation_main_default.htm';
+						$f3->segmentsrender = 'segment/operation/main/default.htm';
 						echo Template::instance()->render($f3->segmentsdefaultrender);
 					}
 				);
