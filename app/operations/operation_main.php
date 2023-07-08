@@ -16,7 +16,7 @@ class operation_main extends abstract_operation {
 	}
 
 	// (todo): This would be a router specification.
-	public function main_template_default(Base $f3): bool {
+	public function main_template_default(Base $f3) {
 		$f3->main_template_default = [];
 
 		$f3->main_template_default += [
@@ -37,10 +37,9 @@ class operation_main extends abstract_operation {
 		if (isset($handle_template)) { }
 
 		$this->render();
-		return true;
 	}
 
-	public function main_helloworld_getpost(Base $f3): bool {
+	public function main_helloworld_getpost(Base $f3) {
 		echo '<html><head><title>Test F3</title></head><body>';
 		echo '<div id="header"><h4>' . $f3->sitename . '</h4></div>';
 
@@ -56,11 +55,9 @@ class operation_main extends abstract_operation {
 		echo '<div id="footer"><h4>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h4></div>';
 
 		echo '</body></html>';
-
-		return true;
 	}
 
-	public function main_f3jig_default(Base $f3): bool {
+	public function main_f3jig_default(Base $f3) {
 		$f3->main_f3jig_default = [];
 
 		$transaction_f3jig = new transaction_f3jig($f3);
@@ -81,10 +78,9 @@ class operation_main extends abstract_operation {
 		}
 
 		$this->render();
-		return true;
 	}
 
-	public function main_f3mysql_default(Base $f3): bool {
+	public function main_f3mysql_default(Base $f3) {
 		$f3->main_f3mysql_default = [];
 
 		$transaction_f3mysql = new transaction_f3mysql($f3);
@@ -101,10 +97,9 @@ class operation_main extends abstract_operation {
 		}
 
 		$this->render();
-		return true;
 	}
 
-	public function main_db_default(Base $f3): bool {
+	public function main_db_default(Base $f3) {
 		$f3->main_db_default = [];
 
 		$job_db = new job_db($f3, enums\enum_database_type::f3mysql);
@@ -123,6 +118,5 @@ class operation_main extends abstract_operation {
 		}
 
 		$this->render();
-		return true;
 	}
 }

@@ -11,7 +11,7 @@ class operation_info extends abstract_operation {
 		parent::__construct();
 	}
 
-	public function info_default(Base $f3): bool {
+	public function info_default(Base $f3) {
 		$f3->info_default = [];
 
 		$job_db = new $this->job_db($f3, enums\enum_database_type::f3mysql);
@@ -21,13 +21,11 @@ class operation_info extends abstract_operation {
 		}
 
 		$this->render();
-		return true;
 	}
 
-	public function info_about_default(Base $f3): bool {
+	public function info_about_default(Base $f3) {
 		$f3->info_about_default = [];
 
 		$this->render();
-		return true;
 	}
 }
