@@ -17,7 +17,7 @@ class operation_main extends abstract_operation {
 
 	// (todo): This would be a router specification.
 	public function main_template_default(Base $f3) {
-		$f3->main_template_default = [];
+		$f3->main_template_default = []; // TODO: Add `trait for before-after generic. (for specially, rout[] & render()).
 
 		$f3->main_template_default += [
 			'str' => 'dev.openroot@gmail.com',
