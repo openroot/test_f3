@@ -90,11 +90,20 @@ abstract class abstract_operation extends abstract_model {
 			$this->f3->segmentsrender = $segmentoughtfile;
 		}
 		else {
-
+			$breadcrumb = explode('_', $invokerfunctionname);
+			$segmentoughtfile = 'segment/operation/' . implode('/', (array_slice($breadcrumb, 0, count($breadcrumb) - 1))) . '/' . array_pop($breadcrumb) . '.htm';
+			if (file_exists($this->f3->get('segments.path') . $segmentoughtfile)) {
+				$this->f3->segmentsrender = $segmentoughtfile;
+			}
+			else {
+				if (file_put_contents($this->f3->get('segments.path') . $segmentoughtfile, '') !== false) {
+					$this->f3->segmentsrender = $segmentoughtfile;
+				}
+			}
 		}
 
 		if (empty($this->f3->segmentsrender)) {
-			$this->f3->segmentsrender = 'segment_operation_pagenotavailable.htm';
+			$this->f3->segmentsrender = 'segment/operation/pagenotavailable.htm';
 		}
 
 		echo $this->f3template->render($this->f3->segmentsdefaultrender);
