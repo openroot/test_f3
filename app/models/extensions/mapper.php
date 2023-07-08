@@ -41,7 +41,7 @@ class mapper extends SQL\Mapper {
 				$foreigntabletruename = '\models\orms\orm_' . $foreigntablename;
 
 				$map = (new $foreigntabletruename())->get_map();
-				$map->load_withfkdata(array('meta_id=?', $this->meta_id), null, $ttl, $depthlevel);
+				$map->load_withfkdata(['meta_id=?', $this->meta_id], null, $ttl, $depthlevel);
 				$this->__set($foreigntablename, $map);
 			}
 		}

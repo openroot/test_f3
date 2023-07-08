@@ -135,13 +135,13 @@ class operation_instruct extends abstract_operation {
 			$o1_id = $o1->meta_id;
 		}
 		else {
-			$o1->load(array('meta_id=?', 1));
+			$o1->load(['meta_id=?', 1]);
 			$o1_id = $o1->meta_id;
 		}
 
 		if (isset($o1_id)) {
 			$o = (new \models\orms\orm_order())->get_map();
-			$o->load_withfkdata(array('meta_id=?', $o1_id), null, 0, null);
+			$o->load_withfkdata(['meta_id=?', $o1_id], null, 0, null);
 
 			$f3->instruct_orm_litter_seed_default += ['htmlstring' => job_rough::get_htmlstring_table(
 				['Order ID', 'Product', 'Customer name', 'Quantity'],
