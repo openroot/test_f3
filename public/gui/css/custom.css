@@ -1,9 +1,7 @@
 html {
 	box-sizing: border-box;
 }
-*,
-*:before,
-*:after {
+*, *:before, *:after {
 	box-sizing: inherit;
 }
 
@@ -12,9 +10,7 @@ body {
 	border: 3px solid black;
 }
 
-div#header,
-div#content,
-div#footer {
+div#header, div#content, div#footer {
 	padding: 10px;
 	background-color: #fffae5;
 	border: 1px solid white;
@@ -30,8 +26,7 @@ div.negativetext {
 	background-color: #FF5C5C;
 }
 
-a:link,
-a:visited {
+a:link, a:visited {
 	background-color: #fffae5;
 	color: black;
 	border: 2px solid black;
@@ -41,8 +36,7 @@ a:visited {
 	display: inline-block;
 }
 
-a:hover,
-a:active {
+a:hover, a:active {
 	background-color: black;
 	color: #fffae5;
 }
@@ -52,9 +46,7 @@ table {
 	width: 100%;
 }
 
-table,
-th,
-td {
+table, th, td {
 	border: 1px solid black;
 	border-collapse: collapse;
 	padding-left: 5px;
