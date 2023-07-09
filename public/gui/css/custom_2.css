@@ -33,6 +33,10 @@ div#navbar-bottom-e {
 	background-color: bisque;
 }
 
+main>.container-fluid {
+	padding: 60px 15px 60px;
+}
+
 ::-webkit-scrollbar {
 	width: 15px;
 }
