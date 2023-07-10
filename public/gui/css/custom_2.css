@@ -7,7 +7,8 @@ body {
 	height: 100%;
 	display: flex;
 	flex-direction: column;
-	margin: 8px;
+	margin-left: 8px;
+	margin-right: 8px;
 	border-left: 3px solid black;
 	border-right: 3px solid black;
 	background-color: bisque;
@@ -18,7 +19,11 @@ main {
 	overflow: auto;
 }
 
-div#navbar-top-e {
+main>.container-fluid {
+	padding: 60px 15px 60px;
+}
+
+header>div#navbar-top-e {
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -32,7 +37,7 @@ div#navbar-top-e {
 	background-color: bisque;
 }
 
-div#navbar-bottom-e {
+footer>div#navbar-bottom-e {
 	position: fixed;
 	bottom: 0;
 	right: 0;
@@ -44,10 +49,6 @@ div#navbar-bottom-e {
 	margin-right: 8px;
 	border-top: 3px solid black;
 	background-color: bisque;
-}
-
-main>.container-fluid {
-	padding: 60px 15px 60px;
 }
 
 ::-webkit-scrollbar {
