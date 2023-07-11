@@ -20,12 +20,20 @@ document.addEventListener("DOMContentLoaded", function () {
 					// Hide every submenu as well
 					everysubmenu.style.display = 'none';
 				});
+				this.querySelectorAll('.submenu-left').forEach(function (everysubmenu) {
+					// Hide every submenu as well
+					everysubmenu.style.display = 'none';
+				});
+				this.querySelectorAll('.submenu-up').forEach(function (everysubmenu) {
+					// Hide every submenu as well
+					everysubmenu.style.display = 'none';
+				});
 			})
 		});
 		document.querySelectorAll('.dropdown-menu a').forEach(function (element) {
 			element.addEventListener('click', function (e) {
 				let nextEl = this.nextElementSibling;
-				if (nextEl && nextEl.classList.contains('submenu')) {
+				if (nextEl && (nextEl.classList.contains('submenu') || nextEl.classList.contains('submenu-left') || nextEl.classList.contains('submenu-up') )) {
 					// Prevent opening link if link needs to open dropdown
 					e.preventDefault();
 					console.log(nextEl);
