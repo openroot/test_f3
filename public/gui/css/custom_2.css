@@ -79,12 +79,11 @@ footer>div#navbar-bottom-e {
 
 	.dropdown-menu .submenu-left {
 		right: 100%;
-		left: auto;
+		top: -7px;
 	}
 
 	.dropdown-menu .submenu-up {
 		left: 100%;
-		right: auto;
 		bottom: -7px;
 	}
 
