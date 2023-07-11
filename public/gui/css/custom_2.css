@@ -110,6 +110,12 @@ footer>div#navbar-bottom-e {
 li>.dropdown-menu {
 	background-color: #fffae5 !important;
 }
+.foreground-light,
+.form-control,
+input,
+textarea {
+	color: bisque!important;
+}
 
 .form-signin-container {
 	display: flex;
