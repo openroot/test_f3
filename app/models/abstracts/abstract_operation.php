@@ -33,6 +33,7 @@ abstract class abstract_operation extends abstract_model {
 		try {
 			// TODO: Put 'initialization' logics here for app client.
 			$this->handle_this = 'To be replaced with real \'client\' object';
+			$this->f3->set($this->f3->get('ALIAS'), []);
 		}
 		catch (Exception $exception) {
 			$this->destroy_handle();
@@ -91,13 +92,17 @@ abstract class abstract_operation extends abstract_model {
 		}
 		else {
 			$breadcrumb = explode('_', $invokerfunctionname);
-			$segmentoughtfile = 'segment/operation/' . implode('/', (array_slice($breadcrumb, 0, count($breadcrumb) - 1))) . '/' . array_pop($breadcrumb) . '.htm';
-			if (file_exists($this->f3->get('segments.path') . $segmentoughtfile)) {
-				$this->f3->segmentsrender = $segmentoughtfile;
+			$segmentoughtdirectory = 'segment/operation/' . implode('/', (array_slice($breadcrumb, 0, count($breadcrumb) - 1))) . '/';
+			$segmentoughtfile =  array_pop($breadcrumb) . '.htm';
+			if (file_exists($this->f3->get('segments.path') . $segmentoughtdirectory . $segmentoughtfile)) {
+				$this->f3->segmentsrender = $segmentoughtdirectory . $segmentoughtfile;
 			}
 			else {
-				if (file_put_contents($this->f3->get('segments.path') . $segmentoughtfile, '') !== false) {
-					$this->f3->segmentsrender = $segmentoughtfile;
+				if (!file_exists($this->f3->get('segments.path') . $segmentoughtdirectory)) {
+					mkdir($this->f3->get('segments.path') . $segmentoughtdirectory, 0777, true);
+				}
+				if (file_put_contents($this->f3->get('segments.path') . $segmentoughtdirectory . $segmentoughtfile, '') !== false) {
+					$this->f3->segmentsrender = $segmentoughtdirectory. $segmentoughtfile;
 				}
 			}
 		}

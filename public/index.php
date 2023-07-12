@@ -232,6 +232,14 @@ class app_test_f3 {
 					'operations\operation_instruct->instruct_orm_litter_seed_default'
 				);
 
+				// URI example: http://localhost:4000/module/
+				$this->handle_this->route(
+					'GET ' .
+					'@module_default: ' .
+					'/module',
+					'operations\operation_module->module_default'
+				);
+
 				return true;
 			}
 			catch (Exception $exception) {
