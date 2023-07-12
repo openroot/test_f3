@@ -43,11 +43,11 @@ class operation_main extends abstract_operation {
 
 		echo '<div id="content">';
 		echo '<pre>This Route: ' . $f3->ALIASES['main_helloworld_getpost'] . '</pre>';
-		echo '<br><code>Hello World! This is a `' . $f3->VERB . '` verb.</code><br>';
-		echo '<br><code>Query string posted:</code>';
-		echo '<br><code>Name = ' . $f3->PARAMS['name'] . '</code>';
-		echo '<br><code>Age = ' . $f3->PARAMS['age'] . '</code>';
-		echo '<br><code>Profession = ' . $f3->PARAMS['profession'] . '</code>';
+		echo '<br>Hello World! This is a `' . $f3->VERB . '` verb.<br>';
+		echo '<br>Query string posted:';
+		echo '<br>Name = ' . $f3->PARAMS['name'];
+		echo '<br>Age = ' . $f3->PARAMS['age'];
+		echo '<br>Profession = ' . $f3->PARAMS['profession'];
 		echo '</div>';
 
 		echo '<div id="footer"><h4>This site is powered by <a href="http://fatfree.sourceforge.net">F3</a> - the common sense PHP framework</h4></div>';

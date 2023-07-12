@@ -119,9 +119,7 @@ class app_test_f3 {
 					'/',
 					function ($f3) {
 						// faster inbuilt function realization
-						$f3->main_default = array(
-							'value1' => 'This user-defined value.'
-						);
+						$f3->main_default = [];
 
 						$f3->segmentsrender = 'segment/operation/main/default.htm';
 						echo Template::instance()->render($f3->segmentsdefaultrender);

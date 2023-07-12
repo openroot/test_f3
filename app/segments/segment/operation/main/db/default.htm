@@ -1,12 +1,12 @@
-<code>Database type selected: {{ @@main_db_default.dbtype }}</code>
-<br>
-<code>Database UUID: {{ @@main_db_default.uuid }}</code>
+Database type selected: {{ @@main_db_default.dbtype }}
 
 <br>
-<code>Tables: 
+Database UUID: {{ @@main_db_default.uuid }}
+
+<br>
+Tables: 
 <F3:check if="{{ count(@@main_db_default.tablelist) > 0 }}">
 	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@main_db_default.tablelist) }}" step="{{ @i++ }}">
 		{{ @i+1 }}. {{ @@main_db_default.tablelist[@i]['Tables_in_test_f3'] }},&nbsp;
 	</F3:loop>
 </F3:check>
-</code>
