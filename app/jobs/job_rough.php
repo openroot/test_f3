@@ -59,8 +59,7 @@ class job_rough {
 		if (($heading_column_count > 0) && ($heading_column_count === $data_column_count)) {
 			$inlinestyle = isset($inlinestyle) ? $inlinestyle : 'height: 100%';
 
-			$htmlstring .= '<div class="viewtable" style="' . $inlinestyle . '">';
-			$htmlstring .= '<table>';
+			$htmlstring .= '<table style="' . $inlinestyle . '">';
 
 			if (isset($caption)) {
 				$htmlstring .= '<caption>' . $caption . '</caption>';
@@ -89,7 +88,6 @@ class job_rough {
 			}
 
 			$htmlstring .= '</table>';
-			$htmlstring .= '</div>';
 		}
 		else {
 			$htmlstring .= 'Table column head count and minimum cell count in rows is differing.';

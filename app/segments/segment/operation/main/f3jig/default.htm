@@ -1,24 +1,22 @@
-<code>F3-Jig database ID: {{ @@main_f3jig_default.uuid }}</code>
+F3-Jig database ID: {{ @@main_f3jig_default.uuid }}
 
 <br>
-<code>F3-Jig database directory: {{ @@main_f3jig_default.dir }}</code>
+F3-Jig database directory: {{ @@main_f3jig_default.dir }}
 
 <br>
-<code>F3-Jig table `{{ @@main_f3jig_default.tablename }}`:</code>
-<div class="viewtable" style="width: 400px">
-	<table>
-		<caption>{{ @@main_f3jig_default.tablename }}</caption>
-		<tr><th>Index</th><th>Username</th><th>Password</th></tr>
-		<F3:repeat
-			group="{{ @@main_f3jig_default.tabledata }}"
-			key="{{ @key }}"
-			value="{{ @value }}"
-			counter="{{ @counter }}">
-			<tr>
-				<td>{{ @@counter }}</td>
-				<td>{{ @@value.username }}</td>
-				<td>{{ @@value.password }}</td>
-			</tr>
-		</F3:repeat>
-	</table>
-</div>
+F3-Jig table `{{ @@main_f3jig_default.tablename }}`:
+<table>
+	<caption>{{ @@main_f3jig_default.tablename }}</caption>
+	<tr><th>Index</th><th>Username</th><th>Password</th></tr>
+	<F3:repeat
+		group="{{ @@main_f3jig_default.tabledata }}"
+		key="{{ @key }}"
+		value="{{ @value }}"
+		counter="{{ @counter }}">
+		<tr>
+			<td>{{ @@counter }}</td>
+			<td>{{ @@value.username }}</td>
+			<td>{{ @@value.password }}</td>
+		</tr>
+	</F3:repeat>
+</table>

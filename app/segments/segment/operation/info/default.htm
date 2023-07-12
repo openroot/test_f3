@@ -1,20 +1,18 @@
-<code>MySQL list of tables:</code>
-<div class="viewtable" style="width: 400px">
-	<table>
-		<caption>tables</caption>
+MySQL list of tables:
+<table>
+	<caption>tables</caption>
+	<tr>
+		<th>Index</th>
+		<th>Name</th>
+	</tr>
+	<F3:repeat
+		group="{{ @@info_default.tablelist }}"
+		key="{{ @key }}"
+		value="{{ @value }}"
+		counter="{{ @counter }}">
 		<tr>
-			<th>Index</th>
-			<th>Name</th>
+			<td>{{ @@counter }}</td>
+			<td>{{ @@value.Tables_in_test_f3 }}</td>
 		</tr>
-		<F3:repeat
-			group="{{ @@info_default.tablelist }}"
-			key="{{ @key }}"
-			value="{{ @value }}"
-			counter="{{ @counter }}">
-			<tr>
-				<td>{{ @@counter }}</td>
-				<td>{{ @@value.Tables_in_test_f3 }}</td>
-			</tr>
-		</F3:repeat>
-	</table>
-</div>
+	</F3:repeat>
+</table>
