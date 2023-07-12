@@ -12,8 +12,6 @@ class operation_info extends abstract_operation {
 	}
 
 	public function info_default(Base $f3) {
-		$f3->info_default = [];
-
 		$job_db = new $this->job_db($f3, enums\enum_database_type::f3mysql);
 		$result = $job_db->mysqlexec('SHOW TABLES');
 		if (isset($result)) {
@@ -24,8 +22,6 @@ class operation_info extends abstract_operation {
 	}
 
 	public function info_about_default(Base $f3) {
-		$f3->info_about_default = [];
-
 		$this->render();
 	}
 }

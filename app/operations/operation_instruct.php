@@ -20,14 +20,10 @@ class operation_instruct extends abstract_operation {
 	}
 
 	public function instruct_default(Base $f3) {
-		$f3->instruct_default = [];
-
 		$this->render();
 	}
 
 	public function instruct_orm_default(Base $f3) {
-		$f3->instruct_orm_default = [];
-
 		$htmlstring = '';
 		$rows = [];
 		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
@@ -45,8 +41,6 @@ class operation_instruct extends abstract_operation {
 	}
 
 	public function instruct_orm_explore_default(Base $f3) {
-		$f3->instruct_orm_explore_default = [];
-
 		$qs_ormclass = $f3->PARAMS['ormclass'];
 
 		$htmlstring = '';
@@ -67,8 +61,6 @@ class operation_instruct extends abstract_operation {
 	}
 
 	public function instruct_orm_execute_default(Base $f3) {
-		$f3->instruct_orm_execute_default = [];
-
 		$htmlstring = '';
 
 		$rows = [];
@@ -95,14 +87,10 @@ class operation_instruct extends abstract_operation {
 	}
 
 	public function instruct_orm_litter_default(Base $f3) {
-		$f3->instruct_orm_litter_default = [];
-
 		$this->render();
 	}
 
 	public function instruct_orm_litter_seed_default(Base $f3) {
-		$f3->instruct_orm_litter_seed_default = [];
-
 		$b1 = (new \models\orms\orm_brand())->get_map();
 		$p1 = (new \models\orms\orm_product())->get_map();
 		$c1 = (new \models\orms\orm_customer())->get_map();

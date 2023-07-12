@@ -17,8 +17,6 @@ class operation_main extends abstract_operation {
 
 	// (todo): This would be a router specification.
 	public function main_template_default(Base $f3) {
-		$f3->main_template_default = []; // TODO: Add `trait for before-after generic. (for specially, rout[] & render()).
-
 		$f3->main_template_default += [
 			'str' => 'dev.openroot@gmail.com',
 			'num' => 0420,
@@ -58,8 +56,6 @@ class operation_main extends abstract_operation {
 	}
 
 	public function main_f3jig_default(Base $f3) {
-		$f3->main_f3jig_default = [];
-
 		$transaction_f3jig = new transaction_f3jig($f3);
 
 		$handle_f3jig = $transaction_f3jig->retrieve_handle();
@@ -81,8 +77,6 @@ class operation_main extends abstract_operation {
 	}
 
 	public function main_f3mysql_default(Base $f3) {
-		$f3->main_f3mysql_default = [];
-
 		$transaction_f3mysql = new transaction_f3mysql($f3);
 		$handle_f3mysql = $transaction_f3mysql->retrieve_handle();
 		if (isset($handle_f3mysql)) {
@@ -100,8 +94,6 @@ class operation_main extends abstract_operation {
 	}
 
 	public function main_db_default(Base $f3) {
-		$f3->main_db_default = [];
-
 		$job_db = new job_db($f3, enums\enum_database_type::f3mysql);
 
 		$handle_db = $job_db->retrieve_handle();
