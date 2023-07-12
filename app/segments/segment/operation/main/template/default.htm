@@ -1,20 +1,19 @@
 <pre>This route: {{ @@ALIASES.main_template_default }}</pre>
 
-<code>Template variable `str` (string): {{ @@main_template_default.str }}</code>
+Template variable `str` (string): {{ @@main_template_default.str }}
 
 <br>
-<code>Template variable `num` (number): {{ @@main_template_default.num }}</code>
+Template variable `num` (number): {{ @@main_template_default.num }}
 
 <br>
-<code>Template variable `boo` (boolean) with [check]: 
-	<F3:check if="{{ @@main_template_default.boo }}">
-		<true><span>True</span></true>
-		<false><span>False</span></false>
-	</F3:check>
-</code>
+Template variable `boo` (boolean) with [check]: 
+<F3:check if="{{ @@main_template_default.boo }}">
+	<true><span>True</span></true>
+	<false><span>False</span></false>
+</F3:check>
 
 <br>
-<code>Template with [switch]: 
+Template with [switch]: 
 <F3:switch expr="{{ 'Sunday' }}">
 	<case value="{{ 'Sunday' }}" break="{{ TRUE }}">
 		"It is not Sun-day."
@@ -23,40 +22,36 @@
 		"Default message."
 	</default>
 </F3:switch>
-</code>
 
 <br>
-<code>Template variable `arr_inde` (indexed array) with [check] [loop]: 
+Template variable `arr_inde` (indexed array) with [check] [loop]: 
 <F3:check if="{{ count(@@main_template_default.arr_inde) > 0 }}">
 	<F3:loop from="{{ @i=0 }}" to="{{ @i < count(@@main_template_default.arr_inde) }}" step="{{ @i++ }}">
 		{{ @i+1 }}. {{ @@main_template_default.arr_inde[@i] }},&nbsp;
 	</F3:loop>
 </F3:check>
-</code>
 
 <br>
-<code>Template variable `arr_associa` (associative array) with [repeat]:</code>
-<div class="viewtable" style="width: 350px; height: 100%">
-	<table>
-		<caption>Associative Array</caption>
+Template variable `arr_associa` (associative array) with [repeat]:
+<table>
+	<caption>Associative Array</caption>
+	<tr>
+		<th>Index</th>
+		<th>Key</th>
+		<th>Value</th>
+	</tr>
+	<F3:repeat
+		group="{{ @@main_template_default.arr_associa }}"
+		key="{{ @key }}"
+		value="{{ @value }}"
+		counter="{{ @counter }}">
 		<tr>
-			<th>Index</th>
-			<th>Key</th>
-			<th>Value</th>
+			<td>{{ @@counter }}</td>
+			<td>{{ @@key }}</td>
+			<td>{{ @@value}}</td>
 		</tr>
-		<F3:repeat
-			group="{{ @@main_template_default.arr_associa }}"
-			key="{{ @key }}"
-			value="{{ @value }}"
-			counter="{{ @counter }}">
-			<tr>
-				<td>{{ @@counter }}</td>
-				<td>{{ @@key }}</td>
-				<td>{{ @@value}}</td>
-			</tr>
-		</F3:repeat>
-	</table>
-</div>
+	</F3:repeat>
+</table>
 
 <br>
 <F3:exclude>A Template comment</exclude>
