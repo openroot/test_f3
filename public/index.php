@@ -230,12 +230,20 @@ class app_test_f3 {
 					'operations\operation_instruct->instruct_orm_litter_seed_default'
 				);
 
-				// URI example: http://localhost:4000/module/
+				// URI example: http://localhost:4000/ormgenerator/
 				$this->handle_this->route(
 					'GET ' .
-					'@module_default: ' .
-					'/module',
-					'operations\operation_module->module_default'
+					'@ormgenerator_default: ' .
+					'/ormgenerator',
+					'operations\operation_ormgenerator->ormgenerator_default'
+				);
+
+				// URI example: http://localhost:4000/modulegenerator/
+				$this->handle_this->route(
+					'GET ' .
+					'@modulegenerator_default: ' .
+					'/modulegenerator',
+					'operations\operation_modulegenerator->modulegenerator_default'
 				);
 
 				return true;
