@@ -3,10 +3,9 @@
 namespace jobs;
 
 use \Base as Base;
+use \transactions\transaction_f3jig as transaction_f3jig;
 
 class job_rough {
-	private ?Base $f3;
-
 	public function __construct() { }
 
 	public static function get_invokerfunctionname(int $level = 2): string {
@@ -23,12 +22,18 @@ class job_rough {
 	}
 
 	public static function get_ormclass_orderedlist(): array {
-		$ormclass_orderedlist = [
-			\models\orms\orm_brand::class,
-			\models\orms\orm_product::class,
-			\models\orms\orm_customer::class,
-			\models\orms\orm_order::class
-		];
+		$ormclass_orderedlist = [];
+
+		$transaction_f3jig_handle = (new transaction_f3jig(Base::instance()))->retrieve_handle();
+		if (isset($transaction_f3jig_handle)) {
+			$ormclasses = $transaction_f3jig_handle->read('ormclasses.json');
+			if (count($ormclasses) > 0) {
+				foreach ($ormclasses as $ormclass) {
+					array_push($ormclass_orderedlist, $ormclass['phpclass']);
+				}
+			}
+		}
+
 		return $ormclass_orderedlist;
 	}
 
@@ -39,7 +44,7 @@ class job_rough {
 		return null;
 	}
 
-	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $inlinestyle = null): string {
+	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $class = null, ?string $inlinestyle = null): string {
 		$htmlstring = '';
 
 		$heading_column_count = 0;
@@ -59,7 +64,7 @@ class job_rough {
 		if (($heading_column_count > 0) && ($heading_column_count === $data_column_count)) {
 			$inlinestyle = isset($inlinestyle) ? $inlinestyle : 'height: 100%';
 
-			$htmlstring .= '<table style="' . $inlinestyle . '">';
+			$htmlstring .= '<table class="' . $class . '" style="' . $inlinestyle . '">';
 
 			if (isset($caption)) {
 				$htmlstring .= '<caption>' . $caption . '</caption>';
