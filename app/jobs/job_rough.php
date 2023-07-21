@@ -8,6 +8,13 @@ use \transactions\transaction_f3jig as transaction_f3jig;
 class job_rough {
 	public function __construct() { }
 
+	public static function extract_tablename_from_ormclassname(string $classname): ?string {
+		if (stripos($classname, 'orm_')) {
+			return substr($classname, stripos($classname, 'orm_') + 4);
+		}
+		return null;
+	}
+
 	public static function get_invokerfunctionname(int $level = 2): string {
 		return debug_backtrace()[$level]['function'];
 	}
@@ -21,15 +28,15 @@ class job_rough {
 		return null;
 	}
 
-	public static function get_ormclass_orderedlist(): array {
+	public static function get_list_ormclass(): array {
 		$ormclass_orderedlist = [];
 
 		$transaction_f3jig_handle = (new transaction_f3jig(Base::instance()))->retrieve_handle();
 		if (isset($transaction_f3jig_handle)) {
-			$ormclasses = $transaction_f3jig_handle->read('ormclasses.json');
+			$ormclasses = $transaction_f3jig_handle->read('ormclass.json');
 			if (count($ormclasses) > 0) {
 				foreach ($ormclasses as $ormclass) {
-					array_push($ormclass_orderedlist, $ormclass['phpclass']);
+					array_push($ormclass_orderedlist, ['id' => $ormclass['id'], 'phpclass' => $ormclass['phpclass'], 'mysqltable' => $ormclass['mysqltable']]);
 				}
 			}
 		}
@@ -37,11 +44,18 @@ class job_rough {
 		return $ormclass_orderedlist;
 	}
 
-	public static function extract_tablename_from_ormclassname(string $classname): ?string {
-		if (stripos($classname, 'orm_')) {
-			return substr($classname, stripos($classname, 'orm_') + 4);
+	public static function get_liquorinto_htmlstring_table(array $liquor, array $liquor_identifiers): string {
+		$htmlstring = '';
+
+		if (isset($liquor) && isset($liquor_identifiers)) {
+			if (count($liquor_identifiers) === count($liquor)) {
+				foreach ($liquor_identifiers as $key => $liquor_identifier) {
+					$htmlstring .= job_rough::get_htmlstring_table($liquor_identifier, $liquor[$key]);
+				}
+			}
 		}
-		return null;
+
+		return $htmlstring;
 	}
 
 	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $class = null, ?string $inlinestyle = null): string {
@@ -96,20 +110,6 @@ class job_rough {
 		}
 		else {
 			$htmlstring .= 'Table column head count and minimum cell count in rows is differing.';
-		}
-
-		return $htmlstring;
-	}
-
-	public static function get_liquorinto_htmlstring_table(array $liquor, array $liquor_identifiers): string {
-		$htmlstring = '';
-
-		if (isset($liquor) && isset($liquor_identifiers)) {
-			if (count($liquor_identifiers) === count($liquor)) {
-				foreach ($liquor_identifiers as $key => $liquor_identifier) {
-					$htmlstring .= job_rough::get_htmlstring_table($liquor_identifier, $liquor[$key]);
-				}
-			}
 		}
 
 		return $htmlstring;

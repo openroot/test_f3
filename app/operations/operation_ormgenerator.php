@@ -14,13 +14,12 @@ class operation_ormgenerator extends abstract_operation {
 	public function ormgenerator_default(Base $f3) {
 		$htmlstring = '';
 		$rows = [];
-		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
+		foreach (job_rough::get_list_ormclass() as $index => $ormclass) {
 			$htmlstring1 = job_rough::get_htmlstring_anchorbutton(
-				'/instruct/orm/explore/orm_' . job_rough::extract_tablename_from_ormclassname($ormclass),
-				$ormclass,
+				'/instruct/orm/explore/orm_' . $ormclass['mysqltable'],
+				$ormclass['phpclass'],
 				'btn btn-outline-danger'
 			);
-
 			array_push($rows, [($index + 1), $htmlstring1]);
 		}
 		$htmlstring .= job_rough::get_htmlstring_table(['Index', 'PHP Class'], $rows, 'ORM Classes Ordered', 'table table-hover table-borderless background-light');

@@ -26,14 +26,15 @@ class operation_instruct extends abstract_operation {
 	public function instruct_orm_default(Base $f3) {
 		$htmlstring = '';
 		$rows = [];
-		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
-			$href = '<a href="/instruct/orm/explore/orm_'
-				. job_rough::extract_tablename_from_ormclassname($ormclass)
-				. '">' . $ormclass . '</a>';
-
-			array_push($rows, [($index + 1), $href]);
+		foreach (job_rough::get_list_ormclass() as $index => $ormclass) {
+			$htmlstring1 = job_rough::get_htmlstring_anchorbutton(
+				'/instruct/orm/explore/orm_' . $ormclass['mysqltable'],
+				$ormclass['phpclass'],
+				'btn btn-outline-danger'
+			);
+			array_push($rows, [($index + 1), $htmlstring1]);
 		}
-		$htmlstring .= job_rough::get_htmlstring_table(['Index', 'Class name'], $rows, 'Ordered list of orm classes');
+		$htmlstring .= job_rough::get_htmlstring_table(['Index', 'PHP Class'], $rows, 'ORM Classes Ordered', 'table table-hover table-borderless background-light');
 
 		$f3->instruct_orm_default += ['htmlstring' => $htmlstring];
 
@@ -64,8 +65,8 @@ class operation_instruct extends abstract_operation {
 		$htmlstring = '';
 
 		$rows = [];
-		foreach (job_rough::get_ormclass_orderedlist() as $index => $ormclass) {
-			$orminstance = new $ormclass();
+		foreach (job_rough::get_list_ormclass() as $index => $ormclass) {
+			$orminstance = new $ormclass['phpclass']();
 
 			$orm_liquor = $orminstance->liquor_create_table();
 
