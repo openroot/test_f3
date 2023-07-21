@@ -58,6 +58,36 @@ class job_rough {
 		return $htmlstring;
 	}
 
+	private static function get_htmlstring_hr(?string $class = null): string {
+		$htmlstring = '';
+
+		$class = isset($class) ? $class : 'my-1';
+
+		$htmlstring .= '<div class="' . $class . '"></div>';
+
+		return $htmlstring;
+	}
+
+	public static function get_htmlstring_hr1(): string {
+		return self::get_htmlstring_hr('my-1');
+	}
+
+	public static function get_htmlstring_hr2(): string {
+		return self::get_htmlstring_hr('my-2');
+	}
+
+	public static function get_htmlstring_hr3(): string {
+		return self::get_htmlstring_hr('my-3');
+	}
+
+	public static function get_htmlstring_hr4(): string {
+		return self::get_htmlstring_hr('my-4');
+	}
+
+	public static function get_htmlstring_hr5(): string {
+		return self::get_htmlstring_hr('my-5');
+	}
+
 	public static function get_htmlstring_table($ths, $rows, ?string $caption = null, ?string $class = null, ?string $inlinestyle = null): string {
 		$htmlstring = '';
 
@@ -115,11 +145,43 @@ class job_rough {
 		return $htmlstring;
 	}
 
-	public static function get_htmlstring_anchorbutton(string $href, string $text, ?string $button_class = null): string {
+	private static function get_htmlstring_anchorbutton(string $href, string $text, ?string $class = null): string {
 		$htmlstring = '';
 
-		$htmlstring .= '<a href="' . $href . '"><button class="' . $button_class . '" type="button">' . $text . '</button></a>';
+		$class = isset($class) ? $class : 'btn btn-danger';
+
+		$htmlstring .= '<a href="' . $href . '"><button class="' . $class . '" type="button">' . $text . '</button></a>';
 
 		return $htmlstring;
+	}
+
+	public static function get_htmlstring_anchorbutton11(string $href, string $text): string {
+		return self::get_htmlstring_anchorbutton($href, $text, 'btn btn-danger');
+	}
+
+	public static function get_htmlstring_anchorbutton12(string $href, string $text): string {
+		return self::get_htmlstring_anchorbutton($href, $text, 'btn btn-outline-danger');
+	}
+
+	private static function get_htmlstring_jumbotron3(?string $textprimary = null, ?string $textsecondary = null, ?string $htmlstring_anchorbutton = null, ?string $class = null): string {
+		$htmlstring = '';
+
+		$class = isset($class) ? $class : 'bg-dark text-white';
+
+		$htmlstring .= '<div class="h-100 p-5 rounded-3 ' . $class . '">' .
+							'<h2>' . $textprimary . '</h2>' .
+							'<p>' . $textsecondary . '</p>' .
+							$htmlstring_anchorbutton .
+						'</div>';
+
+		return $htmlstring;
+	}
+
+	public static function get_htmlstring_jumbotron31(?string $textprimary = null, ?string $textsecondary = null, ?string $htmlstring_anchorbutton = null): string {
+		return self::get_htmlstring_jumbotron3($textprimary, $textsecondary, $htmlstring_anchorbutton, 'bg-dark text-white');
+	}
+
+	public static function get_htmlstring_jumbotron32(?string $textprimary = null, ?string $textsecondary = null, ?string $htmlstring_anchorbutton = null): string {
+		return self::get_htmlstring_jumbotron3($textprimary, $textsecondary, $htmlstring_anchorbutton, 'bg-light background-light border');
 	}
 }
