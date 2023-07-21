@@ -317,5 +317,4 @@ abstract class abstract_orm extends abstract_model {
 		}
 		return null;
 	}
-
 }
