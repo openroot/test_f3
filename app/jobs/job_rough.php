@@ -114,4 +114,12 @@ class job_rough {
 
 		return $htmlstring;
 	}
+
+	public static function get_htmlstring_anchorbutton(string $href, string $text, ?string $button_class = null): string {
+		$htmlstring = '';
+
+		$htmlstring .= '<a href="' . $href . '"><button class="' . $button_class . '" type="button">' . $text . '</button></a>';
+
+		return $htmlstring;
+	}
 }
