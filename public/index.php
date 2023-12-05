@@ -198,7 +198,7 @@ class app_test_f3 {
 					'operations\operation_instruct->instruct_orm_default'
 				);
 
-				// URI example: http://localhost:4000/instruct/orm/explore/orm_orde
+				// URI example: http://localhost:4000/instruct/orm/explore/orm_order
 				$this->handle_this->route(
 					'GET ' .
 					'@instruct_orm_explore_default: ' .
